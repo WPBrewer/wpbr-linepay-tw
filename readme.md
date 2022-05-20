@@ -2,7 +2,7 @@
 This plugin provide LINE Pay payment functionality in Taiwan.
 
 ## Features
-1. Payment
+1. General Payment
 2. Refund (allow partial refund)
 
 ## Feedback
