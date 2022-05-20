@@ -31,6 +31,7 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 define( 'LINEPAY_TW_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'LINEPAY_TW_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'LINEPAY_TW_BASENAME', plugin_basename( __FILE__ ) );
+define( 'LINEPAY_TW_VERSION', '0.0.9' );
 
 
 function linepay_tw_needs_woocommerce() {

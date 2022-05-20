@@ -2,7 +2,7 @@
 /**
  * LINEPay_TW_Request class file
  *
- * @package linepay
+ * @package linepay_tw
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -30,7 +30,7 @@ class LINEPay_TW_Request {
 	}
 
 	/**
-	 * Call LINE Pay's reserve-api and return the result.
+	 * Call LINE Pay's request-api and return the result.
 	 * Change the order status according to the api call result.
 	 *
 	 * Request successful
@@ -42,7 +42,7 @@ class LINEPay_TW_Request {
 	 * @param int $order_id Order ID.
 	 * @return array
 	 */
-	public function reserve( $order_id ) {
+	public function request( $order_id ) {
 
 		try {
 			$order        = wc_get_order( $order_id );
@@ -56,7 +56,7 @@ class LINEPay_TW_Request {
 				throw new WC_Gateway_LINEPay_Exception( sprintf( WC_Gateway_LINEPay_Const::LOG_TEMPLATE_RESERVE_UNVALID_CURRENCY_SCALE, $order_id, $std_amount, $currency, $this->get_currency_scale( $currency ), $this->get_amount_precision( $amount ) ) );
 			}
 
-			$url  = $this->get_request_url( WC_Gateway_LINEPay_Const::REQUEST_TYPE_RESERVE );
+			$url  = $this->get_request_url( WC_Gateway_LINEPay_Const::REQUEST_TYPE_REQUEST );
 			$body = array(
 				'orderId'  => $order_id,
 				'amount'   => $std_amount,
@@ -137,7 +137,7 @@ class LINEPay_TW_Request {
 	 * -Send failure message
 	 * -Go to order detail page
 	 *
-	 * @see WC_Gateway_LINEPay_Handler->handle_callback()
+	 * @see LINEPay_TW_Response->receive_payment_response()
 	 * @param int $order_id Order ID.
 	 */
 	public function confirm( $order_id ) {
@@ -197,6 +197,7 @@ class LINEPay_TW_Request {
 
 			wp_safe_redirect( $this->get_return_url( $order ) );
 			exit;
+
 		} catch ( WC_Gateway_LINEPay_Exception $e ) {
 			$info = $e->getInfo();
 			// static::$logger->error( 'process_payment_confirm', ( is_wp_error( $info ) ) ? $info : $e->getMessage() );
@@ -536,7 +537,7 @@ class LINEPay_TW_Request {
 	/**
 	 * Returns the URL that matches the request type.
 	 *
-	 * @param string $type	=> const:WC_Gateway_LINEPay_Const::REQUEST_TYPE_RESERVE|CONFIRM|CANCEL|REFUND
+	 * @param string $type	=> const:WC_Gateway_LINEPay_Const::REQUEST_TYPE_REQUEST|CONFIRM|CANCEL|REFUND
 	 * @param array $args
 	 * @return string
 	 */
@@ -573,7 +574,7 @@ class LINEPay_TW_Request {
 	 * Returns the uri that matches the request type.
 	 * If the uri contains variables, it is combined with args to create a new uri.
 	 *
-	 * @param string $type	=> const:WC_Gateway_LINEPay_Const::REQUEST_TYPE_RESERVE|CONFIRM|CANCEL|REFUND
+	 * @param string $type	=> const:WC_Gateway_LINEPay_Const::REQUEST_TYPE_REQUEST|CONFIRM|CANCEL|REFUND
 	 * @param array $args
 	 * @return string
 	 */
@@ -581,8 +582,8 @@ class LINEPay_TW_Request {
 		$uri = '';
 
 		switch ($type) {
-			case WC_Gateway_LINEPay_Const::REQUEST_TYPE_RESERVE:
-				$uri = WC_Gateway_LINEPay_Const::URI_RESERVE;
+			case WC_Gateway_LINEPay_Const::REQUEST_TYPE_REQUEST:
+				$uri = WC_Gateway_LINEPay_Const::URI_REQUEST;
 				break;
 			case WC_Gateway_LINEPay_Const::REQUEST_TYPE_CONFIRM:
 				$uri = WC_Gateway_LINEPay_Const::URI_CONFIRM;

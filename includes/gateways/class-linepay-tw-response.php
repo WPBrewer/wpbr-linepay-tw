@@ -85,8 +85,7 @@ class LINEPay_TW_Response {
 
 			// LINEPay_TW::log( 'handle_callback', sprintf( WC_Gateway_LINEPay_Const::LOG_TEMPLATE_HANDLE_CALLBANK_NOT_FOUND_REQUREST, $order_id, $payment_status, $request_type, __( 'Unable to process callback.', 'woocommerce_gateway_linepay' ) ) );
 		} catch ( Exception $e ) {
-			// Leave error log.
-			LINEPay_TW::log( 'handle_callback: ' . $e->getMessage() );
+			LINEPay_TW::log( 'receive_payment_response error: ' . $e->getMessage() );
 		}
 
 	}

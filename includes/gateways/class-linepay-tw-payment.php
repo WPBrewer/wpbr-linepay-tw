@@ -3,10 +3,9 @@
 /**
  * LINEPay Payment Gateway
  *
- * @class WC_Gateway_LINEPay
+ * @class LINEPay_TW_Payment
  * @extends WC_Payment_Gateway
- * @version 3.0.0
- * @author LINEPay
+ * @version 1.0.0
  */
 class LINEPay_TW_Payment extends WC_Payment_Gateway {
 
@@ -24,27 +23,21 @@ class LINEPay_TW_Payment extends WC_Payment_Gateway {
 		$this->method_title       = WC_Gateway_LINEPay_Const::TITLE;
 		$this->method_description = WC_Gateway_LINEPay_Const::DESC;
 
-		/**
-		 * Initialize the information to be supported by LINEPay Gateway.
-		 * -Purchase or refund
-		 * -Supported countries
-		 * -Support currency
-		 * -Information on refund status of manager and buyer
-		 */
+		$this->payment_type       = 'NORMAL';
+		$this->payment_action     = get_option( 'linepay_tw_payment_action' );
+
 		// Support refund function.
 		$this->supports = array(
 			'products',
 			'refunds',
 		);
 
-		// LINE Pay supported currency.
+		// Supported currency.
 		$this->supported_currencies     = array( 'TWD' );
 
 		// Define form field to show in admin setting.
 		$this->init_form_fields();
 		$this->init_settings();
-
-		$this->init_merchant_data();
 
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 
@@ -71,26 +64,8 @@ class LINEPay_TW_Payment extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Initialize the information registered in form fields to the fields of LINEPay Gateway.
-	 * Fields newly defined for LINEPay are separated by prefixing with linepay_.
-	 */
-	protected function init_merchant_data() {
-
-		// $this->linepay_lang_cd        = $this->get_option( 'lang_cd' );
-
-		$this->payment_type   = 'NORMAL';
-		$this->payment_action = get_option( 'linepay_tw_payment_action' );
-
-		// LINEPay Gateway Check whether it is used.
-		$this->linepay_is_valid = $this->is_valid_for_use();
-		if ( is_wp_error( $this->linepay_is_valid ) ) {
-			$this->enabled = 'no';
-		}
-	}
-
-	/**
 	 * Process payments and return results.
-	 * To pay with LINE Pay, reserve-api is first called.
+	 * To pay with LINE Pay, request-api is first called.
 	 * Override the parent process_payment function.
 	 * return the success and redirect in an array. e.g:
 	 * return array(
@@ -102,12 +77,12 @@ class LINEPay_TW_Payment extends WC_Payment_Gateway {
 	 * @return array
 	 */
 	public function process_payment( $order_id ) {
+		//TODO
 		add_post_meta( $order_id, '_linepay_payment_status', null, true );
 		add_post_meta( $order_id, '_linepay_reserved_transaction_id', null, true );
 
-		// reserve.
 		$request = new LINEPay_TW_Request( $this );
-		return $request->reserve( $order_id );
+		return $request->request( $order_id );
 	}
 
 	/**
@@ -132,43 +107,30 @@ class LINEPay_TW_Payment extends WC_Payment_Gateway {
 	}
 
 	/**
-	 * Returns whether the currency is supported.
+	 * Check if the gateway is available for use.
 	 *
-	 * @param	string $currency
-	 * @return	boolean
+	 * @return bool
 	 */
-	private function is_supported_currency( $currency ) {
-		return in_array( $currency, $this->supported_currencies );
-	}
-
-	/**
-	 * Returns whether LINEPay Gateway can be used.
-	 * -Accepted currency
-	 * -Input channel information
-	 *
-	 * @return boolean|WP_Error
-	 */
-	private function is_valid_for_use() {
-
-		// Return if not already used.
-		if ( ! $this->enabled ) {
-			return 'no';
-		}
-
-		// Accepted Currency.
-		$cur_currency = get_woocommerce_currency();
-		if ( ! $this->is_supported_currency( $cur_currency ) ) {
-			return new WP_Error( 'linepay_not_supported_currency', sprintf( '[%s] ' . __( 'Unsupported currency.', 'woo-linepay-tw' ), $cur_currency ), $cur_currency );
-		}
+	public function is_available() {
+		$is_available = ( 'yes' === $this->enabled );
 
 		// Channel information by usage environment.
 		$channel_info = LINEPay_TW::get_channel_info();
 		if ( empty( $channel_info['channel_id'] ) || empty( $channel_info['channel_secret'] ) ) {
-
-			return new WP_Error( 'linepay_empty_channel_info', sprintf( '[%s] ' . __( 'You have not entered your channel information.', 'woo-linepay-tw' ), LINEPay_TW::$env_status ) );
+			$is_available = false;
 		}
 
-		return 'yes';
+		// Accepted Currency.
+		$cur_currency = get_woocommerce_currency();
+		if ( ! in_array( $cur_currency, $this->supported_currencies ) ) {
+			$is_available = false;
+		}
+
+		if ( WC()->cart && 0 < $this->get_order_total() && 0 < $this->max_amount && $this->max_amount < $this->get_order_total() ) {
+			$is_available = false;
+		}
+
+		return $is_available;
 	}
 
 }

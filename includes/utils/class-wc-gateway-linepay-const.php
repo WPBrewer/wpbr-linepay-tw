@@ -26,11 +26,8 @@ final class WC_Gateway_LINEPay_Const {
 	const RESOURCE_IMG_LOGO_OFFICIAL_5          = '74x24.png';
 	const RESOURCE_IMG_LOGO_OFFICIAL_6          = '61x20.png';
 
-	const RESOURCE_JS_CUSTOMER_REFUND_ACTION = '/assets/js/customer-refund-action.js';
-	const RESOURCE_JS_LOGO_UPLOADER          = '/assets/js/logo-uploader.js';
-
 	// uri.
-	const URI_RESERVE          = '/v3/payments/request';
+	const URI_REQUEST          = '/v3/payments/request';
 	const URI_CONFIRM          = '/v3/payments/{transaction_id}/confirm';
 	const URI_DETAILS          = '/v3/payments?transactionId={transaction_id}';
 	// const URI_DETAILS          = '/v3/payments?orderId={order_id}';
@@ -42,7 +39,7 @@ final class WC_Gateway_LINEPay_Const {
 	const HOST_REAL    = 'https://api-pay.line.me';
 
 	// request type.
-	const REQUEST_TYPE_RESERVE = 'reserve';
+	const REQUEST_TYPE_REQUEST = 'request';
 	const REQUEST_TYPE_CONFIRM = 'confirm';
 	const REQUEST_TYPE_DETAILS = 'details';
 	const REQUEST_TYPE_CANCEL  = 'cancel';
