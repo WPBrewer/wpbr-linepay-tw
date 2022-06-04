@@ -40,6 +40,8 @@ class LINEPay_TW_Payment extends WC_Payment_Gateway {
 		$this->init_settings();
 
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
+		add_filter( 'woocommerce_thankyou_order_received_text', array( $this, 'thankyou_order_on_hold_message'), 10, 2 );
+		add_action( 'woocommerce_order_details_before_order_table', array( $this, 'display_on_hold_message_on_order_details' ));
 
 	}
 
@@ -77,12 +79,11 @@ class LINEPay_TW_Payment extends WC_Payment_Gateway {
 	 * @return array
 	 */
 	public function process_payment( $order_id ) {
-		//TODO
-		add_post_meta( $order_id, '_linepay_payment_status', null, true );
-		add_post_meta( $order_id, '_linepay_reserved_transaction_id', null, true );
 
-		$request = new LINEPay_TW_Request( $this );
-		return $request->request( $order_id );
+		WC()->cart->empty_cart();
+
+		$linepay_request = new LINEPay_TW_Request( $this );
+		return $linepay_request->request( $order_id );
 	}
 
 	/**
@@ -90,9 +91,6 @@ class LINEPay_TW_Payment extends WC_Payment_Gateway {
 	 *
 	 * This method is called only when the administrator processes it.
 	 * When the administrator requests a refund, the process_refund() method is called through WC_AJAX::refund_line_items().
-	 *
-	 * The woocommerce_delete_shop_order_transients action
-	 * This action occurs immediately before woocommerce completes the refund process when a manager requests a refund and gives a json response.
 	 *
 	 * @see WC_AJAX::refund_line_items()
 	 * @see	woocommerce::action - woocommerce_delete_shop_order_transients
@@ -102,8 +100,8 @@ class LINEPay_TW_Payment extends WC_Payment_Gateway {
 	 * @return bool|WP_Error
 	 */
 	public function process_refund( $order_id, $amount = null, $reason = '' ) {
-		$request = new LINEPay_TW_Request( $this );
-		return $request->refund( $order_id, $amount, $reason );
+		$linepay_request = new LINEPay_TW_Request( $this );
+		return $linepay_request->refund( $order_id, $amount, $reason );
 	}
 
 	/**
@@ -131,6 +129,45 @@ class LINEPay_TW_Payment extends WC_Payment_Gateway {
 		}
 
 		return $is_available;
+	}
+
+	function thankyou_order_on_hold_message( $text, $order ) {
+
+		if ( $order ) {
+			if ( $order->get_payment_method() !== $this->id ) {
+				return $text;
+			}
+
+			if ( $order->get_status() == 'on-hold' ) {
+				$text = '<span class="linepay-order-onhold">'. esc_html__('We have received your order, but the payment status need to be confirmed. Please contact the support.', 'woo-linepay-tw') .'</span>';
+			}
+
+			if ( $order->get_status() == 'pending' ) {
+				$text = '<span class="linepay-order-onhold">'. esc_html__('We have received your order, but the order is awaiting payment. Please pay again.', 'woo-linepay-tw') .'</span>';
+			}
+
+		}
+
+        return $text;
+	}
+
+	function display_on_hold_message_on_order_details( $order ) {
+
+		if ( is_checkout()) {
+			return;
+		}
+		if ( $order->get_payment_method() !== $this->id ) {
+			return;
+		}
+
+		if ( $order->get_status() == 'on-hold' ) {
+			echo '<div class="linepay-order-onhold">'. esc_html__('We have received your order, but the payment status need to be confirmed. Please contact the support.', 'woo-linepay-tw') .'</div>';
+		}
+
+		if ( $order->get_status() == 'pending' ) {
+			echo '<div class="linepay-order-onhold">'. esc_html__('We have received your order, but the order is awaiting payment. Please pay again', 'woo-linepay-tw') .'</div>';
+		}
+
 	}
 
 }

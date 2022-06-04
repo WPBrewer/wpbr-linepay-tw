@@ -68,7 +68,7 @@ class LINEPay_TW {
 		require_once LINEPAY_TW_PLUGIN_DIR . 'includes/gateways/class-linepay-tw-request.php';
 		require_once LINEPAY_TW_PLUGIN_DIR . 'includes/gateways/class-linepay-tw-response.php';
 		require_once LINEPAY_TW_PLUGIN_DIR . 'includes/utils/class-wc-gateway-linepay-const.php';
-		require_once LINEPAY_TW_PLUGIN_DIR . 'includes/utils/class-wc-gateway-linepay-exception.php';
+		require_once LINEPAY_TW_PLUGIN_DIR . 'includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php';
 
 		self::$log_enabled = 'yes' === get_option( 'linepay_tw_debug_log_enabled', 'no' );
 
@@ -96,15 +96,27 @@ class LINEPay_TW {
 		);
 
 		LINEPay_TW_Response::init();
+		LINEPay_TW_Order_Meta_Boxes::init();
 
 		load_plugin_textdomain( 'woo-linepay-tw', false, trailingslashit( dirname( LINEPAY_TW_BASENAME ) . '/languages' ) );
 
 		add_filter( 'woocommerce_get_settings_pages', array( self::get_instance(), 'linepay_tw_add_settings' ), 15 );
 		add_filter( 'woocommerce_payment_gateways', array( self::get_instance(), 'add_linepay_tw_payment_gateway' ) );
-
+		add_action( 'wp_enqueue_scripts', array( self::get_instance(), 'linepay_tw_enqueue_scripts' ), 9 );
 		add_action( 'admin_enqueue_scripts', array( self::get_instance(), 'linepay_tw_admin_scripts' ), 9 );
 
 
+		// do_action( 'woocommerce_after_pay_action', array( self::get_instance(), 'linepay_order_pay') );
+
+
+	}
+
+	public function linepay_order_pay( $order ) {
+		LINEPay_TW::log('linepay order pay');
+		if ( $order->needs_payment() ) {
+			wp_safe_redirect( $order->$order->get_checkout_payment_url() );
+			exit;
+		}
 	}
 
 	/**
@@ -115,28 +127,6 @@ class LINEPay_TW {
 	public static function get_channel_info() {
 		return self::$channel_info[ self::$env_status ];
 	}
-
-	//把多個商品結合成一個字串，超過60字則截斷
-    public static function itemsAsString( $order ) {
-        $items = $order->get_items();
-        $item_s = '';
-        foreach ( $items as $item ) {
-            $item_s .= $item['name'];
-            if ( end($items)['name'] != $item['name']) {
-                $item_s .= ',';
-            }
-        }
-
-        if ( $this->get_option( 'allow_character' ) == 'yes' ) {
-            $item_s = $this->clean($item_s);
-        }
-        $resp = (mb_strlen($item_s) > 50)? mb_substr($item_s, 0, 50) : $item_s;
-        return $resp;
-    }
-
-    public static function clean($string) {
-        return preg_replace('/[^[:alnum:][:space:]]/u', '', $string);
-    }
 
 	/**
 	 * Add payment gateways
@@ -149,8 +139,13 @@ class LINEPay_TW {
 		return $merged_methods;
 	}
 
+	public function linepay_tw_enqueue_scripts() {
+		wp_enqueue_style( 'linepay-tw', LINEPAY_TW_PLUGIN_URL . 'assets/css/linepay-tw-public.css', array(), '1.0' );
+	}
+
 	public function linepay_tw_admin_scripts() {
 		wp_enqueue_script( 'linepay-tw', LINEPAY_TW_PLUGIN_URL . 'assets/js/linepay-admin.js', array(), '1.0' );
+		wp_enqueue_style( 'linepay-tw', LINEPAY_TW_PLUGIN_URL . 'assets/css/linepay-tw-admin.css', array(), '1.0' );
 	}
 
 	/**

@@ -29,12 +29,12 @@ class LINEPay_TW_Response {
 	public static function init() {
 		self::get_instance();
 
-		// the result_url, get data from LINE Pay.
+		// the confirmURL, get data from LINE Pay.
 		add_action( 'woocommerce_api_linepay_payment', array( self::get_instance(), 'receive_payment_response' ) );
+
 	}
 
 	/**
-	 * LINEPay payment provider
 	 *
 	 * The callback can only handle the following states:
 	 * payment status	: reserved
@@ -50,7 +50,9 @@ class LINEPay_TW_Response {
 	public function receive_payment_response() {
 
 		try {
+
 			$order_id = wp_unslash( $_GET['order_id'] );
+
 			if ( empty( $order_id ) ) {
 				throw new Exception( sprintf( WC_Gateway_LINEPay_Const::LOG_TEMPLATE_HANDLE_CALLBANK_NOT_FOUND_ORDER_ID, $order_id, __( 'Unable to process callback.', 'woocommerce_gateway_linepay' ) ) );
 			}
@@ -61,11 +63,10 @@ class LINEPay_TW_Response {
 			$gateway = new LINEPay_TW_Payment();
 			$request = new LINEPay_TW_Request( $gateway );
 
-			if ( WC_Gateway_LINEPay_Const::PAYMENT_STATUS_RESERVED === $payment_status ) {
+			if ( $payment_status === WC_Gateway_LINEPay_Const::PAYMENT_STATUS_RESERVED) {
 
 				switch ( $request_type ) {
 					case WC_Gateway_LINEPay_Const::REQUEST_TYPE_CONFIRM:
-						LINEPay_TW::log( 'process_payment_confirm' );
 						$request->confirm( $order_id );
 						break;
 					case WC_Gateway_LINEPay_Const::REQUEST_TYPE_CANCEL:
@@ -73,7 +74,7 @@ class LINEPay_TW_Response {
 						break;
 				}
 
-			} elseif ( WC_Gateway_LINEPay_Const::PAYMENT_STATUS_CONFIRMED === $payment_status ) {
+			} elseif ( $payment_status === WC_Gateway_LINEPay_Const::PAYMENT_STATUS_CONFIRMED ) {
 
 				switch ( $request_type ) {
 					case WC_Gateway_LINEPay_Const::REQUEST_TYPE_REFUND:
@@ -83,7 +84,6 @@ class LINEPay_TW_Response {
 
 			}
 
-			// LINEPay_TW::log( 'handle_callback', sprintf( WC_Gateway_LINEPay_Const::LOG_TEMPLATE_HANDLE_CALLBANK_NOT_FOUND_REQUREST, $order_id, $payment_status, $request_type, __( 'Unable to process callback.', 'woocommerce_gateway_linepay' ) ) );
 		} catch ( Exception $e ) {
 			LINEPay_TW::log( 'receive_payment_response error: ' . $e->getMessage() );
 		}

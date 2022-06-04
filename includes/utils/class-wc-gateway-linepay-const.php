@@ -30,8 +30,10 @@ final class WC_Gateway_LINEPay_Const {
 	const URI_REQUEST          = '/v3/payments/request';
 	const URI_CONFIRM          = '/v3/payments/{transaction_id}/confirm';
 	const URI_DETAILS          = '/v3/payments?transactionId={transaction_id}';
+	const URI_CHECK            = '/v3/payments/requests/{transaction_id}/check';
 	// const URI_DETAILS          = '/v3/payments?orderId={order_id}';
 	const URI_REFUND           = '/v3/payments/{transaction_id}/refund';
+
 	const URI_CALLBACK_HANDLER = '/wc-api/linepay_payment';
 
 	// host.
@@ -42,6 +44,7 @@ final class WC_Gateway_LINEPay_Const {
 	const REQUEST_TYPE_REQUEST = 'request';
 	const REQUEST_TYPE_CONFIRM = 'confirm';
 	const REQUEST_TYPE_DETAILS = 'details';
+	const REQUEST_TYPE_CHECK   = 'check';
 	const REQUEST_TYPE_CANCEL  = 'cancel';
 	const REQUEST_TYPE_REFUND  = 'refund';
 
@@ -51,7 +54,8 @@ final class WC_Gateway_LINEPay_Const {
 
 	// payment status.
 	const PAYMENT_STATUS_RESERVED  = 'reserved';
-	const PAYMENT_STATUS_CONFIRMED = 'confirmed';
+	const PAYMENT_STATUS_AUTHED    = 'authed';//已經 reserved 但是尚未 confirmed
+	const PAYMENT_STATUS_CONFIRMED = 'confirmed';//captured
 	const PAYMENT_STATUS_CANCELLED = 'cancelled';
 	const PAYMENT_STATUS_REFUNDED  = 'refunded';
 	const PAYMENT_STATUS_FAILED    = 'failed';
@@ -63,10 +67,6 @@ final class WC_Gateway_LINEPay_Const {
 	// payment type.
 	const PAYMENT_TYPE_NORMAL      = 'NORMAL';
 	const PAYMENT_TYPE_PREAPPROVED = 'PREAPPROVED';
-
-	// user status.
-	const USER_STATUS_ADMIN    = 'admin';
-	const USER_STATUS_CUSTOMER = 'customer';
 
 	// log template.
 	const LOG_TEMPLATE_REFUND_FAILURE_AFTER_CONFIRM          = '[order_id: %s][requested confirm amount: %s][confirmed amount: %s] - %s';

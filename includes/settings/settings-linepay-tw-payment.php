@@ -29,5 +29,4 @@ return array(
         'desc_tip'    => true,
     ),
 
-
 );

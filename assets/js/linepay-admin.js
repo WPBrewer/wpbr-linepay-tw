@@ -2,7 +2,7 @@ jQuery(function ($) {
 	'use strict';
 
 	/**
-	 * Object to handle PayPal admin functions.
+	 * Object to handle LINE Pay admin functions.
 	 */
 	var linepay_admin = {
 		/**
