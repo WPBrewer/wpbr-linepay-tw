@@ -149,7 +149,7 @@ class LINEPay_TW_Request {
 	 * @see LINEPay_TW_Response->receive_payment_response()
 	 * @param int $order_id Order ID.
 	 */
-	public function confirm( $order_id ) {
+	public function confirm( $order_id,  $is_checkout = true ) {
 
 		try {
 
@@ -159,6 +159,8 @@ class LINEPay_TW_Request {
 			if ( ! $order ) {
 				throw new Exception( 'Cant find order by order_id:' . $order_id );
 			}
+
+			// throw new Exception('confirm error');
 
 			$amount   = $order->get_total();
 			$currency = $order->get_currency();
@@ -190,7 +192,7 @@ class LINEPay_TW_Request {
 			$result = $this->execute( $url, $request_args, 40 );
 
 			if ( '0000' !== $result->returnCode) {
-				throw new Exception( sprintf( 'Execute LINE Pay Confirm API failed. Return code: %s. Response body: %s', $result->returnCode, $result )  );
+				throw new Exception( sprintf( 'Execute LINE Pay Confirm API failed. Return code: %s. Return Message: %s', $result->returnCode, $result->returnMessage )  );
 			}
 
 			$confirmed_amount = 0;
@@ -219,14 +221,29 @@ class LINEPay_TW_Request {
 			$this->check_payment_and_update_order_note( $order, 'Check payment status when confirmed' );
 
 
-			WC()->cart->empty_cart();
-			wp_safe_redirect( $this->get_return_url( $order ) );
-			exit;
+			if ( $is_checkout ) {
+
+				WC()->cart->empty_cart();
+				wp_safe_redirect( $this->get_return_url( $order ) );
+				exit;
+
+			} else {
+
+				return true;
+
+			}
+
 
 		} catch ( Exception $e ) {
 
 			LINEPay_TW::log( 'process payment confirm error:' . $e->getMessage() );
-			do_action( 'linepay_process_confirm_failed', $order );
+			if ( $is_checkout ) {
+				do_action( 'linepay_process_confirm_failed', $order );
+			} else {
+				//just throw the exception
+				throw $e;
+			}
+
 
 		}
 	}
@@ -241,19 +258,16 @@ class LINEPay_TW_Request {
 
 		LINEPay_TW::log('on_process_confirm_failed====>');
 
-		//this has no effect!
-
 		// Initialize order stored in session.
 		// FIXME: not sure the purpose.
 		WC()->session->set( 'order_awaiting_payment', false );
 
 		try {
 
+			// $this->check_payment_and_update_order_note( $order, 'Check payment status when confirm failed' );
 			$check_status = $this->check( $order );
-
 			$check_code = $check_status->returnCode;
 			$check_msg  = $check_status->returnMessage;
-
 			$check_info = sprintf('[confirm][order_id:%s] Check payment status when confirm failed, return code:%s, return message:%s', $order->get_id(), $check_code, $check_msg );
 			LINEPay_TW::log( $check_info );
 			$order->add_order_note( $check_info );
@@ -262,6 +276,7 @@ class LINEPay_TW_Request {
 				//Completed authorization - Able to call the Confirm API
 				$order->update_meta_data( '_linepay_payment_status' , WC_Gateway_LINEPay_Const::PAYMENT_STATUS_AUTHED );
 				$order->save();
+				$order->add_order_note( __('Order payment is authed, but need to be confirmed', 'woo-linepay-tw') );
 			}
 
 		} catch ( Exception $e ) {
@@ -336,7 +351,11 @@ class LINEPay_TW_Request {
 		LINEPay_TW::log( 'remaining refund:' . $remaining_refund_amount );
 		$is_partial_refund = ( $remaining_refund_amount > 0 )? true : false;
 
-		$result         = $this->do_refund( $order, $transaction_id, $std_refund_amount, $is_partial_refund );
+		if ( apply_filters( 'line_pay_allow_partial_refund', $is_partial_refund ) ) {
+			return new WP_Error( 'refund error',  __( 'Not allow partial refund', 'woo-linepay-tw' ) );
+		}
+
+		$result = $this->do_refund( $order, $transaction_id, $std_refund_amount, $is_partial_refund );
 
 		return $result;
 	}

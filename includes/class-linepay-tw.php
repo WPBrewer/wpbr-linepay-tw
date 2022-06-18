@@ -105,8 +105,9 @@ class LINEPay_TW {
 		add_action( 'wp_enqueue_scripts', array( self::get_instance(), 'linepay_tw_enqueue_scripts' ), 9 );
 		add_action( 'admin_enqueue_scripts', array( self::get_instance(), 'linepay_tw_admin_scripts' ), 9 );
 
+		add_action( 'wp_ajax_linepay_confirm', array( self::get_instance(), 'linepay_tw_ajax_confirm_payment' ) );
 
-		// do_action( 'woocommerce_after_pay_action', array( self::get_instance(), 'linepay_order_pay') );
+
 
 
 	}
@@ -119,6 +120,54 @@ class LINEPay_TW {
 		}
 	}
 
+	public function linepay_tw_ajax_confirm_payment() {
+
+		if ( ! wp_verify_nonce( $_POST['security'], 'linepay-confirm' ) ) {
+			$return = array(
+				'success' => false,
+				'message'  => __( 'Unsecure AJAX call', 'woo-linepay-tw' ),
+			);
+			wp_send_json( $return );
+     	}
+
+		$order_id = $_POST['post_id'];
+		$order = wc_get_order( $order_id );
+
+		if ( !$order ) {
+			$return = array(
+				'success' => false,
+				'message'  => __( 'No such order id', 'woo-linepay-tw' ),
+			);
+			wp_send_json( $return );
+		}
+
+		$reserved_transaction_id = $order->get_transaction_id();
+		$gateway = new LINEPay_TW_Payment();
+		$request = new LINEPay_TW_Request( $gateway );
+		try {
+
+			if ( $request->confirm( $order->get_id(), false ) ) {
+				$order->add_order_note( __( 'LINE Pay Confirm Succeed!', 'woo-linepay-tw' ) );
+				$return = array(
+					'success' => true,
+					'message' => __( 'Confirm succeed', 'woo-linepay-tw' ),
+				);
+				wp_send_json( $return );
+			}
+
+
+		} catch( Exception $e ) {
+
+			$order->add_order_note( __( 'LINE Pay Confirm Failed!', 'woo-linepay-tw' ) . $e->getMessage() );
+			$return = array(
+				'success' => false,
+				'message'  => $e->getMessage()
+			);
+			wp_send_json( $return );
+
+		}
+
+	}
 	/**
 	 * Returns channel information that matches the environment information of LINEPay Gateway.
 	 *
@@ -144,8 +193,14 @@ class LINEPay_TW {
 	}
 
 	public function linepay_tw_admin_scripts() {
-		wp_enqueue_script( 'linepay-tw', LINEPAY_TW_PLUGIN_URL . 'assets/js/linepay-admin.js', array(), '1.0' );
+		wp_enqueue_script( 'linepay-tw', LINEPAY_TW_PLUGIN_URL . 'assets/js/linepay-tw-admin.js', array(), '1.0' );
 		wp_enqueue_style( 'linepay-tw', LINEPAY_TW_PLUGIN_URL . 'assets/css/linepay-tw-admin.css', array(), '1.0' );
+
+		wp_localize_script( 'linepay-tw', 'linepay_object', array(
+			'ajax_url'     => admin_url( 'admin-ajax.php' ),
+			'confirm_nonce'  => wp_create_nonce( 'linepay-confirm' ),
+		) );
+
 	}
 
 	/**

@@ -73,9 +73,9 @@ class LINEPay_TW_Order_Meta_Boxes {
 			echo '<tr><th><div>' . esc_html__( 'Payment Status', 'woo-linepay-tw' ) . '</div></th><td>' . esc_html( $theorder->get_meta( '_linepay_payment_status' ) ) . '</td></tr>';
 
 			if ( $theorder->get_meta( '_linepay_payment_status' ) ===  WC_Gateway_LINEPay_Const::PAYMENT_STATUS_AUTHED ) {
-				echo '<tr id="paynow-action"><th>付款動作</th><td><button class="button print-label" data-id=' . esc_html( $post->ID ) . ' data-service="' . esc_html( $service_id ) . '">付款確認</button><button class="button linepay-update-status" data-id="' . esc_html( $post->ID ) . '">更新</button>'.$cancel_btn.'</td></tr>';
+				echo '<tr id="linepay-action"><th>付款動作</th><td><button class="button linepay-confirm-btn" data-id=' . esc_html( $post->ID ) . ' data-service="' . esc_html( $service_id ) . '">付款確認</button><button class="button linepay-update-status" data-id="' . esc_html( $post->ID ) . '">查詢</button>'.$cancel_btn.'</td></tr>';
 			} else {
-				echo '<tr id="paynow-action"><th>付款動作</th><td><button class="button linepay-update-status" data-id="' . esc_html( $post->ID ) . '">查詢</button>'.$cancel_btn.'</td></tr>';
+				echo '<tr id="linepay-action"><th>付款動作</th><td><button class="button linepay-update-status" data-id="' . esc_html( $post->ID ) . '">查詢</button>'.$cancel_btn.'</td></tr>';
 			}
 
 			echo '</table>';
