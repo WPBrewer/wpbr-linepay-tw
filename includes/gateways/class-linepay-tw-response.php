@@ -1,4 +1,3 @@
-
 <?php
 /**
  * LINEPay_TW_Response class file
@@ -29,7 +28,7 @@ class LINEPay_TW_Response {
 	public static function init() {
 		self::get_instance();
 
-		// the confirmURL, get data from LINE Pay.
+		// handling callback from LINE Pay.
 		add_action( 'woocommerce_api_linepay_payment', array( self::get_instance(), 'receive_payment_response' ) );
 
 	}
@@ -37,11 +36,11 @@ class LINEPay_TW_Response {
 	/**
 	 *
 	 * The callback can only handle the following states:
-	 * payment status	: reserved
-	 * -> request type	: confirm, cancel
+	 * payment status   : reserved
+	 * -> request type  : confirm, cancel
 	 *
-	 * payment status	: confirmed
-	 * 	-> request type	: refund
+	 * payment status   : confirmed
+	 *  -> request type : refund
 	 *
 	 * If it cannot be processed, an error log is left.
 	 *
@@ -51,10 +50,11 @@ class LINEPay_TW_Response {
 
 		try {
 
+			// phpcs:disable WordPress.Security.NonceVerification.Recommended
 			$order_id = wp_unslash( $_GET['order_id'] );
 
 			if ( empty( $order_id ) ) {
-				throw new Exception( sprintf( WC_Gateway_LINEPay_Const::LOG_TEMPLATE_HANDLE_CALLBANK_NOT_FOUND_ORDER_ID, $order_id, __( 'Unable to process callback.', 'woocommerce_gateway_linepay' ) ) );
+				throw new Exception( sprintf( WC_Gateway_LINEPay_Const::LOG_TEMPLATE_HANDLE_CALLBANK_NOT_FOUND_ORDER_ID, $order_id, __( 'Unable to process callback.', 'woo-linepay-tw' ) ) );
 			}
 
 			$request_type   = wp_unslash( $_GET['request_type'] );
@@ -63,7 +63,7 @@ class LINEPay_TW_Response {
 			$gateway = new LINEPay_TW_Payment();
 			$request = new LINEPay_TW_Request( $gateway );
 
-			if ( $payment_status === WC_Gateway_LINEPay_Const::PAYMENT_STATUS_RESERVED) {
+			if ( WC_Gateway_LINEPay_Const::PAYMENT_STATUS_RESERVED === $payment_status ) {
 
 				switch ( $request_type ) {
 					case WC_Gateway_LINEPay_Const::REQUEST_TYPE_CONFIRM:
@@ -73,17 +73,9 @@ class LINEPay_TW_Response {
 						$request->cancel( $order_id );
 						break;
 				}
-
-			} elseif ( $payment_status === WC_Gateway_LINEPay_Const::PAYMENT_STATUS_CONFIRMED ) {
-
-				switch ( $request_type ) {
-					case WC_Gateway_LINEPay_Const::REQUEST_TYPE_REFUND:
-						$this->process_refund_by_customer( $gateway, $order_id );
-						break;
-				}
-
+			} else {
+				LINEPay_TW::log( sprintf( 'invalid status: %s to handle callback for order id: %s', $payment_status, $order_id ) );
 			}
-
 		} catch ( Exception $e ) {
 			LINEPay_TW::log( 'receive_payment_response error: ' . $e->getMessage() );
 		}

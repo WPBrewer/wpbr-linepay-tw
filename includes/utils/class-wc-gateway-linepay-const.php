@@ -1,38 +1,37 @@
 <?php
 /**
+ * WC_Gateway_LINEPay_Const class file
+ *
+ * @package linepay_tw
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
  * LINEPay Gateway Constant
  *
  * Define the constant used in LINE Pay.
  *
  * @version 1.0.0
- * @author LINEPay
  */
 final class WC_Gateway_LINEPay_Const {
 
 	// data.
 	const ID           = 'linepay-tw';
 	const TITLE        = 'LINE Pay Gateway';
-	const DESC         = 'Payments are received through the LINE Pay gateway, which supports USD, JPY, TWD, and THB. In order to use LINE Pay, you must have a Channel ID and Channel SecretKey.';
+	const DESC         = 'Payments are received through the LINE Pay gateway.';
 	const METHOD_TITLE = 'LINE Pay';
-	const METHOD_DESC  = 'Payments are received through the LINE Pay gateway, which supports USD, JPY, TWD, and THB. In order to use LINE Pay, you must have a Channel ID and Channel SecretKey.';
-
-	// resource.
-	const RESOURCE_IMG_LOGO_OFFICIAL_PREFIX     = '/assets/images/logo/linepay_logo_';
-	const RESOURCE_IMG_LOGO_OFFICIAL_THB_PREFIX = '/assets/images/logo/THB/linepay_logo_';
-	const RESOURCE_IMG_LOGO_OFFICIAL_1          = '238x78.png';
-	const RESOURCE_IMG_LOGO_OFFICIAL_2          = '119x39.png';
-	const RESOURCE_IMG_LOGO_OFFICIAL_3          = '98x32.png';
-	const RESOURCE_IMG_LOGO_OFFICIAL_4          = '85x28.png';
-	const RESOURCE_IMG_LOGO_OFFICIAL_5          = '74x24.png';
-	const RESOURCE_IMG_LOGO_OFFICIAL_6          = '61x20.png';
+	const METHOD_DESC  = 'Payments are received through the LINE Pay gateway.';
 
 	// uri.
-	const URI_REQUEST          = '/v3/payments/request';
-	const URI_CONFIRM          = '/v3/payments/{transaction_id}/confirm';
-	const URI_DETAILS          = '/v3/payments?transactionId={transaction_id}';
-	const URI_CHECK            = '/v3/payments/requests/{transaction_id}/check';
+	const URI_REQUEST = '/v3/payments/request';
+	const URI_CONFIRM = '/v3/payments/{transaction_id}/confirm';
+	const URI_DETAILS = '/v3/payments?transactionId={transaction_id}';
+	const URI_CHECK   = '/v3/payments/requests/{transaction_id}/check';
 	// const URI_DETAILS          = '/v3/payments?orderId={order_id}';
-	const URI_REFUND           = '/v3/payments/{transaction_id}/refund';
+	const URI_REFUND = '/v3/payments/{transaction_id}/refund';
 
 	const URI_CALLBACK_HANDLER = '/wc-api/linepay_payment';
 
@@ -54,8 +53,8 @@ final class WC_Gateway_LINEPay_Const {
 
 	// payment status.
 	const PAYMENT_STATUS_RESERVED  = 'reserved';
-	const PAYMENT_STATUS_AUTHED    = 'authed';//已經 reserved 但是尚未 confirmed
-	const PAYMENT_STATUS_CONFIRMED = 'confirmed';//captured
+	const PAYMENT_STATUS_AUTHED    = 'authed'; // 已經 reserved 但是尚未 confirmed.
+	const PAYMENT_STATUS_CONFIRMED = 'confirmed'; // captured.
 	const PAYMENT_STATUS_CANCELLED = 'cancelled';
 	const PAYMENT_STATUS_REFUNDED  = 'refunded';
 	const PAYMENT_STATUS_FAILED    = 'failed';

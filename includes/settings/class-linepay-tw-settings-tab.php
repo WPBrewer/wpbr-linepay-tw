@@ -1,12 +1,12 @@
-
 <?php
 /**
- * WC_Settings_Tab_LINEPay_TW class file
+ * WC_Settings_Tab_LINEPay_TW setting tab file
  *
- * @package linepay
+ * @package linepay_tw
  */
 
 defined( 'ABSPATH' ) || exit;
+
 /**
  * Settings class.
  */
@@ -65,6 +65,13 @@ class WC_Settings_Tab_LINEPay_TW extends WC_Settings_Page {
 						'id'      => 'linepay_tw_debug_log_enabled',
 					),
 					array(
+						'title'   => __( 'Display Logo', 'woo-linepay-tw' ),
+						'type'    => 'checkbox',
+						'default' => 'no',
+						'desc'    => __( 'Display logo on checkout page', 'woo-linepay-tw' ),
+						'id'      => 'linepay_tw_display_logo_enabled',
+					),
+					array(
 						'type' => 'sectionend',
 						'id'   => 'linepay_tw_general_setting',
 					),
@@ -75,45 +82,45 @@ class WC_Settings_Tab_LINEPay_TW extends WC_Settings_Page {
 						'id'    => 'linepay_tw_api_settings',
 					),
 					array(
-						'title'			 => __( 'Sandbox Mode', 'woo-linepay-tw' ),
-						'type'			 => 'checkbox',
-						'label'			 => __( 'Enable sandbox mode.', 'woo-linepay-tw' ),
-						'desc'	 => '',
-						'default'		 => 'no',
+						'title'   => __( 'Sandbox Mode', 'woo-linepay-tw' ),
+						'type'    => 'checkbox',
+						'label'   => __( 'Enable sandbox mode.', 'woo-linepay-tw' ),
+						'desc'    => '',
+						'default' => 'no',
 						'desc'    => __( 'When enabled, you need to use the test-only data below.', 'woo-linepay-tw' ),
 						'id'      => 'linepay_tw_sandboxmode_enabled',
 					),
 					array(
-						'title'			 => __( 'Sandbox Channel ID', 'woo-linepay-tw' ),
-						'type'			 => 'text',
-						'desc'	 => __( 'Enter your Channel ID.', 'woo-linepay-tw' ),
-						'desc_tip'		 => true,
-						'default'		 => '',
-						'id'      => 'linepay_tw_sandbox_channel_id',
+						'title'    => __( 'Sandbox Channel ID', 'woo-linepay-tw' ),
+						'type'     => 'text',
+						'desc'     => __( 'Enter your Channel ID.', 'woo-linepay-tw' ),
+						'desc_tip' => true,
+						'default'  => '',
+						'id'       => 'linepay_tw_sandbox_channel_id',
 					),
 					array(
-						'title'			=> __( 'Sandbox Channel Secret Key', 'woo-linepay-tw' ),
-						'type'			=> 'text',
-						'desc'	=> __( 'Enter your Channel SecretKey.', 'woo-linepay-tw' ),
-						'desc_tip'		=> true,
-						'default'		=> '',
-						'id'      => 'linepay_tw_sandbox_channel_secret',
+						'title'    => __( 'Sandbox Channel Secret Key', 'woo-linepay-tw' ),
+						'type'     => 'text',
+						'desc'     => __( 'Enter your Channel SecretKey.', 'woo-linepay-tw' ),
+						'desc_tip' => true,
+						'default'  => '',
+						'id'       => 'linepay_tw_sandbox_channel_secret',
 					),
 					array(
-						'title'			=> __( 'Channel ID', 'woo-linepay-tw' ),
-						'type'			=> 'text',
-						'desc'	=> __( 'Enter your Channel ID.', 'woo-linepay-tw' ),
-						'desc_tip'		=> true,
-						'default'		=> '',
-						'id'      => 'linepay_tw_channel_id',
+						'title'    => __( 'Channel ID', 'woo-linepay-tw' ),
+						'type'     => 'text',
+						'desc'     => __( 'Enter your Channel ID.', 'woo-linepay-tw' ),
+						'desc_tip' => true,
+						'default'  => '',
+						'id'       => 'linepay_tw_channel_id',
 					),
 					array(
-						'title'			=> __( 'Channel Secret Key', 'woo-linepay-tw' ),
-						'type'			=> 'text',
-						'desc'	=> __( 'Enter your Channel SecretKey.', 'woo-linepay-tw' ),
-						'desc_tip'		=> true,
-						'default'		=> '',
-						'id'      => 'linepay_tw_channel_secret',
+						'title'    => __( 'Channel Secret Key', 'woo-linepay-tw' ),
+						'type'     => 'text',
+						'desc'     => __( 'Enter your Channel SecretKey.', 'woo-linepay-tw' ),
+						'desc_tip' => true,
+						'default'  => '',
+						'id'       => 'linepay_tw_channel_secret',
 					),
 					array(
 						'type' => 'sectionend',

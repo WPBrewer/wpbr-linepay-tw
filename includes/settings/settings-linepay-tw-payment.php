@@ -1,7 +1,12 @@
 <?php
+/**
+ * LINE Pay payment settings file
+ *
+ * @package linepay_tw
+ */
 
 if ( ! defined( 'ABSPATH' ) ) {
-    exit;
+	exit;
 }
 
 /**
@@ -9,24 +14,24 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 return array(
 
-    'enabled' => array(
-        'title'       => __( 'Enable/Disable', 'woo-linepay-tw' ),
-        'type'        => 'checkbox',
-        'label'       => __( 'Enable', 'woo-linepay-tw' ),
-        'default'     => 'no'
-    ),
-    'title' => array(
-        'title'       => __( 'Title', 'woo-linepay-tw' ),
-        'type'        => 'text',
-        'description' => __( 'This controls the title which the user sees during checkout.', 'woo-linepay-tw'),
-        'default'     => __( 'LINE Pay Taiwan Payment Gateway', 'woo-linepay-tw' ),
-        'desc_tip'    => true,
-    ),
-    'description' => array(
-        'title'       => __( 'Description', 'woo-linepay-tw' ),
-        'type'        => 'textarea',
-        'description' => __('This controls the description which the user sees during checkout.', 'woo-linepay-tw'),
-        'desc_tip'    => true,
-    ),
+	'enabled'     => array(
+		'title'   => __( 'Enable/Disable', 'woo-linepay-tw' ),
+		'type'    => 'checkbox',
+		'label'   => __( 'Enable', 'woo-linepay-tw' ),
+		'default' => 'no',
+	),
+	'title'       => array(
+		'title'       => __( 'Title', 'woo-linepay-tw' ),
+		'type'        => 'text',
+		'description' => __( 'This controls the title which the user sees during checkout.', 'woo-linepay-tw' ),
+		'default'     => __( 'LINE Pay Taiwan Payment Gateway', 'woo-linepay-tw' ),
+		'desc_tip'    => true,
+	),
+	'description' => array(
+		'title'       => __( 'Description', 'woo-linepay-tw' ),
+		'type'        => 'textarea',
+		'description' => __( 'This controls the description which the user sees during checkout.', 'woo-linepay-tw' ),
+		'desc_tip'    => true,
+	),
 
 );

@@ -8,9 +8,8 @@
  * Version: 0.0.9
  *
  * WC requires at least: 3.0.0
- * WC tested up to: 3.0.x, 3.2.x, 3.6.x
+ * WC tested up to: 6.0.x
  *
- * Copyright (c) 2015 LINEPay
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +23,8 @@
  *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * @package wpbrewer
  */
 
 defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
@@ -33,29 +34,42 @@ define( 'LINEPAY_TW_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'LINEPAY_TW_BASENAME', plugin_basename( __FILE__ ) );
 define( 'LINEPAY_TW_VERSION', '0.0.9' );
 
-
+/**
+ * Display a notice if WooCommerce is not installed and activated
+ *
+ * @return void
+ */
 function linepay_tw_needs_woocommerce() {
 
 	echo '<div id="message" class="error">';
-	echo '  <p>'.__('LINE Pay Taiwan for WooCommerce needs WooCommerce, please intall and activate WooCommerce first!', 'woo-linepay-tw').'</p>';
+	echo '  <p>' . esc_html( __( 'LINE Pay Taiwan for WooCommerce needs WooCommerce, please intall and activate WooCommerce first!', 'woo-linepay-tw' ) ) . '</p>';
 	echo '</div>';
 
 }
 
+/**
+ * Run the plugin.
+ *
+ * @return void
+ */
 function run_linepay_tw() {
 
-    if ( !in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ) ) ) {
-        require_once( ABSPATH . 'wp-admin/includes/plugin.php');
-        if ( is_plugin_active('woo-linepay-tw/woo-linepay-tw.php') ) {
-            deactivate_plugins( LINEPAY_TW_BASENAME );
-            add_action( 'admin_notices', 'linepay_tw_needs_woocommerce');
-            return;
-        }
-    }
+	/**
+	 * Check if WooCommerce is installed and activated.
+	 *
+	 * @since 1.0.0
+	 */
+	if ( ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ), true ) ) {
+		require_once ABSPATH . 'wp-admin/includes/plugin.php';
+		if ( is_plugin_active( 'woo-linepay-tw/woo-linepay-tw.php' ) ) {
+			deactivate_plugins( LINEPAY_TW_BASENAME );
+			add_action( 'admin_notices', 'linepay_tw_needs_woocommerce' );
+			return;
+		}
+	}
 
-    require_once LINEPAY_TW_PLUGIN_DIR . 'includes/class-linepay-tw.php';
+	require_once LINEPAY_TW_PLUGIN_DIR . 'includes/class-linepay-tw.php';
 	LINEPay_TW::init();
 
 }
-
-add_action( 'plugins_loaded', 'run_linepay_tw');
+add_action( 'plugins_loaded', 'run_linepay_tw' );

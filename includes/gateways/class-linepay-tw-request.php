@@ -27,7 +27,7 @@ class LINEPay_TW_Request {
 	 */
 	public function __construct( $gateway ) {
 		$this->gateway = $gateway;
-		add_action( 'linepay_process_confirm_failed', array( $this, 'on_process_confirm_failed' ), 10, 1);
+		add_action( 'linepay_process_confirm_failed', array( $this, 'on_process_confirm_failed' ), 10, 1 );
 	}
 
 	/**
@@ -66,9 +66,25 @@ class LINEPay_TW_Request {
 
 			$redirect_urls = array(
 				'redirectUrls' => array(
-					'confirmUrl'     => esc_url_raw( add_query_arg( array( 'request_type' => WC_Gateway_LINEPay_Const::REQUEST_TYPE_CONFIRM, 'order_id' => $order_id ), home_url( WC_Gateway_LINEPay_Const::URI_CALLBACK_HANDLER ) ) ),
-					'confirmUrlType' => WC_Gateway_LINEPay_Const::CONFIRM_URLTYPE_CLIENT, //使用者的畫面跳轉到商家confirmUrl，完成付款流程
-					'cancelUrl'      => esc_url_raw( add_query_arg( array( 'request_type' => WC_Gateway_LINEPay_Const::REQUEST_TYPE_CANCEL, 'order_id' => $order_id ), home_url( WC_Gateway_LINEPay_Const::URI_CALLBACK_HANDLER ) ) ),
+					'confirmUrl'     => esc_url_raw(
+						add_query_arg(
+							array(
+								'request_type' => WC_Gateway_LINEPay_Const::REQUEST_TYPE_CONFIRM,
+								'order_id'     => $order_id,
+							),
+							home_url( WC_Gateway_LINEPay_Const::URI_CALLBACK_HANDLER )
+						)
+					),
+					'confirmUrlType' => WC_Gateway_LINEPay_Const::CONFIRM_URLTYPE_CLIENT, // 使用者的畫面跳轉到商家 confirmUrl，完成付款流程.
+					'cancelUrl'      => esc_url_raw(
+						add_query_arg(
+							array(
+								'request_type' => WC_Gateway_LINEPay_Const::REQUEST_TYPE_CANCEL,
+								'order_id'     => $order_id,
+							),
+							home_url( WC_Gateway_LINEPay_Const::URI_CALLBACK_HANDLER )
+						)
+					),
 				),
 			);
 
@@ -76,26 +92,26 @@ class LINEPay_TW_Request {
 				'options' => array(
 					'payment' => array(
 						'payType' => strtoupper( $this->gateway->payment_type ),
-						'capture' => true,
+						'capture' => apply_filters( 'linepay_tw_payment_capture', true ),
 					),
-					'extra' => array(
+					'extra'   => array(
 						'branchName' => '',
 					),
 				),
 			);
 
-			$url  = $this->get_request_url( WC_Gateway_LINEPay_Const::REQUEST_TYPE_REQUEST );
+			$url = $this->get_request_url( WC_Gateway_LINEPay_Const::REQUEST_TYPE_REQUEST );
 			LINEPay_TW::log( sprintf( '[request][order_id:%s] http request url : %s', $order_id, $url ) );
 
-			$body = array_merge( $body, $product_info, $redirect_urls, $options );
+			$body         = array_merge( $body, $product_info, $redirect_urls, $options );
 			$request_args = $this->build_execute_request_args( $url, $body );
-			LINEPay_TW::log( sprintf( '[request][order_id:%s] execute request_args: %s', $order_id,  wc_print_r( $request_args, true ) ) );
-
+			LINEPay_TW::log( sprintf( '[request][order_id:%s] execute request_args: %s', $order_id, wc_print_r( $request_args, true ) ) );
 
 			$result = $this->execute( $url, $request_args );
 
-			if ( '0000' !== $result->returnCode) {
-				throw new Exception( sprintf( 'Execute LINE Pay Request API failed. Return code: %s. Response body: %s', $result->returnCode, $result )  );
+			// phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+			if ( '0000' !== $result->returnCode ) {
+				throw new Exception( sprintf( 'Execute LINE Pay Request API failed. Return code: %s. Response body: %s', $result->returnCode, $result ) );
 			}
 
 			$order->update_meta_data( '_linepay_payment_status', WC_Gateway_LINEPay_Const::PAYMENT_STATUS_RESERVED );
@@ -114,16 +130,16 @@ class LINEPay_TW_Request {
 
 			LINEPay_TW::log( 'process payment request error:' . $e->getMessage(), 'error' );
 
-		    // display error on checkout order pay page
-		    // TODO: allow admin to custom this message.
+			// display error on checkout order pay page
+			// TODO: allow admin to custom this message.
 			wc_add_wp_error_notices( new WP_Error( 'process_payment_request', __( '[LINE Pay] Order Received but unable to process payment request. Please try to pay again.', 'woo-linepay-tw' ) ) );
 
 			// in this state, the default order status is pending
-			// $order->update_status( 'pending' );
-			$order->update_meta_data( '_linepay_payment_status',  WC_Gateway_LINEPay_Const::PAYMENT_STATUS_FAILED );
-			$order->save();
+			// FIXME: 重複執行 request 的狀況？
+			// $order->update_meta_data( '_linepay_payment_status',  WC_Gateway_LINEPay_Const::PAYMENT_STATUS_FAILED );
+			// $order->save();
 
-			// 回傳導向 checkout order pay 頁面
+			// 回傳導向 checkout order pay 頁面.
 			return array(
 				'result'   => 'success',
 				'redirect' => $order->get_checkout_payment_url( false ),
@@ -131,7 +147,6 @@ class LINEPay_TW_Request {
 
 		}
 	}
-
 
 	/**
 	 * Call confirm-api of LINE Pay and move to the page that matches the result.
@@ -147,20 +162,21 @@ class LINEPay_TW_Request {
 	 * -Go to order detail page
 	 *
 	 * @see LINEPay_TW_Response->receive_payment_response()
-	 * @param int $order_id Order ID.
+	 *
+	 * @param int     $order_id The Order ID.
+	 * @param boolean $is_checkout Whether the request is from checkout process.
+	 *
+	 * @throws Exception Throw exception when confirm failed.
 	 */
-	public function confirm( $order_id,  $is_checkout = true ) {
+	public function confirm( $order_id, $is_checkout = true ) {
 
 		try {
 
-			$order    = wc_get_order( $order_id );
-			// throw new Exception('something goes wrong!!!');
+			$order = wc_get_order( $order_id );
 
 			if ( ! $order ) {
 				throw new Exception( 'Cant find order by order_id:' . $order_id );
 			}
-
-			// throw new Exception('confirm error');
 
 			$amount   = $order->get_total();
 			$currency = $order->get_currency();
@@ -179,20 +195,20 @@ class LINEPay_TW_Request {
 			$url                     = $this->get_request_url( WC_Gateway_LINEPay_Const::REQUEST_TYPE_CONFIRM, array( 'transaction_id' => $reserved_transaction_id ) );
 			LINEPay_TW::log( sprintf( '[confirm][order_id:%s] http request url : %s', $order_id, $url ) );
 
-			$body                    = array(
+			$body = array(
 				'amount'   => $std_amount,
 				'currency' => $currency,
 			);
 
 			$request_args = $this->build_execute_request_args( $url, $body );
-			LINEPay_TW::log( sprintf( '[confirm][order_id:%s] http_request request_args:', $order_id,  wc_print_r( $request_args, true ) ) );
+			LINEPay_TW::log( sprintf( '[confirm][order_id:%s] http_request request_args:', $order_id, wc_print_r( $request_args, true ) ) );
 
 			$this->check_payment_and_update_order_note( $order, 'Check payment status before confirm' );
 
 			$result = $this->execute( $url, $request_args, 40 );
 
-			if ( '0000' !== $result->returnCode) {
-				throw new Exception( sprintf( 'Execute LINE Pay Confirm API failed. Return code: %s. Return Message: %s', $result->returnCode, $result->returnMessage )  );
+			if ( '0000' !== $result->returnCode ) {
+				throw new Exception( sprintf( 'Execute LINE Pay Confirm API failed. Return code: %s. Return Message: %s', $result->returnCode, $result->returnMessage ) );
 			}
 
 			$confirmed_amount = 0;
@@ -220,7 +236,6 @@ class LINEPay_TW_Request {
 
 			$this->check_payment_and_update_order_note( $order, 'Check payment status when confirmed' );
 
-
 			if ( $is_checkout ) {
 
 				WC()->cart->empty_cart();
@@ -232,31 +247,34 @@ class LINEPay_TW_Request {
 				return true;
 
 			}
-
-
 		} catch ( Exception $e ) {
 
 			LINEPay_TW::log( 'process payment confirm error:' . $e->getMessage() );
 			if ( $is_checkout ) {
+				/**
+				 * Do action when confirm failed.
+				 *
+				 * @since 1.0.0
+				 *
+				 * @param WC_Order $order The order object.
+				 */
 				do_action( 'linepay_process_confirm_failed', $order );
 			} else {
-				//just throw the exception
+				// just throw the exception.
 				throw $e;
 			}
-
-
 		}
 	}
 
 	/**
 	 * Get order payment detail after confirm failed, the order status will be set to on-hold.
 	 *
-	 * @param WC_Order $order
+	 * @param WC_Order $order The order object.
 	 * @return void
 	 */
 	public function on_process_confirm_failed( $order ) {
 
-		LINEPay_TW::log('on_process_confirm_failed====>');
+		LINEPay_TW::log( 'on_process_confirm_failed====>' );
 
 		// Initialize order stored in session.
 		// FIXME: not sure the purpose.
@@ -266,28 +284,27 @@ class LINEPay_TW_Request {
 
 			// $this->check_payment_and_update_order_note( $order, 'Check payment status when confirm failed' );
 			$check_status = $this->check( $order );
-			$check_code = $check_status->returnCode;
-			$check_msg  = $check_status->returnMessage;
-			$check_info = sprintf('[confirm][order_id:%s] Check payment status when confirm failed, return code:%s, return message:%s', $order->get_id(), $check_code, $check_msg );
+			$check_code   = $check_status->returnCode;
+			$check_msg    = $check_status->returnMessage;
+			$check_info   = sprintf( '[confirm][order_id:%s] Check payment status when confirm failed, return code:%s, return message:%s', $order->get_id(), $check_code, $check_msg );
 			LINEPay_TW::log( $check_info );
 			$order->add_order_note( $check_info );
 
-			if ( $check_code === '0110' ) {
-				//Completed authorization - Able to call the Confirm API
-				$order->update_meta_data( '_linepay_payment_status' , WC_Gateway_LINEPay_Const::PAYMENT_STATUS_AUTHED );
+			if ( '0110' === $check_code ) {
+				// Completed authorization - Able to call the Confirm API.
+				$order->update_meta_data( '_linepay_payment_status', WC_Gateway_LINEPay_Const::PAYMENT_STATUS_AUTHED );
 				$order->save();
-				$order->add_order_note( __('Order payment is authed, but need to be confirmed', 'woo-linepay-tw') );
+				$order->add_order_note( __( 'Order payment is authed, but need to be confirmed', 'woo-linepay-tw' ) );
 			}
-
 		} catch ( Exception $e ) {
 
-			LINEPay_TW::log('check status failed, error:' . $e->getMessage(), 'error' );
+			LINEPay_TW::log( 'check status failed, error:' . $e->getMessage(), 'error' );
 
 		} finally {
 
 			// customer payment is auth, but the payment need to be confirmed.
 			$order->update_status( 'on-hold' );
-			//FIXME: need to check status
+			// FIXME: need to check status
 			// $order->update_meta_data( '_linepay_payment_status' , WC_Gateway_LINEPay_Const::PAYMENT_STATUS_FAILED );
 			// $order->save();
 
@@ -306,8 +323,8 @@ class LINEPay_TW_Request {
 	 * If you cancel after calling reserve-api, according to the registered cancelUrl
 	 * Call receive_payment_response of woocommerce.
 	 *
-	 * @see		LINEPay_TW_Response->receive_payment_response()
-	 * @param	int $order_id
+	 * @see     LINEPay_TW_Response->receive_payment_response()
+	 * @param   int $order_id The order ID.
 	 */
 	public function cancel( $order_id ) {
 
@@ -319,6 +336,7 @@ class LINEPay_TW_Request {
 
 		LINEPay_TW::log( sprintf( WC_Gateway_LINEPay_Const::LOG_TEMPLATE_PAYMENT_CANCEL, $order_id, $reserved_transaction_id ) );
 
+		// redirect to thank you page, order status is pending.
 		wp_safe_redirect( $this->get_return_url( $order ) );
 		exit;
 	}
@@ -326,22 +344,27 @@ class LINEPay_TW_Request {
 	/**
 	 * Request LINEPay's refund-api and return the result.
 	 *
-	 * @param int $order_id
-	 * @param string $refund_amount => wc_format_decimal()
-	 * @param string $reason
-	 * @return boolean(true) |WP_Error
+	 * @param int    $order_id The order id.
+	 * @param string $refund_amount => wc_format_decimal().
+	 * @param string $reason The reason of refund.
+	 *
+	 * @return boolean(true)|WP_Error
 	 */
-	public function refund ( $order_id, $refund_amount, $reason = '') {
+	public function refund( $order_id, $refund_amount, $reason = '' ) {
 
 		$order             = wc_get_order( $order_id );
 		$std_refund_amount = $this->get_standardized( $refund_amount );
 
 		if ( false === $order ) {
 
-			return new WP_Error( 'process_refund_request', sprintf( __( 'Unable to find order #%s', 'woo-linepay-tw' ), $order_id ), array(
-				'order_id'      => $order_id,
-				'refund_amount' => $std_refund_amount,
-			));
+			return new WP_Error(
+				'process_refund_request',
+				sprintf( __( 'Unable to find order #%s', 'woo-linepay-tw' ), $order_id ),
+				array(
+					'order_id'      => $order_id,
+					'refund_amount' => $std_refund_amount,
+				)
+			);
 
 		}
 
@@ -349,10 +372,10 @@ class LINEPay_TW_Request {
 
 		$remaining_refund_amount = $order->get_remaining_refund_amount();
 		LINEPay_TW::log( 'remaining refund:' . $remaining_refund_amount );
-		$is_partial_refund = ( $remaining_refund_amount > 0 )? true : false;
+		$is_partial_refund = ( $remaining_refund_amount > 0 ) ? true : false;
 
 		if ( apply_filters( 'line_pay_allow_partial_refund', $is_partial_refund ) ) {
-			return new WP_Error( 'refund error',  __( 'Not allow partial refund', 'woo-linepay-tw' ) );
+			return new WP_Error( 'refund error', __( 'Not allow partial refund', 'woo-linepay-tw' ) );
 		}
 
 		$result = $this->do_refund( $order, $transaction_id, $std_refund_amount, $is_partial_refund );
@@ -360,6 +383,14 @@ class LINEPay_TW_Request {
 		return $result;
 	}
 
+	/**
+	 * LINE Pay check payment status function
+	 *
+	 * @param WC_Order $order the order object.
+	 * @return mixed|WP_Error
+	 *
+	 * @throws Exception When the request is failed.
+	 */
 	public function check( $order ) {
 
 		$reserved_transaction_id = $order->get_meta( '_linepay_reserved_transaction_id' );
@@ -372,15 +403,25 @@ class LINEPay_TW_Request {
 		LINEPay_TW::log( sprintf( '[check][order_id:%s] http request url : %s', $order->get_id(), $url ) );
 
 		$request_args = $this->build_execute_request_args( $url, null, 20, 'GET' );
-		LINEPay_TW::log( sprintf( '[check][order_id:%s] execute request_args: %s', $order->get_id(),  wc_print_r( $request_args, true ) ) );
+		LINEPay_TW::log( sprintf( '[check][order_id:%s] execute request_args: %s', $order->get_id(), wc_print_r( $request_args, true ) ) );
 
-		// FIXME: 如果沒有 confirm 成功，呼叫 details 會沒有資料！
+		// FIXME: 如果沒有 confirm 成功，呼叫 details 會沒有資料！.
 		$check_result = $this->execute( $url, $request_args, 20 );
 
 		return $check_result;
 
 	}
 
+	/**
+	 * Build request arguments for LINE Pay API.
+	 *
+	 * @param string $url The request url.
+	 * @param array  $body The request body.
+	 * @param int    $timeout The request timeout.
+	 * @param string $method The request method.
+	 *
+	 * @return array
+	 */
 	private function build_execute_request_args( $url, $body = null, $timeout = 20, $method = 'POST' ) {
 
 		$channel_info = LINEPay_TW::get_channel_info();
@@ -421,9 +462,11 @@ class LINEPay_TW_Request {
 	 * 1. Save refund information in the form of serialized array
 	 * 2. After refund, the balance of the transaction amount is stored in string form.
 	 *
-	 * @param WC_Order $order_id
-	 * @param string $transaction_id
-	 * @param number|string $refund_amount
+	 * @param WC_Order      $order The order object.
+	 * @param string        $transaction_id The transaction id of the order.
+	 * @param number|string $refund_amount The refund amount.
+	 * @param boolean       $is_partial_refund Whether the refund is partial or fully.
+	 *
 	 * @return boolean(true)|WP_Error
 	 */
 	private function do_refund( $order, $transaction_id, $refund_amount, $is_partial_refund = false ) {
@@ -433,33 +476,32 @@ class LINEPay_TW_Request {
 
 		$url  = $this->get_request_url( WC_Gateway_LINEPay_Const::REQUEST_TYPE_REFUND, array( 'transaction_id' => $transaction_id ) );
 		$body = array(
-			'refundAmount' => $std_refund_amount
+			'refundAmount' => $std_refund_amount,
 		);
 
 		$request_args = $this->build_execute_request_args( $url, $body );
-		LINEPay_TW::log( sprintf( '[refund][order_id:%s] request_args:%s', $order_id,  wc_print_r( $request_args, true ) ) );
+		LINEPay_TW::log( sprintf( '[refund][order_id:%s] request_args:%s', $order_id, wc_print_r( $request_args, true ) ) );
 
 		try {
 			$resp = $this->execute( $url, $request_args );
 
 			if ( '0000' !== $resp->returnCode ) {
-				throw new Exception( sprintf( 'Execute LINE Pay Refund API failed. Return code: %s. Response body: %s', $resp->returnCode, $resp )  );
+				throw new Exception( sprintf( 'Execute LINE Pay Refund API failed. Return code: %s. Response body: %s', $resp->returnCode, $resp ) );
 			}
-
 		} catch ( Exception $e ) {
-			LINEPay_TW::log( sprintf('[refund][order_id:%s] refund error:%s', $order_id, $e->getMessage() ) );
+			LINEPay_TW::log( sprintf( '[refund][order_id:%s] refund error:%s', $order_id, $e->getMessage() ) );
 			return new WP_Error( $e->getMessage() );
 		}
 
 		if ( '0000' === $resp->returnCode ) {
 
-			//get meta always return '' or array()
+			// get meta always return '' or array().
 			$refund_ids = $order->get_meta( '_linepay_refund_transaction_id' );
 			if ( empty( $refund_ids ) ) {
 				$refund_ids = array();
 			}
 
-			LINEPay_TW::log( sprintf('[refund][order_id:%s] refund transaction ids:%s', $order_id, wc_print_r( $refund_ids, true ) ) );
+			LINEPay_TW::log( sprintf( '[refund][order_id:%s] refund transaction ids:%s', $order_id, wc_print_r( $refund_ids, true ) ) );
 			$refund_ids[] = $resp->info->refundTransactionId;
 			$order->update_meta_data( '_linepay_refund_transaction_id', $refund_ids );
 
@@ -474,10 +516,9 @@ class LINEPay_TW_Request {
 			$this->check_payment_and_update_order_note( $order, 'Check payment status after refunded' );
 
 		} else {
-			//TODO: log and add order note about refund failed reason.
+			// TODO: log and add order note about refund failed reason.
 			$order->add_order_note( sprintf( 'Refund via LINE Pay failed. Refund transaction id: %s', $resp->info->refundTransactionId ) );
 		}
-
 
 		return true;
 	}
@@ -486,10 +527,12 @@ class LINEPay_TW_Request {
 	 * Sends a request based on the transmitted information and returns the result.
 	 * When requesting LINEPay, create a header to be used in common.
 	 *
-	 * @param string $url
-	 * @param array $request_args
-	 * @param int $timeout
-	 * @return mixed|WP_Error Return info object or WP_Error
+	 * @param string $url The API URL.
+	 * @param array  $request_args The request arguments.
+	 * @param int    $timeout Timeout in seconds.
+	 * @return mixed|WP_Error Return respond body or WP_Error
+	 *
+	 * @throws Exception When the request failed.
 	 */
 	private function execute( $url, $request_args = null, $timeout = 20 ) {
 
@@ -503,18 +546,12 @@ class LINEPay_TW_Request {
 		$response_body = self::json_custom_decode( wp_remote_retrieve_body( $response ) );
 		$return_code   = $response_body->returnCode;
 
-		//FIXME: add order_id to log
+		// FIXME: add order_id to log.
 		LINEPay_TW::log( '[execute] http response code: ' . $http_status . ', response body: ' . wc_print_r( $response_body, true ) );
 
 		if ( 200 !== $http_status ) {
-			throw new Exception( sprintf('Execute API http response not success. http response code: %s. url: $s', $http_status, $url ) );
+			throw new Exception( sprintf( 'Execute API http response not success. http response code: %s. url: $s', $http_status, $url ) );
 		}
-
-
-		// don't check return code here, do this in each api funciton
-		// if ( '0000' !== $return_code && false === $check ) {
-		// 	throw new Exception( sprintf( 'Execute LINE Pay API failure. Return code: %s. Response body: %s', $return_code, $response_body )  );
-		// }
 
 		return $response_body;
 	}
@@ -523,14 +560,7 @@ class LINEPay_TW_Request {
 	 * Returns the array to be transferred to reserve-api based on the order information.
 	 * The array contains productName and productImageUrl.
 	 *
-	 * productName
-	 * -1: Name of the first item
-	 * -2 or more: first item name + remaining items
-	 *
-	 * productImageUrl
-	 * -URL information of the first item
-	 *
-	 * @param WC_Order $order
+	 * @param WC_Order $order The order object.
 	 * @return array
 	 */
 	private function get_product_info( $order ) {
@@ -550,7 +580,15 @@ class LINEPay_TW_Request {
 			$order_name = $wc_product->get_name();
 
 			if ( count( $items ) > 1 ) {
-				$order_name = $order_name . '等共' . $order->get_item_count() . '個商品';
+				/**
+				 * Filter allow to change the product name displayed in LINE Pay.
+				 *
+				 * @since 1.0.0
+				 *
+				 * @param strng  $order_name               The product name.
+				 * @param string $order->get_item_count()  Number of the order item count.
+				 */
+				$order_name = apply_filters( 'linepay_tw_checkout_product_name', sprintf( __( '%1$s and total %2$s products', 'woo-linepay-tw' ), $order_name, $order->get_item_count() ) );
 			}
 
 			$product = array(
@@ -564,7 +602,14 @@ class LINEPay_TW_Request {
 			$thumbnail_image_urls = wp_get_attachment_image_src( get_post_thumbnail_id( $first_item->get_product_id() ) );
 
 			if ( isset( $thumbnail_image_urls[0] ) ) {
-				$product['imageUrl'] = $thumbnail_image_urls[0];
+				/**
+				 * Filter allow to change the product image displayed in LINE Pay.
+				 *
+				 * @since 1.0.0
+				 *
+				 * @param string $thumbnail_image_urls[0] The product name.
+				 */
+				$product['imageUrl'] = apply_filters( 'linepay_tw_checkout_product_image', $thumbnail_image_urls[0] );
 			}
 
 			array_push( $products, $product );
@@ -583,24 +628,27 @@ class LINEPay_TW_Request {
 		return $packages;
 	}
 
+	/**
+	 * Call LINE Pay payment status check API.
+	 *
+	 * @param WC_Order $order   The order object.
+	 * @param string   $context The context of the call.
+	 * @return void
+	 */
 	private function check_payment_and_update_order_note( $order, $context ) {
 		$check_status = $this->check( $order );
-		$check_code = $check_status->returnCode;
-		$check_msg  = $check_status->returnMessage;
-		$check_info = sprintf('[check][order_id:%s] %s, return code:%s, return message:%s', $order->get_id(), $context, $check_code, $check_msg );
+		$check_code   = $check_status->returnCode;
+		$check_msg    = $check_status->returnMessage;
+		$check_info   = sprintf( '[check][order_id:%s] %s, return code:%s, return message:%s', $order->get_id(), $context, $check_code, $check_msg );
 		LINEPay_TW::log( $check_info );
 		$order->add_order_note( $check_info );
-	}
-
-	private function update_payment_status_by_status_code( $status_code ) {
-
 	}
 
 	/**
 	 * Returns the number_format for the currency
 	 *
-	 * @param number|string $amount
-	 * @param string $currency
+	 * @param number|string $amount   The amount.
+	 * @param string        $currency The currency.
 	 * @return string
 	 */
 	private function get_standardized( $amount, $currency = null ) {
@@ -639,19 +687,20 @@ class LINEPay_TW_Request {
 	/**
 	 * Check if the scale of the $amount received based on the basic currency code is appropriate.
 	 *
-	 * @param number $amount
-	 * @param $currency_code
+	 * @param number $amount The amount.
+	 * @param sting  $currency_code The currency code.
+	 *
 	 * @return boolean
 	 */
 	private function valid_currency_scale( $amount, $currency_code = null ) {
-		return ( $this->get_currency_scale( $currency_code)  >= $this->get_amount_precision( $amount ) );
+		return ( $this->get_currency_scale( $currency_code ) >= $this->get_amount_precision( $amount ) );
 	}
 
 	/**
 	 * Returns the URL that matches the request type.
 	 *
-	 * @param string $type	=> const:WC_Gateway_LINEPay_Const::REQUEST_TYPE_REQUEST|CONFIRM|CANCEL|REFUND|CHECK
-	 * @param array $args
+	 * @param string $type const:WC_Gateway_LINEPay_Const::REQUEST_TYPE_REQUEST|CONFIRM|CANCEL|REFUND|CHECK.
+	 * @param array  $args The request arguments.
 	 * @return string
 	 */
 	private function get_request_url( $type, $args = array() ) {
@@ -687,14 +736,14 @@ class LINEPay_TW_Request {
 	 * Returns the uri that matches the request type.
 	 * If the uri contains variables, it is combined with args to create a new uri.
 	 *
-	 * @param string $type	=> const:WC_Gateway_LINEPay_Const::REQUEST_TYPE_REQUEST|CONFIRM|CANCEL|REFUND
-	 * @param array $args
+	 * @param string $type const:WC_Gateway_LINEPay_Const::REQUEST_TYPE_REQUEST|CONFIRM|CANCEL|REFUND.
+	 * @param array  $args The request arguments.
 	 * @return string
 	 */
 	private function get_request_uri( $type, $args ) {
 		$uri = '';
 
-		switch ($type) {
+		switch ( $type ) {
 			case WC_Gateway_LINEPay_Const::REQUEST_TYPE_REQUEST:
 				$uri = WC_Gateway_LINEPay_Const::URI_REQUEST;
 				break;
@@ -723,16 +772,16 @@ class LINEPay_TW_Request {
 	/**
 	 * Returns the decimal point accuracy of the passed $amount
 	 *
-	 * @param number $amount
+	 * @param number $amount The amount.
 	 * @return number
 	 */
-	private function get_amount_precision( $amount = 0) {
+	private function get_amount_precision( $amount = 0 ) {
 		if ( is_string( $amount ) ) {
 			$amount = (float) $amount;
 		}
-		$strl = strlen( $amount);
+		$strl = strlen( $amount );
 
-		$strp = strpos( $amount, '.');
+		$strp = strpos( $amount, '.' );
 		$strp = ( false !== $strp ) ? $strp + 1 : $strl;
 
 		return ( $strl - $strp );
@@ -769,14 +818,15 @@ class LINEPay_TW_Request {
 	}
 
 	/**
-	* Generate signature
-	*
-	* @param [type] $channel_secret
-	* @param [type] $url
-	* @param [type] $request_body
-	* @param [type] $nonce
-	* @return void
-	*/
+	 * Generate signature
+	 *
+	 * @param string $channel_secret The channel secret.
+	 * @param string $url The request url.
+	 * @param string $request_body The request body.
+	 * @param string $nonce The nonce.
+	 *
+	 * @return string
+	 */
 	private static function generate_signature( $channel_secret, $url, $request_body, $nonce ) {
 		$url_path = wp_parse_url( $url, PHP_URL_PATH );
 		$data     = $channel_secret . $url_path . $request_body . $nonce;
@@ -784,7 +834,7 @@ class LINEPay_TW_Request {
 	}
 
 	private static function generate_request_time() {
-		return date( WC_Gateway_LINEPay_Const::REQUEST_TIME_FORMAT) . '' . ( explode( '.', microtime( true ) )[1] );
+		return date( WC_Gateway_LINEPay_Const::REQUEST_TIME_FORMAT ) . '' . ( explode( '.', microtime( true ) )[1] );
 	}
 
 }
