@@ -237,15 +237,11 @@ class LINEPay_TW_Request {
 			$this->check_payment_and_update_order_note( $order, 'Check payment status when confirmed' );
 
 			if ( $is_checkout ) {
-
 				WC()->cart->empty_cart();
 				wp_safe_redirect( $this->get_return_url( $order ) );
 				exit;
-
 			} else {
-
 				return true;
-
 			}
 		} catch ( Exception $e ) {
 
@@ -511,13 +507,12 @@ class LINEPay_TW_Request {
 
 			$order->save();
 
-			$order->add_order_note( sprintf( 'Refund via LINE Pay successfully. Refund transaction id: %s', $resp->info->refundTransactionId ) );
+			$order->add_order_note( sprintf( __( 'Refund via LINE Pay successfully. Refund transaction id: %s', 'woo-linepay-tw' ), $resp->info->refundTransactionId ) );
 
 			$this->check_payment_and_update_order_note( $order, 'Check payment status after refunded' );
 
 		} else {
-			// TODO: log and add order note about refund failed reason.
-			$order->add_order_note( sprintf( 'Refund via LINE Pay failed. Refund transaction id: %s', $resp->info->refundTransactionId ) );
+			$order->add_order_note( sprintf( __( 'Refund via LINE Pay failed. Refund transaction id: %1$s, returnCode: %2$s, returnMessage: %3$s', 'woo-linepay-tw' ), $resp->info->refundTransactionId, $resp->returnCode, $resp->returnMessage ) );
 		}
 
 		return true;
@@ -546,7 +541,6 @@ class LINEPay_TW_Request {
 		$response_body = self::json_custom_decode( wp_remote_retrieve_body( $response ) );
 		$return_code   = $response_body->returnCode;
 
-		// FIXME: add order_id to log.
 		LINEPay_TW::log( '[execute] http response code: ' . $http_status . ', response body: ' . wc_print_r( $response_body, true ) );
 
 		if ( 200 !== $http_status ) {
@@ -629,19 +623,31 @@ class LINEPay_TW_Request {
 	}
 
 	/**
-	 * Call LINE Pay payment status check API.
+	 * Call LINE Pay payment status check API and add note to order.
 	 *
 	 * @param WC_Order $order   The order object.
 	 * @param string   $context The context of the call.
 	 * @return void
 	 */
 	private function check_payment_and_update_order_note( $order, $context ) {
-		$check_status = $this->check( $order );
-		$check_code   = $check_status->returnCode;
-		$check_msg    = $check_status->returnMessage;
-		$check_info   = sprintf( '[check][order_id:%s] %s, return code:%s, return message:%s', $order->get_id(), $context, $check_code, $check_msg );
-		LINEPay_TW::log( $check_info );
-		$order->add_order_note( $check_info );
+		/**
+		 * Filter allow to check the payment status and add detail note to order.
+		 *
+		 * @since 1.0.0
+		 *
+		 * @param WC_Order $order The order object.
+		 * @param boolean  true Enable to check the payment status and add detail note to order.
+		 *
+		 * @return void
+		 */
+		if ( apply_filters( 'linepay_tw_enable_detail_note', true ) ) {
+			$check_status = $this->check( $order );
+			$check_code   = $check_status->returnCode;
+			$check_msg    = $check_status->returnMessage;
+			$check_info   = sprintf( '[check][order_id:%s] %s, return code:%s, return message:%s', $order->get_id(), $context, $check_code, $check_msg );
+			LINEPay_TW::log( $check_info );
+			$order->add_order_note( $check_info );
+		}
 	}
 
 	/**
@@ -833,6 +839,11 @@ class LINEPay_TW_Request {
 		return base64_encode( hash_hmac( WC_Gateway_LINEPay_Const::AUTH_ALGRO, $data, $channel_secret, true ) );
 	}
 
+	/**
+	 * Generate request timestamp.
+	 *
+	 * @return string
+	 */
 	private static function generate_request_time() {
 		return date( WC_Gateway_LINEPay_Const::REQUEST_TIME_FORMAT ) . '' . ( explode( '.', microtime( true ) )[1] );
 	}
