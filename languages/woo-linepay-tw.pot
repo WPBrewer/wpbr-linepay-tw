@@ -1,0 +1,250 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: LINE Pay Taiwan for WooCommerce\n"
+"POT-Creation-Date: 2022-06-29 15:59+0800\n"
+"PO-Revision-Date: 2022-06-29 15:35+0800\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"X-Generator: Poedit 3.1\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-Flags-xgettext: --add-comments=translators:\n"
+"X-Poedit-WPHeader: woo-linepay-tw.php\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
+"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: *.min.js\n"
+
+#: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:47
+msgid "LINE Pay Details"
+msgstr ""
+
+#: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:78
+msgid "Transaction ID"
+msgstr ""
+
+#: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:79
+msgid "Payment Status"
+msgstr ""
+
+#: includes/class-linepay-tw.php:137
+msgid "Unsecure AJAX call"
+msgstr ""
+
+#: includes/class-linepay-tw.php:148
+msgid "No such order id"
+msgstr ""
+
+#: includes/class-linepay-tw.php:159
+msgid "LINE Pay Confirm Succeed!"
+msgstr ""
+
+#: includes/class-linepay-tw.php:162
+msgid "Confirm succeed"
+msgstr ""
+
+#: includes/class-linepay-tw.php:168
+msgid "LINE Pay Confirm Failed!"
+msgstr ""
+
+#: includes/class-linepay-tw.php:236
+msgid "Settings"
+msgstr ""
+
+#: includes/gateways/class-linepay-tw-payment.php:32
+msgid "Pay with LINE Pay"
+msgstr ""
+
+#: includes/gateways/class-linepay-tw-payment.php:73
+msgid "LINE Pay Taiwan"
+msgstr ""
+
+#: includes/gateways/class-linepay-tw-payment.php:179
+#: includes/gateways/class-linepay-tw-payment.php:205
+msgid ""
+"We have received your order, but the payment status need to be confirmed. "
+"Please contact the support."
+msgstr ""
+
+#: includes/gateways/class-linepay-tw-payment.php:183
+#: includes/gateways/class-linepay-tw-payment.php:209
+msgid ""
+"We have received your order, but the order is awaiting payment. Please pay "
+"again."
+msgstr ""
+
+#: includes/gateways/class-linepay-tw-request.php:135
+msgid ""
+"[LINE Pay] Order Received but unable to process payment request. Please try "
+"to pay again."
+msgstr ""
+
+#: includes/gateways/class-linepay-tw-request.php:293
+msgid "Order payment is authed, but need to be confirmed"
+msgstr ""
+
+#: includes/gateways/class-linepay-tw-request.php:358
+#, php-format
+msgid "Unable to find order #%s"
+msgstr ""
+
+#: includes/gateways/class-linepay-tw-request.php:374
+msgid "Not allow partial refund"
+msgstr ""
+
+#: includes/gateways/class-linepay-tw-request.php:395
+msgid "no transaction_id is found"
+msgstr ""
+
+#: includes/gateways/class-linepay-tw-request.php:510
+#, php-format
+msgid "Refund via LINE Pay successfully. Refund transaction id: %s"
+msgstr ""
+
+#: includes/gateways/class-linepay-tw-request.php:515
+#, php-format
+msgid ""
+"Refund via LINE Pay failed. Refund transaction id: %1$s, returnCode: %2$s, "
+"returnMessage: %3$s"
+msgstr ""
+
+#: includes/gateways/class-linepay-tw-request.php:585
+#, php-format
+msgid "%1$s and total %2$s products"
+msgstr ""
+
+#: includes/gateways/class-linepay-tw-response.php:57
+msgid "Unable to process callback."
+msgstr ""
+
+#: includes/settings/class-linepay-tw-settings-tab.php:20
+msgid "LINE Pay"
+msgstr ""
+
+#: includes/settings/class-linepay-tw-settings-tab.php:37
+msgid "Payment Settings"
+msgstr ""
+
+#: includes/settings/class-linepay-tw-settings-tab.php:56
+msgid "General Payment Settings"
+msgstr ""
+
+#: includes/settings/class-linepay-tw-settings-tab.php:61
+msgid "Debug Log"
+msgstr ""
+
+#: includes/settings/class-linepay-tw-settings-tab.php:64
+#, php-format
+msgid "Log LINE Pay payment message, inside <code>%s</code>"
+msgstr ""
+
+#: includes/settings/class-linepay-tw-settings-tab.php:68
+msgid "Display Logo"
+msgstr ""
+
+#: includes/settings/class-linepay-tw-settings-tab.php:71
+msgid "Display logo on checkout page"
+msgstr ""
+
+#: includes/settings/class-linepay-tw-settings-tab.php:79
+msgid "API Settings"
+msgstr ""
+
+#: includes/settings/class-linepay-tw-settings-tab.php:81
+msgid "Enter your LINE Pay API credentials"
+msgstr ""
+
+#: includes/settings/class-linepay-tw-settings-tab.php:85
+msgid "Sandbox Mode"
+msgstr ""
+
+#: includes/settings/class-linepay-tw-settings-tab.php:87
+msgid "Enable sandbox mode."
+msgstr ""
+
+#: includes/settings/class-linepay-tw-settings-tab.php:90
+msgid "When enabled, you need to use the test-only data below."
+msgstr ""
+
+#: includes/settings/class-linepay-tw-settings-tab.php:94
+msgid "Sandbox Channel ID"
+msgstr ""
+
+#: includes/settings/class-linepay-tw-settings-tab.php:96
+#: includes/settings/class-linepay-tw-settings-tab.php:112
+msgid "Enter your Channel ID."
+msgstr ""
+
+#: includes/settings/class-linepay-tw-settings-tab.php:102
+msgid "Sandbox Channel Secret Key"
+msgstr ""
+
+#: includes/settings/class-linepay-tw-settings-tab.php:104
+#: includes/settings/class-linepay-tw-settings-tab.php:120
+msgid "Enter your Channel SecretKey."
+msgstr ""
+
+#: includes/settings/class-linepay-tw-settings-tab.php:110
+msgid "Channel ID"
+msgstr ""
+
+#: includes/settings/class-linepay-tw-settings-tab.php:118
+msgid "Channel Secret Key"
+msgstr ""
+
+#: includes/settings/settings-linepay-tw-payment.php:18
+msgid "Enable/Disable"
+msgstr ""
+
+#: includes/settings/settings-linepay-tw-payment.php:20
+msgid "Enable"
+msgstr ""
+
+#: includes/settings/settings-linepay-tw-payment.php:24
+msgid "Title"
+msgstr ""
+
+#: includes/settings/settings-linepay-tw-payment.php:26
+msgid "This controls the title which the user sees during checkout."
+msgstr ""
+
+#: includes/settings/settings-linepay-tw-payment.php:27
+msgid "LINE Pay Taiwan Payment Gateway"
+msgstr ""
+
+#: includes/settings/settings-linepay-tw-payment.php:31
+msgid "Description"
+msgstr ""
+
+#: includes/settings/settings-linepay-tw-payment.php:33
+msgid "This controls the description which the user sees during checkout."
+msgstr ""
+
+#: woo-linepay-tw.php:45
+msgid ""
+"LINE Pay Taiwan for WooCommerce needs WooCommerce, please intall and "
+"activate WooCommerce first!"
+msgstr ""
+
+#. Plugin Name of the plugin/theme
+msgid "LINE Pay Taiwan for WooCommerce"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+#. Author URI of the plugin/theme
+msgid "https://wpbrewer.com"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "LINE Pay Gateway for Taiwan"
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "WPBrewer"
+msgstr ""
