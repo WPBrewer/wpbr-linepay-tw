@@ -70,7 +70,7 @@ class LINEPay_TW_Payment extends WC_Payment_Gateway {
 
 		$icon_html = '';
 		if ( get_option( 'linepay_tw_display_logo_enabled' ) === 'yes' ) {
-			$icon_html .= '<img src="' . LINEPAY_TW_PLUGIN_URL . 'assets/images/linepay-logo.png alt="' . __( 'LINE Pay Taiwan', 'woo-linepay-tw' ) . '" />';
+			$icon_html .= '<img src="' . LINEPAY_TW_PLUGIN_URL . 'assets/images/linepay-logo.png" alt="' . __( 'LINE Pay Taiwan', 'woo-linepay-tw' ) . '" />';
 		}
 		/**
 		 * Allow to filter the payment gateway icon.
