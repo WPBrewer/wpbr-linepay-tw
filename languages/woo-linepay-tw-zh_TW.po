@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: LINE Pay Taiwan for WooCommerce\n"
-"POT-Creation-Date: 2022-06-29 17:27+0800\n"
-"PO-Revision-Date: 2022-06-29 17:27+0800\n"
+"POT-Creation-Date: 2022-07-14 00:46+0800\n"
+"PO-Revision-Date: 2022-07-14 00:46+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: zh_TW\n"
@@ -76,7 +76,7 @@ msgstr "透過 LINE Pay 來進行付款"
 
 #: includes/gateways/class-linepay-tw-payment.php:73
 msgid "LINE Pay Taiwan"
-msgstr ""
+msgstr "LINE Pay Taiwan"
 
 #: includes/gateways/class-linepay-tw-payment.php:179
 #: includes/gateways/class-linepay-tw-payment.php:205
@@ -92,11 +92,55 @@ msgid ""
 "again."
 msgstr "我們已收到您的訂單，但訂單尚未付款。請再次付款。"
 
-#: includes/gateways/class-linepay-tw-response.php:57
+#: includes/gateways/class-linepay-tw-request.php:135
+msgid ""
+"[LINE Pay] Order Received but unable to process payment request. Please try "
+"to pay again."
+msgstr "[LINE Pay] 已收到您的訂單，但付款失敗。請重新再付款一次。"
+
+#: includes/gateways/class-linepay-tw-request.php:282
+msgid "Order payment is authed, but need to be confirmed"
+msgstr "訂單交易已授權(Auth)，但需要進行交易確認(Confirm)"
+
+#: includes/gateways/class-linepay-tw-request.php:345
+#, php-format
+msgid "Unable to find order #%s"
+msgstr "找不到訂單編號 #%s"
+
+#: includes/gateways/class-linepay-tw-request.php:361
+msgid "Not allow partial refund"
+msgstr "不允許部分退款"
+
+#: includes/gateways/class-linepay-tw-request.php:382
+msgid "no transaction_id is found"
+msgstr "找不到交易編號"
+
+#: includes/gateways/class-linepay-tw-request.php:496
+#, php-format
+msgid "Refund via LINE Pay successfully. Refund transaction id: %s"
+msgstr "通過 LINE Pay退款成功。退款交易編號：%s"
+
+#: includes/gateways/class-linepay-tw-request.php:501
+#, php-format
+msgid ""
+"Refund via LINE Pay failed. Refund transaction id: %1$s, returnCode: %2$s, "
+"returnMessage: %3$s"
+msgstr ""
+"通過LINE Pay退款失敗。退款交易編號： %1$s， 回傳代碼： %2$s， 回傳訊息： "
+"%3$s"
+
+#. translators:  %1$s is product name, %2$s is the order item count
+#: includes/gateways/class-linepay-tw-request.php:575
+#, php-format
+msgid "%1$s and total %2$s products"
+msgstr "%1$s 以及總共 %2$s 個商品"
+
+#: includes/gateways/class-linepay-tw-response.php:58
 msgid "Unable to process callback."
 msgstr "無法處理 callback 呼叫。"
 
 #: includes/settings/class-linepay-tw-settings-tab.php:20
+#: includes/settings/settings-linepay-tw-payment.php:27
 msgid "LINE Pay"
 msgstr "LINE Pay"
 
@@ -183,10 +227,6 @@ msgstr "付款方式名稱"
 msgid "This controls the title which the user sees during checkout."
 msgstr "這是使用者結帳時會看到的付款方式名稱。"
 
-#: includes/settings/settings-linepay-tw-payment.php:27
-msgid "LINE Pay Taiwan Payment Gateway"
-msgstr ""
-
 #: includes/settings/settings-linepay-tw-payment.php:31
 msgid "Description"
 msgstr "描述"
@@ -218,35 +258,6 @@ msgstr ""
 #. Author of the plugin/theme
 msgid "WPBrewer"
 msgstr "WPBrewer"
-
-#~ msgid "Order payment is authed, but need to be confirmed"
-#~ msgstr "訂單交易已授權(Auth)，但需要進行交易確認(Confirm)"
-
-#, php-format
-#~ msgid "Unable to find order #%s"
-#~ msgstr "找不到訂單編號 #%s"
-
-#~ msgid "Not allow partial refund"
-#~ msgstr "不允許部分退款"
-
-#~ msgid "no transaction_id is found"
-#~ msgstr "找不到交易編號"
-
-#, php-format
-#~ msgid "Refund via LINE Pay successfully. Refund transaction id: %s"
-#~ msgstr "通過 LINE Pay退款成功。退款交易編號：%s"
-
-#, php-format
-#~ msgid ""
-#~ "Refund via LINE Pay failed. Refund transaction id: %1$s, returnCode: "
-#~ "%2$s, returnMessage: %3$s"
-#~ msgstr ""
-#~ "通過LINE Pay退款失敗。退款交易編號： %1$s， 回傳代碼： %2$s， 回傳訊"
-#~ "息： %3$s"
-
-#, php-format
-#~ msgid "%1$s and total %2$s products"
-#~ msgstr "%1$s 以及總共 %2$s 個商品"
 
 #~ msgid "Settings"
 #~ msgstr "設定"

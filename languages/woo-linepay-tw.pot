@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: LINE Pay Taiwan for WooCommerce\n"
-"POT-Creation-Date: 2022-06-29 17:28+0800\n"
+"POT-Creation-Date: 2022-07-14 00:47+0800\n"
 "PO-Revision-Date: 2022-06-29 15:35+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -16,8 +16,8 @@ msgstr ""
 "X-Poedit-WPHeader: woo-linepay-tw.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
-"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;_n_noop:1,2;"
-"_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
+"esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
+"_n_noop:1,2;_nx_noop:3c,1,2;__ngettext_noop:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.min.js\n"
 
@@ -98,45 +98,47 @@ msgid ""
 "to pay again."
 msgstr ""
 
-#: includes/gateways/class-linepay-tw-request.php:293
+#: includes/gateways/class-linepay-tw-request.php:282
 msgid "Order payment is authed, but need to be confirmed"
 msgstr ""
 
-#: includes/gateways/class-linepay-tw-request.php:358
+#: includes/gateways/class-linepay-tw-request.php:345
 #, php-format
 msgid "Unable to find order #%s"
 msgstr ""
 
-#: includes/gateways/class-linepay-tw-request.php:374
+#: includes/gateways/class-linepay-tw-request.php:361
 msgid "Not allow partial refund"
 msgstr ""
 
-#: includes/gateways/class-linepay-tw-request.php:395
+#: includes/gateways/class-linepay-tw-request.php:382
 msgid "no transaction_id is found"
 msgstr ""
 
-#: includes/gateways/class-linepay-tw-request.php:510
+#: includes/gateways/class-linepay-tw-request.php:496
 #, php-format
 msgid "Refund via LINE Pay successfully. Refund transaction id: %s"
 msgstr ""
 
-#: includes/gateways/class-linepay-tw-request.php:515
+#: includes/gateways/class-linepay-tw-request.php:501
 #, php-format
 msgid ""
 "Refund via LINE Pay failed. Refund transaction id: %1$s, returnCode: %2$s, "
 "returnMessage: %3$s"
 msgstr ""
 
-#: includes/gateways/class-linepay-tw-request.php:585
+#. translators:  %1$s is product name, %2$s is the order item count
+#: includes/gateways/class-linepay-tw-request.php:575
 #, php-format
 msgid "%1$s and total %2$s products"
 msgstr ""
 
-#: includes/gateways/class-linepay-tw-response.php:57
+#: includes/gateways/class-linepay-tw-response.php:58
 msgid "Unable to process callback."
 msgstr ""
 
 #: includes/settings/class-linepay-tw-settings-tab.php:20
+#: includes/settings/settings-linepay-tw-payment.php:27
 msgid "LINE Pay"
 msgstr ""
 
@@ -221,10 +223,6 @@ msgstr ""
 
 #: includes/settings/settings-linepay-tw-payment.php:26
 msgid "This controls the title which the user sees during checkout."
-msgstr ""
-
-#: includes/settings/settings-linepay-tw-payment.php:27
-msgid "LINE Pay Taiwan Payment Gateway"
 msgstr ""
 
 #: includes/settings/settings-linepay-tw-payment.php:31

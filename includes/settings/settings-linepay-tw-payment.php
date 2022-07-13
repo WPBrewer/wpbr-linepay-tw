@@ -24,7 +24,7 @@ return array(
 		'title'       => __( 'Title', 'woo-linepay-tw' ),
 		'type'        => 'text',
 		'description' => __( 'This controls the title which the user sees during checkout.', 'woo-linepay-tw' ),
-		'default'     => __( 'LINE Pay Taiwan Payment Gateway', 'woo-linepay-tw' ),
+		'default'     => __( 'LINE Pay', 'woo-linepay-tw' ),
 		'desc_tip'    => true,
 	),
 	'description' => array(
