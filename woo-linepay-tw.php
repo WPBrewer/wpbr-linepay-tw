@@ -1,14 +1,14 @@
 <?php
 /**
  * Plugin Name: LINE Pay Taiwan for WooCommerce
- * Plugin URI: https://wpbrewer.com
+ * Plugin URI: https://wpbrewer.com/product/line-pay-tw-for-woocommerce/
  * Description: LINE Pay Gateway for Taiwan
  * Author: WPBrewer
  * Author URI: https://wpbrewer.com
- * Version: 0.0.9
+ * Version: 1.0.0
  *
  * WC requires at least: 3.0.0
- * WC tested up to: 6.0.x
+ * WC tested up to: 6.7.0
  *
  *
  * This program is free software: you can redistribute it and/or modify
@@ -32,7 +32,7 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 define( 'LINEPAY_TW_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'LINEPAY_TW_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'LINEPAY_TW_BASENAME', plugin_basename( __FILE__ ) );
-define( 'LINEPAY_TW_VERSION', '0.0.9' );
+define( 'LINEPAY_TW_VERSION', '1.0.0' );
 
 /**
  * Display a notice if WooCommerce is not installed and activated
