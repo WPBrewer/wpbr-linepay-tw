@@ -119,6 +119,7 @@ class LINEPay_TW {
 		add_action( 'admin_enqueue_scripts', array( self::get_instance(), 'linepay_tw_admin_scripts' ), 9 );
 
 		add_action( 'wp_ajax_linepay_confirm', array( self::get_instance(), 'linepay_tw_ajax_confirm_payment' ) );
+		add_filter( 'plugin_action_links_' . LINEPAY_TW_BASENAME, array( self::get_instance(), 'linepay_tw_add_action_links' ) );
 
 	}
 
@@ -231,12 +232,14 @@ class LINEPay_TW {
 	 * @param array $links The action links array.
 	 * @return array
 	 */
-	public function linepay_add_action_links( $links ) {
+	public function linepay_tw_add_action_links( $links ) {
 		$setting_links = array(
-			'<a href="' . admin_url( 'admin.php?page=wc-settings&tab=checkout&section=linepay_tw' ) . '">' . __( 'Settings', 'woo-linepay-tw' ) . '</a>',
+			'<a href="' . admin_url( 'admin.php?page=wc-settings&tab=linepay-tw' ) . '">' . __( 'General Settings', 'woo-linepay-tw' ) . '</a>',
+			'<a href="' . admin_url( 'admin.php?page=wc-settings&tab=checkout' ) . '">' . __( 'Payment Settings', 'woo-linepay-tw' ) . '</a>',
 		);
 		return array_merge( $links, $setting_links );
 	}
+
 
 	/**
 	 * Add settings tab

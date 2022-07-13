@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 /**
- * Receive response from LINE Pay.
+ * LINE Pay payment request related API function.
  */
 class LINEPay_TW_Request {
 
@@ -216,20 +216,9 @@ class LINEPay_TW_Request {
 				$confirmed_amount += $item->amount;
 			}
 
-			// Refunds will be processed if the amount at Reserve is different from the amount after Confirm.
-			// FIXME: maybe throw exception and let admin refund manually is better option?
-			$std_confirmed_amount = $this->get_standardized( $confirmed_amount );
-			if ( $std_amount !== $std_confirmed_amount ) {
-				$refund_result = 'Refund Failure';
-				if ( ! is_wp_error( $this->do_refund( $order, $reserved_transaction_id, $std_amount ) ) ) {
-					$refund_result = 'Refund Success';
-				}
-
-				throw new Exception( sprintf( WC_Gateway_LINEPay_Const::LOG_TEMPLATE_REFUND_FAILURE_AFTER_CONFIRM, $order_id, $std_amount, $std_confirmed_amount, $refund_result ) );
-			}
-
 			$order->payment_complete( $result->info->transactionId );
 
+			$std_confirmed_amount = $this->get_standardized( $confirmed_amount );
 			$order->update_meta_data( '_linepay_transaction_balanced_amount', $std_confirmed_amount );
 			$order->update_meta_data( '_linepay_payment_status', WC_Gateway_LINEPay_Const::PAYMENT_STATUS_CONFIRMED );
 			$order->save();
@@ -303,8 +292,6 @@ class LINEPay_TW_Request {
 			// FIXME: need to check status
 			// $order->update_meta_data( '_linepay_payment_status' , WC_Gateway_LINEPay_Const::PAYMENT_STATUS_FAILED );
 			// $order->save();
-
-			WC()->cart->empty_cart();
 
 			wp_safe_redirect( $this->get_return_url( $order ) );
 
@@ -401,7 +388,6 @@ class LINEPay_TW_Request {
 		$request_args = $this->build_execute_request_args( $url, null, 20, 'GET' );
 		LINEPay_TW::log( sprintf( '[check][order_id:%s] execute request_args: %s', $order->get_id(), wc_print_r( $request_args, true ) ) );
 
-		// FIXME: 如果沒有 confirm 成功，呼叫 details 會沒有資料！.
 		$check_result = $this->execute( $url, $request_args, 20 );
 
 		return $check_result;
@@ -582,7 +568,15 @@ class LINEPay_TW_Request {
 				 * @param strng  $order_name               The product name.
 				 * @param string $order->get_item_count()  Number of the order item count.
 				 */
-				$order_name = apply_filters( 'linepay_tw_checkout_product_name', sprintf( __( '%1$s and total %2$s products', 'woo-linepay-tw' ), $order_name, $order->get_item_count() ) );
+				$order_name = apply_filters(
+					'linepay_tw_checkout_product_name',
+					sprintf(
+						/* translators:  %1$s is product name, %2$s is the order item count */
+						__( '%1$s and total %2$s products', 'woo-linepay-tw' ),
+						$order_name,
+						$order->get_item_count()
+					)
+				);
 			}
 
 			$product = array(
@@ -640,7 +634,7 @@ class LINEPay_TW_Request {
 		 *
 		 * @return void
 		 */
-		if ( apply_filters( 'linepay_tw_enable_detail_note', true ) ) {
+		if ( apply_filters( 'linepay_tw_enable_detail_note', false ) ) {
 			$check_status = $this->check( $order );
 			$check_code   = $check_status->returnCode;
 			$check_msg    = $check_status->returnMessage;

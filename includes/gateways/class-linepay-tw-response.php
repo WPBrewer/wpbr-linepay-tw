@@ -39,25 +39,26 @@ class LINEPay_TW_Response {
 	 * payment status   : reserved
 	 * -> request type  : confirm, cancel
 	 *
-	 * payment status   : confirmed
+	 * Payment status   : confirmed
 	 *  -> request type : refund
 	 *
 	 * If it cannot be processed, an error log is left.
 	 *
 	 * @see woocommerce::action - woocommerce_api_
+	 * @throws Exception Throws exception when order id is not found.
 	 */
 	public function receive_payment_response() {
 
 		try {
 
 			// phpcs:disable WordPress.Security.NonceVerification.Recommended
-			$order_id = wp_unslash( $_GET['order_id'] );
+			$order_id = ( isset( $_GET['order_id'] ) ) ? sanitize_text_field( wp_unslash( $_GET['order_id'] ) ) : '';
 
 			if ( empty( $order_id ) ) {
 				throw new Exception( sprintf( WC_Gateway_LINEPay_Const::LOG_TEMPLATE_HANDLE_CALLBANK_NOT_FOUND_ORDER_ID, $order_id, __( 'Unable to process callback.', 'woo-linepay-tw' ) ) );
 			}
 
-			$request_type   = wp_unslash( $_GET['request_type'] );
+			$request_type   = ( isset( $_GET['request_type'] ) ) ? sanitize_text_field( wp_unslash( $_GET['request_type'] ) ) : '';
 			$payment_status = get_post_meta( $order_id, '_linepay_payment_status', true );
 
 			$gateway = new LINEPay_TW_Payment();

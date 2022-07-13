@@ -30,8 +30,8 @@ class LINEPay_TW_Payment extends WC_Payment_Gateway {
 		$this->description        = $this->get_option( 'description' );
 		$this->has_fields         = false;
 		$this->order_button_text  = __( 'Pay with LINE Pay', 'woo-linepay-tw' );
-		$this->method_title       = WC_Gateway_LINEPay_Const::TITLE;
-		$this->method_description = WC_Gateway_LINEPay_Const::DESC;
+		$this->method_title       = __( 'LINE Pay - General', 'woo-linepay-tw' );
+		$this->method_description = __( 'Pay via LINE Pay', 'woo-linepay-tw' );
 
 		$this->payment_type   = 'NORMAL';
 		$this->payment_action = get_option( 'linepay_tw_payment_action' );

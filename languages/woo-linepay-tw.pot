@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: LINE Pay Taiwan for WooCommerce\n"
-"POT-Creation-Date: 2022-06-29 15:59+0800\n"
+"POT-Creation-Date: 2022-06-29 17:28+0800\n"
 "PO-Revision-Date: 2022-06-29 15:35+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -33,32 +33,45 @@ msgstr ""
 msgid "Payment Status"
 msgstr ""
 
-#: includes/class-linepay-tw.php:137
+#: includes/class-linepay-tw.php:138
 msgid "Unsecure AJAX call"
 msgstr ""
 
-#: includes/class-linepay-tw.php:148
+#: includes/class-linepay-tw.php:149
 msgid "No such order id"
 msgstr ""
 
-#: includes/class-linepay-tw.php:159
+#: includes/class-linepay-tw.php:160
 msgid "LINE Pay Confirm Succeed!"
 msgstr ""
 
-#: includes/class-linepay-tw.php:162
+#: includes/class-linepay-tw.php:163
 msgid "Confirm succeed"
 msgstr ""
 
-#: includes/class-linepay-tw.php:168
+#: includes/class-linepay-tw.php:169
 msgid "LINE Pay Confirm Failed!"
 msgstr ""
 
-#: includes/class-linepay-tw.php:236
-msgid "Settings"
+#: includes/class-linepay-tw.php:237
+msgid "General Settings"
+msgstr ""
+
+#: includes/class-linepay-tw.php:238
+#: includes/settings/class-linepay-tw-settings-tab.php:37
+msgid "Payment Settings"
 msgstr ""
 
 #: includes/gateways/class-linepay-tw-payment.php:32
 msgid "Pay with LINE Pay"
+msgstr ""
+
+#: includes/gateways/class-linepay-tw-payment.php:33
+msgid "LINE Pay - General"
+msgstr ""
+
+#: includes/gateways/class-linepay-tw-payment.php:34
+msgid "Pay via LINE Pay"
 msgstr ""
 
 #: includes/gateways/class-linepay-tw-payment.php:73
@@ -125,10 +138,6 @@ msgstr ""
 
 #: includes/settings/class-linepay-tw-settings-tab.php:20
 msgid "LINE Pay"
-msgstr ""
-
-#: includes/settings/class-linepay-tw-settings-tab.php:37
-msgid "Payment Settings"
 msgstr ""
 
 #: includes/settings/class-linepay-tw-settings-tab.php:56
