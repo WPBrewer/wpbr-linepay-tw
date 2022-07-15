@@ -79,7 +79,7 @@ class LINEPay_TW_Order_Meta_Boxes {
 			echo '<tr><th><div>' . esc_html__( 'Payment Status', 'woo-linepay-tw' ) . '</div></th><td>' . esc_html( $theorder->get_meta( '_linepay_payment_status' ) ) . '</td></tr>';
 
 			if ( $theorder->get_meta( '_linepay_payment_status' ) === WC_Gateway_LINEPay_Const::PAYMENT_STATUS_AUTHED ) {
-				echo '<tr id="linepay-action"><th>付款動作</th><td><button class="button linepay-confirm-btn" data-id=' . esc_html( $post->ID ) . ' data-service="' . esc_html( $service_id ) . '">付款確認</button></tr>';
+				echo '<tr id="linepay-action"><th>付款動作</th><td><button class="button linepay-confirm-btn" data-id=' . esc_html( $post->ID ) . '>付款確認</button></tr>';
 			}
 
 			echo '</table>';
