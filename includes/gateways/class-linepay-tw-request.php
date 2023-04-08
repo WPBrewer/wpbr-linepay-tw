@@ -108,6 +108,7 @@ class LINEPay_TW_Request {
 			LINEPay_TW::log( sprintf( '[request][order_id:%s] execute request_args: %s', $order_id, wc_print_r( $request_args, true ) ) );
 
 			$result = $this->execute( $url, $request_args );
+			LINEPay_TW::log( '[request] execute result: ' . wc_print_r( $result, true ) );
 
 			// phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 			if ( '0000' !== $result->returnCode ) {
@@ -583,7 +584,7 @@ class LINEPay_TW_Request {
 				'id'       => $first_item->get_product_id(),
 				'name'     => sanitize_text_field( $order_name ),
 				'quantity' => 1,
-				'price'    => $order->get_total(),
+				'price'    => $this->get_standardized( $order->get_total() ),
 			);
 
 			// 取第一個商品的圖案.
