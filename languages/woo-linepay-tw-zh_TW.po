@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: LINE Pay Taiwan for WooCommerce\n"
-"POT-Creation-Date: 2023-04-14 17:44+0800\n"
-"PO-Revision-Date: 2023-04-14 17:44+0800\n"
+"POT-Creation-Date: 2023-04-14 18:05+0800\n"
+"PO-Revision-Date: 2023-04-14 18:07+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: zh_TW\n"
@@ -262,8 +262,8 @@ msgid "https://wpbrewer.com/product/woo-linepay-tw/"
 msgstr "https://wpbrewer.com/product/woo-linepay-tw/"
 
 #. Description of the plugin/theme
-msgid "LINE Pay Gateway for Taiwan"
-msgstr "提供台灣電商網站 LINE Pay 付款功能"
+msgid "Provides LINE Pay for your WooCommerce store based in Taiwan"
+msgstr "為你的台灣商店加上 LINE Pay 支付方式"
 
 #. Author of the plugin/theme
 msgid "WPBrewer"
@@ -272,6 +272,9 @@ msgstr "WPBrewer"
 #. Author URI of the plugin/theme
 msgid "https://wpbrewer.com"
 msgstr "https://wpbrewer.com"
+
+#~ msgid "LINE Pay Gateway for Taiwan"
+#~ msgstr "提供台灣電商網站 LINE Pay 付款功能"
 
 #~ msgid "Settings"
 #~ msgstr "設定"

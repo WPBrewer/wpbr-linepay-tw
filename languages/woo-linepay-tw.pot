@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: LINE Pay Taiwan for WooCommerce\n"
-"POT-Creation-Date: 2023-04-14 17:42+0800\n"
+"POT-Creation-Date: 2023-04-14 18:05+0800\n"
 "PO-Revision-Date: 2022-06-29 15:35+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -259,7 +259,7 @@ msgid "https://wpbrewer.com/product/woo-linepay-tw/"
 msgstr ""
 
 #. Description of the plugin/theme
-msgid "LINE Pay Gateway for Taiwan"
+msgid "Provides LINE Pay for your WooCommerce store based in Taiwan"
 msgstr ""
 
 #. Author of the plugin/theme
