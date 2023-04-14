@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: LINE Pay Taiwan for WooCommerce\n"
-"POT-Creation-Date: 2022-07-14 00:46+0800\n"
-"PO-Revision-Date: 2022-07-14 00:46+0800\n"
+"POT-Creation-Date: 2023-04-14 17:44+0800\n"
+"PO-Revision-Date: 2023-04-14 17:44+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: zh_TW\n"
@@ -33,6 +33,14 @@ msgstr "交易編號"
 msgid "Payment Status"
 msgstr "付款狀態"
 
+#: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:82
+msgid "Payment Action"
+msgstr "付款動作"
+
+#: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:82
+msgid "Confirm Payment"
+msgstr "付款確認"
+
 #: includes/class-linepay-tw.php:138
 msgid "Unsecure AJAX call"
 msgstr "不安全的 AJAX 呼叫"
@@ -53,11 +61,11 @@ msgstr "付款確認成功"
 msgid "LINE Pay Confirm Failed!"
 msgstr "LINE Pay 付款確認失敗！"
 
-#: includes/class-linepay-tw.php:237
+#: includes/class-linepay-tw.php:240
 msgid "General Settings"
 msgstr "一般設定"
 
-#: includes/class-linepay-tw.php:238
+#: includes/class-linepay-tw.php:246
 #: includes/settings/class-linepay-tw-settings-tab.php:37
 msgid "Payment Settings"
 msgstr "付款方式設定"
@@ -74,19 +82,19 @@ msgstr "LINE Pay - 一般付款"
 msgid "Pay via LINE Pay"
 msgstr "透過 LINE Pay 來進行付款"
 
-#: includes/gateways/class-linepay-tw-payment.php:73
+#: includes/gateways/class-linepay-tw-payment.php:76
 msgid "LINE Pay Taiwan"
 msgstr "LINE Pay Taiwan"
 
-#: includes/gateways/class-linepay-tw-payment.php:179
-#: includes/gateways/class-linepay-tw-payment.php:205
+#: includes/gateways/class-linepay-tw-payment.php:183
+#: includes/gateways/class-linepay-tw-payment.php:209
 msgid ""
 "We have received your order, but the payment status need to be confirmed. "
 "Please contact the support."
 msgstr "我們已收到您的訂單，但付款狀態需要確認。請聯繫客服人員。"
 
-#: includes/gateways/class-linepay-tw-payment.php:183
-#: includes/gateways/class-linepay-tw-payment.php:209
+#: includes/gateways/class-linepay-tw-payment.php:187
+#: includes/gateways/class-linepay-tw-payment.php:213
 msgid ""
 "We have received your order, but the order is awaiting payment. Please pay "
 "again."
@@ -98,29 +106,29 @@ msgid ""
 "to pay again."
 msgstr "[LINE Pay] 已收到您的訂單，但付款失敗。請重新再付款一次。"
 
-#: includes/gateways/class-linepay-tw-request.php:282
+#: includes/gateways/class-linepay-tw-request.php:276
 msgid "Order payment is authed, but need to be confirmed"
 msgstr "訂單交易已授權(Auth)，但需要進行交易確認(Confirm)"
 
-#: includes/gateways/class-linepay-tw-request.php:345
+#: includes/gateways/class-linepay-tw-request.php:335
 #, php-format
 msgid "Unable to find order #%s"
 msgstr "找不到訂單編號 #%s"
 
-#: includes/gateways/class-linepay-tw-request.php:361
+#: includes/gateways/class-linepay-tw-request.php:351
 msgid "Not allow partial refund"
 msgstr "不允許部分退款"
 
-#: includes/gateways/class-linepay-tw-request.php:382
+#: includes/gateways/class-linepay-tw-request.php:372
 msgid "no transaction_id is found"
 msgstr "找不到交易編號"
 
-#: includes/gateways/class-linepay-tw-request.php:496
+#: includes/gateways/class-linepay-tw-request.php:486
 #, php-format
 msgid "Refund via LINE Pay successfully. Refund transaction id: %s"
 msgstr "通過 LINE Pay退款成功。退款交易編號：%s"
 
-#: includes/gateways/class-linepay-tw-request.php:501
+#: includes/gateways/class-linepay-tw-request.php:491
 #, php-format
 msgid ""
 "Refund via LINE Pay failed. Refund transaction id: %1$s, returnCode: %2$s, "
@@ -130,7 +138,7 @@ msgstr ""
 "%3$s"
 
 #. translators:  %1$s is product name, %2$s is the order item count
-#: includes/gateways/class-linepay-tw-request.php:575
+#: includes/gateways/class-linepay-tw-request.php:565
 #, php-format
 msgid "%1$s and total %2$s products"
 msgstr "%1$s 以及總共 %2$s 個商品"
@@ -140,9 +148,8 @@ msgid "Unable to process callback."
 msgstr "無法處理 callback 呼叫。"
 
 #: includes/settings/class-linepay-tw-settings-tab.php:20
-#: includes/settings/settings-linepay-tw-payment.php:27
-msgid "LINE Pay"
-msgstr "LINE Pay"
+msgid "LINE Pay TW"
+msgstr "LINE Pay TW"
 
 #: includes/settings/class-linepay-tw-settings-tab.php:56
 msgid "General Payment Settings"
@@ -227,6 +234,10 @@ msgstr "付款方式名稱"
 msgid "This controls the title which the user sees during checkout."
 msgstr "這是使用者結帳時會看到的付款方式名稱。"
 
+#: includes/settings/settings-linepay-tw-payment.php:27
+msgid "LINE Pay"
+msgstr "LINE Pay"
+
 #: includes/settings/settings-linepay-tw-payment.php:31
 msgid "Description"
 msgstr "描述"
@@ -247,17 +258,20 @@ msgid "LINE Pay Taiwan for WooCommerce"
 msgstr "LINE Pay Taiwan for WooCommerce"
 
 #. Plugin URI of the plugin/theme
-#. Author URI of the plugin/theme
-msgid "https://wpbrewer.com"
-msgstr "https://wpbrewer.com"
+msgid "https://wpbrewer.com/product/woo-linepay-tw/"
+msgstr "https://wpbrewer.com/product/woo-linepay-tw/"
 
 #. Description of the plugin/theme
 msgid "LINE Pay Gateway for Taiwan"
-msgstr ""
+msgstr "提供台灣電商網站 LINE Pay 付款功能"
 
 #. Author of the plugin/theme
 msgid "WPBrewer"
 msgstr "WPBrewer"
+
+#. Author URI of the plugin/theme
+msgid "https://wpbrewer.com"
+msgstr "https://wpbrewer.com"
 
 #~ msgid "Settings"
 #~ msgstr "設定"

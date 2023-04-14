@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: LINE Pay Taiwan for WooCommerce\n"
-"POT-Creation-Date: 2022-07-14 00:47+0800\n"
+"POT-Creation-Date: 2023-04-14 17:42+0800\n"
 "PO-Revision-Date: 2022-06-29 15:35+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -33,6 +33,14 @@ msgstr ""
 msgid "Payment Status"
 msgstr ""
 
+#: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:82
+msgid "Payment Action"
+msgstr ""
+
+#: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:82
+msgid "Confirm Payment"
+msgstr ""
+
 #: includes/class-linepay-tw.php:138
 msgid "Unsecure AJAX call"
 msgstr ""
@@ -53,11 +61,11 @@ msgstr ""
 msgid "LINE Pay Confirm Failed!"
 msgstr ""
 
-#: includes/class-linepay-tw.php:237
+#: includes/class-linepay-tw.php:240
 msgid "General Settings"
 msgstr ""
 
-#: includes/class-linepay-tw.php:238
+#: includes/class-linepay-tw.php:246
 #: includes/settings/class-linepay-tw-settings-tab.php:37
 msgid "Payment Settings"
 msgstr ""
@@ -74,19 +82,19 @@ msgstr ""
 msgid "Pay via LINE Pay"
 msgstr ""
 
-#: includes/gateways/class-linepay-tw-payment.php:73
+#: includes/gateways/class-linepay-tw-payment.php:76
 msgid "LINE Pay Taiwan"
 msgstr ""
 
-#: includes/gateways/class-linepay-tw-payment.php:179
-#: includes/gateways/class-linepay-tw-payment.php:205
+#: includes/gateways/class-linepay-tw-payment.php:183
+#: includes/gateways/class-linepay-tw-payment.php:209
 msgid ""
 "We have received your order, but the payment status need to be confirmed. "
 "Please contact the support."
 msgstr ""
 
-#: includes/gateways/class-linepay-tw-payment.php:183
-#: includes/gateways/class-linepay-tw-payment.php:209
+#: includes/gateways/class-linepay-tw-payment.php:187
+#: includes/gateways/class-linepay-tw-payment.php:213
 msgid ""
 "We have received your order, but the order is awaiting payment. Please pay "
 "again."
@@ -98,29 +106,29 @@ msgid ""
 "to pay again."
 msgstr ""
 
-#: includes/gateways/class-linepay-tw-request.php:282
+#: includes/gateways/class-linepay-tw-request.php:276
 msgid "Order payment is authed, but need to be confirmed"
 msgstr ""
 
-#: includes/gateways/class-linepay-tw-request.php:345
+#: includes/gateways/class-linepay-tw-request.php:335
 #, php-format
 msgid "Unable to find order #%s"
 msgstr ""
 
-#: includes/gateways/class-linepay-tw-request.php:361
+#: includes/gateways/class-linepay-tw-request.php:351
 msgid "Not allow partial refund"
 msgstr ""
 
-#: includes/gateways/class-linepay-tw-request.php:382
+#: includes/gateways/class-linepay-tw-request.php:372
 msgid "no transaction_id is found"
 msgstr ""
 
-#: includes/gateways/class-linepay-tw-request.php:496
+#: includes/gateways/class-linepay-tw-request.php:486
 #, php-format
 msgid "Refund via LINE Pay successfully. Refund transaction id: %s"
 msgstr ""
 
-#: includes/gateways/class-linepay-tw-request.php:501
+#: includes/gateways/class-linepay-tw-request.php:491
 #, php-format
 msgid ""
 "Refund via LINE Pay failed. Refund transaction id: %1$s, returnCode: %2$s, "
@@ -128,7 +136,7 @@ msgid ""
 msgstr ""
 
 #. translators:  %1$s is product name, %2$s is the order item count
-#: includes/gateways/class-linepay-tw-request.php:575
+#: includes/gateways/class-linepay-tw-request.php:565
 #, php-format
 msgid "%1$s and total %2$s products"
 msgstr ""
@@ -138,8 +146,7 @@ msgid "Unable to process callback."
 msgstr ""
 
 #: includes/settings/class-linepay-tw-settings-tab.php:20
-#: includes/settings/settings-linepay-tw-payment.php:27
-msgid "LINE Pay"
+msgid "LINE Pay TW"
 msgstr ""
 
 #: includes/settings/class-linepay-tw-settings-tab.php:56
@@ -225,6 +232,10 @@ msgstr ""
 msgid "This controls the title which the user sees during checkout."
 msgstr ""
 
+#: includes/settings/settings-linepay-tw-payment.php:27
+msgid "LINE Pay"
+msgstr ""
+
 #: includes/settings/settings-linepay-tw-payment.php:31
 msgid "Description"
 msgstr ""
@@ -244,8 +255,7 @@ msgid "LINE Pay Taiwan for WooCommerce"
 msgstr ""
 
 #. Plugin URI of the plugin/theme
-#. Author URI of the plugin/theme
-msgid "https://wpbrewer.com"
+msgid "https://wpbrewer.com/product/woo-linepay-tw/"
 msgstr ""
 
 #. Description of the plugin/theme
@@ -254,4 +264,8 @@ msgstr ""
 
 #. Author of the plugin/theme
 msgid "WPBrewer"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "https://wpbrewer.com"
 msgstr ""
