@@ -8,7 +8,7 @@
  * Version: 1.0.1
  *
  * WC requires at least: 3.0.0
- * WC tested up to: 6.7.0
+ * WC tested up to: 7.6.0
  *
  *
  * This program is free software: you can redistribute it and/or modify
