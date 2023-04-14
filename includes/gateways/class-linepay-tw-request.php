@@ -132,13 +132,7 @@ class LINEPay_TW_Request {
 			LINEPay_TW::log( 'process payment request error:' . $e->getMessage(), 'error' );
 
 			// display error on checkout order pay page
-			// TODO: allow admin to custom this message.
 			wc_add_wp_error_notices( new WP_Error( 'process_payment_request', __( '[LINE Pay] Order Received but unable to process payment request. Please try to pay again.', 'woo-linepay-tw' ) ) );
-
-			// in this state, the default order status is pending
-			// FIXME: 重複執行 request 的狀況？
-			// $order->update_meta_data( '_linepay_payment_status',  WC_Gateway_LINEPay_Const::PAYMENT_STATUS_FAILED );
-			// $order->save();
 
 			// 回傳導向 checkout order pay 頁面.
 			return array(
@@ -263,7 +257,6 @@ class LINEPay_TW_Request {
 		LINEPay_TW::log( 'on_process_confirm_failed====>' );
 
 		// Initialize order stored in session.
-		// FIXME: not sure the purpose.
 		WC()->session->set( 'order_awaiting_payment', false );
 
 		try {
@@ -290,10 +283,6 @@ class LINEPay_TW_Request {
 
 			// customer payment is auth, but the payment need to be confirmed.
 			$order->update_status( 'on-hold' );
-			// FIXME: need to check status
-			// $order->update_meta_data( '_linepay_payment_status' , WC_Gateway_LINEPay_Const::PAYMENT_STATUS_FAILED );
-			// $order->save();
-
 			wp_safe_redirect( $this->get_return_url( $order ) );
 
 			exit;

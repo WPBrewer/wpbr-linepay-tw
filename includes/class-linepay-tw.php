@@ -233,10 +233,19 @@ class LINEPay_TW {
 	 * @return array
 	 */
 	public function linepay_tw_add_action_links( $links ) {
-		$setting_links = array(
-			'<a href="' . admin_url( 'admin.php?page=wc-settings&tab=linepay-tw' ) . '">' . __( 'General Settings', 'woo-linepay-tw' ) . '</a>',
-			'<a href="' . admin_url( 'admin.php?page=wc-settings&tab=checkout' ) . '">' . __( 'Payment Settings', 'woo-linepay-tw' ) . '</a>',
+
+		$setting_links['general'] = sprintf(
+			'<a href="%s">%s</a>',
+			esc_url( admin_url( 'admin.php?page=wc-settings&tab=linepay-tw' ) ),
+			esc_html__( 'General Settings', 'woo-linepay-tw' )
 		);
+
+		$setting_links['payment'] = sprintf(
+			'<a href="%s">%s</a>',
+			esc_url( admin_url( 'admin.php?page=wc-settings&tab=checkout' ) ),
+			esc_html__( 'Payment Settings', 'woo-linepay-tw' )
+		);
+
 		return array_merge( $links, $setting_links );
 	}
 
