@@ -2,7 +2,7 @@
 /**
  * Plugin Name: LINE Pay Taiwan for WooCommerce
  * Plugin URI: https://wpbrewer.com/product/woo-linepay-tw/
- * Description: LINE Pay Gateway for Taiwan
+ * Description: Provides LINE Pay for your WooCommerce store based in Taiwan
  * Author: WPBrewer
  * Author URI: https://wpbrewer.com
  * Version: 1.0.1
