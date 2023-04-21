@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Pay with LINE Pay
- * Plugin URI: https://wpbrewer.com/product/woo-linepay-tw/
+ * Plugin URI: https://wpbrewer.com/product/wpbr-linepay-tw/
  * Description: Provides LINE Pay for your WooCommerce store
  * Author: WPBrewer
  * Author URI: https://wpbrewer.com
@@ -44,14 +44,14 @@ define( 'WPBR_LINEPAY_VERSION', '1.0.1' );
 function wpbr_linepay_tw_needs_woocommerce() {
 
 	echo '<div id="message" class="error">';
-	echo '  <p>' . esc_html( __( 'Pay with LINE Pay needs WooCommerce, please intall and activate WooCommerce first!', 'woo-linepay-tw' ) ) . '</p>';
+	echo '  <p>' . esc_html( __( 'Pay with LINE Pay needs WooCommerce, please intall and activate WooCommerce first!', 'wpbr-linepay-tw' ) ) . '</p>';
 	echo '</div>';
 
 }
 
 function linepay_tw_previous_deactivate() {
 	echo '<div id="message" class="error">';
-	echo '  <p>' . esc_html( __( 'We deactivate plugin LINE Pay Taiwan for WooCommerce to avoid conflict with the new version.', 'woo-linepay-tw' ) ) . '</p>';
+	echo '  <p>' . esc_html( __( 'We deactivate plugin LINE Pay Taiwan for WooCommerce to avoid conflict with the new version.', 'wpbr-linepay-tw' ) ) . '</p>';
 	echo '</div>';
 }
 

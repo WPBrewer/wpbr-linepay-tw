@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: LINE Pay Taiwan for WooCommerce\n"
-"POT-Creation-Date: 2023-04-14 18:05+0800\n"
-"PO-Revision-Date: 2023-04-14 18:07+0800\n"
+"Project-Id-Version: Pay with LINE Pay\n"
+"POT-Creation-Date: 2023-04-22 00:00+0800\n"
+"PO-Revision-Date: 2023-04-22 00:02+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: zh_TW\n"
@@ -13,7 +13,7 @@ msgstr ""
 "X-Generator: Poedit 3.1\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
-"X-Poedit-WPHeader: woo-linepay-tw.php\n"
+"X-Poedit-WPHeader: wpbr-linepay-tw.php\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: __;_e;_n:1,2;_x:1,2c;_ex:1,2c;_nx:4c,1,2;esc_attr__;"
 "esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c;"
@@ -23,7 +23,7 @@ msgstr ""
 
 #: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:47
 msgid "LINE Pay Details"
-msgstr "LINE Pay  付款資訊"
+msgstr "LINE Pay 付款資訊"
 
 #: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:78
 msgid "Transaction ID"
@@ -41,46 +41,44 @@ msgstr "付款動作"
 msgid "Confirm Payment"
 msgstr "付款確認"
 
-#: includes/class-linepay-tw.php:138
+#: includes/class-wpbr-linepay-tw.php:138
 msgid "Unsecure AJAX call"
 msgstr "不安全的 AJAX 呼叫"
 
-#: includes/class-linepay-tw.php:149
+#: includes/class-wpbr-linepay-tw.php:149
 msgid "No such order id"
 msgstr "沒有這個訂單編號"
 
-#: includes/class-linepay-tw.php:160
+#: includes/class-wpbr-linepay-tw.php:160
 msgid "LINE Pay Confirm Succeed!"
 msgstr "LINE Pay 付款確認成功！"
 
-#: includes/class-linepay-tw.php:163
+#: includes/class-wpbr-linepay-tw.php:163
 msgid "Confirm succeed"
 msgstr "付款確認成功"
 
-#: includes/class-linepay-tw.php:169
+#: includes/class-wpbr-linepay-tw.php:169
 msgid "LINE Pay Confirm Failed!"
 msgstr "LINE Pay 付款確認失敗！"
 
-#: includes/class-linepay-tw.php:240
+#: includes/class-wpbr-linepay-tw.php:240
 msgid "General Settings"
 msgstr "一般設定"
 
-#: includes/class-linepay-tw.php:246
+#: includes/class-wpbr-linepay-tw.php:246
 #: includes/settings/class-linepay-tw-settings-tab.php:37
 msgid "Payment Settings"
 msgstr "付款方式設定"
 
+#. Plugin Name of the plugin/theme
 #: includes/gateways/class-linepay-tw-payment.php:32
+#: includes/gateways/class-linepay-tw-payment.php:34
 msgid "Pay with LINE Pay"
 msgstr "以 LINE Pay 付款"
 
 #: includes/gateways/class-linepay-tw-payment.php:33
 msgid "LINE Pay - General"
 msgstr "LINE Pay - 一般付款"
-
-#: includes/gateways/class-linepay-tw-payment.php:34
-msgid "Pay via LINE Pay"
-msgstr "透過 LINE Pay 來進行付款"
 
 #: includes/gateways/class-linepay-tw-payment.php:76
 msgid "LINE Pay Taiwan"
@@ -246,24 +244,25 @@ msgstr "描述"
 msgid "This controls the description which the user sees during checkout."
 msgstr "這是使用者結帳時看到的說明。"
 
-#: woo-linepay-tw.php:45
+#: wpbr-linepay-tw.php:47
 msgid ""
-"LINE Pay Taiwan for WooCommerce needs WooCommerce, please intall and "
-"activate WooCommerce first!"
-msgstr ""
-"LINE Pay Taiwan for WooCommerce需要WooCommerce，請先安裝並啟動WooCommerce！"
+"Pay with LINE Pay needs WooCommerce, please intall and activate WooCommerce "
+"first!"
+msgstr "Pay with LINE Pay 需要WooCommerce，請先安裝並啟動WooCommerce！"
 
-#. Plugin Name of the plugin/theme
-msgid "LINE Pay Taiwan for WooCommerce"
-msgstr "LINE Pay Taiwan for WooCommerce"
+#: wpbr-linepay-tw.php:54
+msgid ""
+"We deactivate plugin LINE Pay Taiwan for WooCommerce to avoid conflict with "
+"the new version."
+msgstr "LINE Pay Taiwan for WooCommerce 已停用來避免可能的衝突。"
 
 #. Plugin URI of the plugin/theme
-msgid "https://wpbrewer.com/product/woo-linepay-tw/"
+msgid "https://wpbrewer.com/product/wpbr-linepay-tw/"
 msgstr "https://wpbrewer.com/product/woo-linepay-tw/"
 
 #. Description of the plugin/theme
-msgid "Provides LINE Pay for your WooCommerce store based in Taiwan"
-msgstr "為你的台灣商店加上 LINE Pay 支付方式"
+msgid "Provides LINE Pay for your WooCommerce store"
+msgstr "為你的商店加上 LINE Pay 支付方式"
 
 #. Author of the plugin/theme
 msgid "WPBrewer"
@@ -272,6 +271,12 @@ msgstr "WPBrewer"
 #. Author URI of the plugin/theme
 msgid "https://wpbrewer.com"
 msgstr "https://wpbrewer.com"
+
+#~ msgid "Pay via LINE Pay"
+#~ msgstr "透過 LINE Pay 來進行付款"
+
+#~ msgid "LINE Pay Taiwan for WooCommerce"
+#~ msgstr "LINE Pay Taiwan for WooCommerce"
 
 #~ msgid "LINE Pay Gateway for Taiwan"
 #~ msgstr "提供台灣電商網站 LINE Pay 付款功能"

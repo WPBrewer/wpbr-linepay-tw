@@ -17,7 +17,7 @@ class WC_Settings_Tab_LINEPay_TW extends WC_Settings_Page {
 	public function __construct() {
 
 		$this->id    = 'linepay-tw';
-		$this->label = __( 'LINE Pay TW', 'woo-linepay-tw' );
+		$this->label = __( 'LINE Pay TW', 'wpbr-linepay-tw' );
 
 		add_action( 'woocommerce_settings_' . $this->id, array( $this, 'output' ) );
 		add_action( 'woocommerce_settings_save_' . $this->id, array( $this, 'save' ) );
@@ -34,7 +34,7 @@ class WC_Settings_Tab_LINEPay_TW extends WC_Settings_Page {
 	public function get_sections() {
 
 		$sections = array(
-			'' => __( 'Payment Settings', 'woo-linepay-tw' ),
+			'' => __( 'Payment Settings', 'wpbr-linepay-tw' ),
 		);
 
 		return apply_filters( 'woocommerce_get_sections_' . $this->id, $sections );
@@ -53,22 +53,22 @@ class WC_Settings_Tab_LINEPay_TW extends WC_Settings_Page {
 				'linepay_tw_payment_settings',
 				array(
 					array(
-						'title' => __( 'General Payment Settings', 'woo-linepay-tw' ),
+						'title' => __( 'General Payment Settings', 'wpbr-linepay-tw' ),
 						'type'  => 'title',
 						'id'    => 'linepay_tw_general_setting',
 					),
 					array(
-						'title'   => __( 'Debug Log', 'woo-linepay-tw' ),
+						'title'   => __( 'Debug Log', 'wpbr-linepay-tw' ),
 						'type'    => 'checkbox',
 						'default' => 'no',
-						'desc'    => sprintf( __( 'Log LINE Pay payment message, inside <code>%s</code>', 'woo-linepay-tw' ), wc_get_log_file_path( 'wpbr-linepay-tw' ) ),
+						'desc'    => sprintf( __( 'Log LINE Pay payment message, inside <code>%s</code>', 'wpbr-linepay-tw' ), wc_get_log_file_path( 'wpbr-linepay-tw' ) ),
 						'id'      => 'linepay_tw_debug_log_enabled',
 					),
 					array(
-						'title'   => __( 'Display Logo', 'woo-linepay-tw' ),
+						'title'   => __( 'Display Logo', 'wpbr-linepay-tw' ),
 						'type'    => 'checkbox',
 						'default' => 'no',
-						'desc'    => __( 'Display logo on checkout page', 'woo-linepay-tw' ),
+						'desc'    => __( 'Display logo on checkout page', 'wpbr-linepay-tw' ),
 						'id'      => 'linepay_tw_display_logo_enabled',
 					),
 					array(
@@ -76,48 +76,48 @@ class WC_Settings_Tab_LINEPay_TW extends WC_Settings_Page {
 						'id'   => 'linepay_tw_general_setting',
 					),
 					array(
-						'title' => __( 'API Settings', 'woo-linepay-tw' ),
+						'title' => __( 'API Settings', 'wpbr-linepay-tw' ),
 						'type'  => 'title',
-						'desc'  => __( 'Enter your LINE Pay API credentials', 'woo-linepay-tw' ),
+						'desc'  => __( 'Enter your LINE Pay API credentials', 'wpbr-linepay-tw' ),
 						'id'    => 'linepay_tw_api_settings',
 					),
 					array(
-						'title'   => __( 'Sandbox Mode', 'woo-linepay-tw' ),
+						'title'   => __( 'Sandbox Mode', 'wpbr-linepay-tw' ),
 						'type'    => 'checkbox',
-						'label'   => __( 'Enable sandbox mode.', 'woo-linepay-tw' ),
+						'label'   => __( 'Enable sandbox mode.', 'wpbr-linepay-tw' ),
 						'desc'    => '',
 						'default' => 'no',
-						'desc'    => __( 'When enabled, you need to use the test-only data below.', 'woo-linepay-tw' ),
+						'desc'    => __( 'When enabled, you need to use the test-only data below.', 'wpbr-linepay-tw' ),
 						'id'      => 'linepay_tw_sandboxmode_enabled',
 					),
 					array(
-						'title'    => __( 'Sandbox Channel ID', 'woo-linepay-tw' ),
+						'title'    => __( 'Sandbox Channel ID', 'wpbr-linepay-tw' ),
 						'type'     => 'text',
-						'desc'     => __( 'Enter your Channel ID.', 'woo-linepay-tw' ),
+						'desc'     => __( 'Enter your Channel ID.', 'wpbr-linepay-tw' ),
 						'desc_tip' => true,
 						'default'  => '',
 						'id'       => 'linepay_tw_sandbox_channel_id',
 					),
 					array(
-						'title'    => __( 'Sandbox Channel Secret Key', 'woo-linepay-tw' ),
+						'title'    => __( 'Sandbox Channel Secret Key', 'wpbr-linepay-tw' ),
 						'type'     => 'text',
-						'desc'     => __( 'Enter your Channel SecretKey.', 'woo-linepay-tw' ),
+						'desc'     => __( 'Enter your Channel SecretKey.', 'wpbr-linepay-tw' ),
 						'desc_tip' => true,
 						'default'  => '',
 						'id'       => 'linepay_tw_sandbox_channel_secret',
 					),
 					array(
-						'title'    => __( 'Channel ID', 'woo-linepay-tw' ),
+						'title'    => __( 'Channel ID', 'wpbr-linepay-tw' ),
 						'type'     => 'text',
-						'desc'     => __( 'Enter your Channel ID.', 'woo-linepay-tw' ),
+						'desc'     => __( 'Enter your Channel ID.', 'wpbr-linepay-tw' ),
 						'desc_tip' => true,
 						'default'  => '',
 						'id'       => 'linepay_tw_channel_id',
 					),
 					array(
-						'title'    => __( 'Channel Secret Key', 'woo-linepay-tw' ),
+						'title'    => __( 'Channel Secret Key', 'wpbr-linepay-tw' ),
 						'type'     => 'text',
-						'desc'     => __( 'Enter your Channel SecretKey.', 'woo-linepay-tw' ),
+						'desc'     => __( 'Enter your Channel SecretKey.', 'wpbr-linepay-tw' ),
 						'desc_tip' => true,
 						'default'  => '',
 						'id'       => 'linepay_tw_channel_secret',

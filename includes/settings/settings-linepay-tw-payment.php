@@ -15,22 +15,22 @@ if ( ! defined( 'ABSPATH' ) ) {
 return array(
 
 	'enabled'     => array(
-		'title'   => __( 'Enable/Disable', 'woo-linepay-tw' ),
+		'title'   => __( 'Enable/Disable', 'wpbr-linepay-tw' ),
 		'type'    => 'checkbox',
-		'label'   => __( 'Enable', 'woo-linepay-tw' ),
+		'label'   => __( 'Enable', 'wpbr-linepay-tw' ),
 		'default' => 'no',
 	),
 	'title'       => array(
-		'title'       => __( 'Title', 'woo-linepay-tw' ),
+		'title'       => __( 'Title', 'wpbr-linepay-tw' ),
 		'type'        => 'text',
-		'description' => __( 'This controls the title which the user sees during checkout.', 'woo-linepay-tw' ),
-		'default'     => __( 'LINE Pay', 'woo-linepay-tw' ),
+		'description' => __( 'This controls the title which the user sees during checkout.', 'wpbr-linepay-tw' ),
+		'default'     => __( 'LINE Pay', 'wpbr-linepay-tw' ),
 		'desc_tip'    => true,
 	),
 	'description' => array(
-		'title'       => __( 'Description', 'woo-linepay-tw' ),
+		'title'       => __( 'Description', 'wpbr-linepay-tw' ),
 		'type'        => 'textarea',
-		'description' => __( 'This controls the description which the user sees during checkout.', 'woo-linepay-tw' ),
+		'description' => __( 'This controls the description which the user sees during checkout.', 'wpbr-linepay-tw' ),
 		'desc_tip'    => true,
 	),
 
