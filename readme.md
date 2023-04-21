@@ -4,6 +4,8 @@ This plugin provides LINE Pay payment (v3) functionality in Taiwan.
 ## Features
 1. General Payment
 2. Refund (Partial refund allowed)
+3. Support country: Taiwan
+4. Support Plugin: WooCommerce
 
 
 ## Changlog ##
