@@ -1,4 +1,4 @@
-name: Create a new LINE Pay Taiwan Payment release
+name: Create a new Pay with LINE release
 on:
   release:
     types: [published]
@@ -14,15 +14,15 @@ jobs:
       - name: Create artifact
         uses: montudor/action-zip@v1
         with:
-          args: zip -X -r build/woo-linepay-tw.zip . -x *.git* node_modules/\* .* "*/\.*" *.dist grumphp.yml composer.* build**
+          args: zip -X -r build/wpbr-linepay-tw.zip . -x *.git* node_modules/\* .* "*/\.*" *.dist grumphp.yml composer.* build**
       - name: Upload artifact
         uses: actions/upload-artifact@v2
         with:
-          name: woo-linepay-tw.
-          path: build/woo-linepay-tw.zip
+          name: wpbr-linepay-tw.
+          path: build/wpbr-linepay-tw.zip
       - name: Upload to release
         uses: JasonEtco/upload-to-release@master
         with:
-          args: build/woo-linepay-tw.zip application/zip
+          args: build/wpbr-linepay-tw.zip application/zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
