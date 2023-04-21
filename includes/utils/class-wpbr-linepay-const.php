@@ -1,6 +1,6 @@
 <?php
 /**
- * WC_Gateway_LINEPay_Const class file
+ * WPBR_LINEPay_Const class file
  *
  * @package linepay_tw
  */
@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * @version 1.0.0
  */
-final class WC_Gateway_LINEPay_Const {
+final class WPBR_LINEPay_Const {
 
 	// data.
 	const ID           = 'linepay-tw';

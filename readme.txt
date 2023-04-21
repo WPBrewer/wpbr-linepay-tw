@@ -1,6 +1,6 @@
-=== LINE Pay Taiwan for WooCommerce ===
+=== Pay with LINE Pay ===
 Contributors: wpbrewer, bluestan
-Tags: woocommerce, payment, LINE Pay, LINE, taiwan, payment, payment gateway
+Tags: WooCommerce, payment, LINE Pay, LINE, taiwan, payment, payment gateway
 Requires at least: 5.9
 Tested up to: 6.2
 Requires PHP: 7.0
@@ -8,17 +8,18 @@ Stable tag: 1.0.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-LINE Pay is the most popular payment provider in Taiwan. By using LINE Pay Taiwan for WooCommerce plugin, you provide the
-most convenient and best checkout experience for your customers.
+Accept payments via LINE Pay for your ecommerce store.
 
 == Description ==
 
-LINE Pay Taiwan for WooCommerce allow you to provide LINE Pay payment gateway for the customers based in Taiwan.
+Pay with LINE Pay allows you to provide LINE Pay payment gateway for the customers.
 
 Major features include:
 
 * General Payment
 * Refund (Partial refund allowed)
+* Support country: Taiwan
+* Support Plugin: WooCommerce
 
 == Changelog ==
 

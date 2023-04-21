@@ -1,4 +1,4 @@
-## LINE Pay Taiwan for WooCommerce
+## Pay with LINE Pay
 This plugin provides LINE Pay payment (v3) functionality in Taiwan.
 
 ## Features

@@ -77,24 +77,24 @@ class LINEPay_TW {
 
 		self::get_instance();
 
-		require_once LINEPAY_TW_PLUGIN_DIR . 'includes/gateways/class-linepay-tw-payment.php';
-		require_once LINEPAY_TW_PLUGIN_DIR . 'includes/gateways/class-linepay-tw-request.php';
-		require_once LINEPAY_TW_PLUGIN_DIR . 'includes/gateways/class-linepay-tw-response.php';
-		require_once LINEPAY_TW_PLUGIN_DIR . 'includes/utils/class-wc-gateway-linepay-const.php';
-		require_once LINEPAY_TW_PLUGIN_DIR . 'includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php';
+		require_once WPBR_LINEPAY_PLUGIN_DIR . 'includes/gateways/class-linepay-tw-payment.php';
+		require_once WPBR_LINEPAY_PLUGIN_DIR . 'includes/gateways/class-linepay-tw-request.php';
+		require_once WPBR_LINEPAY_PLUGIN_DIR . 'includes/gateways/class-linepay-tw-response.php';
+		require_once WPBR_LINEPAY_PLUGIN_DIR . 'includes/utils/class-wpbr-linepay-const.php';
+		require_once WPBR_LINEPAY_PLUGIN_DIR . 'includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php';
 
 		self::$log_enabled = 'yes' === get_option( 'linepay_tw_debug_log_enabled', 'no' );
 
 		self::$enable_sandbox = wc_string_to_bool( get_option( 'linepay_tw_sandboxmode_enabled' ) );
 
-		self::$env_status = ( self::$enable_sandbox ) ? WC_Gateway_LINEPay_Const::ENV_SANDBOX : WC_Gateway_LINEPay_Const::ENV_REAL;
+		self::$env_status = ( self::$enable_sandbox ) ? WPBR_LINEPay_Const::ENV_SANDBOX : WPBR_LINEPay_Const::ENV_REAL;
 
 		self::$channel_info = array(
-			WC_Gateway_LINEPay_Const::ENV_REAL    => array(
+			WPBR_LINEPay_Const::ENV_REAL    => array(
 				'channel_id'     => get_option( 'linepay_tw_channel_id' ),
 				'channel_secret' => get_option( 'linepay_tw_channel_secret' ),
 			),
-			WC_Gateway_LINEPay_Const::ENV_SANDBOX => array(
+			WPBR_LINEPay_Const::ENV_SANDBOX => array(
 				'channel_id'     => get_option( 'linepay_tw_sandbox_channel_id' ),
 				'channel_secret' => get_option( 'linepay_tw_sandbox_channel_secret' ),
 			),
@@ -111,7 +111,7 @@ class LINEPay_TW {
 		LINEPay_TW_Response::init();
 		LINEPay_TW_Order_Meta_Boxes::init();
 
-		load_plugin_textdomain( 'woo-linepay-tw', false, trailingslashit( dirname( LINEPAY_TW_BASENAME ) . '/languages' ) );
+		load_plugin_textdomain( 'wpbr-linepay-tw', false, trailingslashit( dirname( WPBR_LINEPAY_BASENAME ) . '/languages' ) );
 
 		add_filter( 'woocommerce_get_settings_pages', array( self::get_instance(), 'linepay_tw_add_settings' ), 15 );
 		add_filter( 'woocommerce_payment_gateways', array( self::get_instance(), 'add_linepay_tw_payment_gateway' ) );
@@ -119,7 +119,7 @@ class LINEPay_TW {
 		add_action( 'admin_enqueue_scripts', array( self::get_instance(), 'linepay_tw_admin_scripts' ), 9 );
 
 		add_action( 'wp_ajax_linepay_confirm', array( self::get_instance(), 'linepay_tw_ajax_confirm_payment' ) );
-		add_filter( 'plugin_action_links_' . LINEPAY_TW_BASENAME, array( self::get_instance(), 'linepay_tw_add_action_links' ) );
+		add_filter( 'plugin_action_links_' . WPBR_LINEPAY_BASENAME, array( self::get_instance(), 'linepay_tw_add_action_links' ) );
 
 	}
 
@@ -135,7 +135,7 @@ class LINEPay_TW {
 		if ( ! array_key_exists( 'security', $posted ) || ! wp_verify_nonce( $posted['security'], 'linepay-confirm' ) ) {
 			$return = array(
 				'success' => false,
-				'message' => __( 'Unsecure AJAX call', 'woo-linepay-tw' ),
+				'message' => __( 'Unsecure AJAX call', 'wpbr-linepay-tw' ),
 			);
 			wp_send_json( $return );
 		}
@@ -146,7 +146,7 @@ class LINEPay_TW {
 		if ( ! $order ) {
 			$return = array(
 				'success' => false,
-				'message' => __( 'No such order id', 'woo-linepay-tw' ),
+				'message' => __( 'No such order id', 'wpbr-linepay-tw' ),
 			);
 			wp_send_json( $return );
 		}
@@ -157,16 +157,16 @@ class LINEPay_TW {
 		try {
 
 			if ( $request->confirm( $order->get_id(), false ) ) {
-				$order->add_order_note( __( 'LINE Pay Confirm Succeed!', 'woo-linepay-tw' ) );
+				$order->add_order_note( __( 'LINE Pay Confirm Succeed!', 'wpbr-linepay-tw' ) );
 				$return = array(
 					'success' => true,
-					'message' => __( 'Confirm succeed', 'woo-linepay-tw' ),
+					'message' => __( 'Confirm succeed', 'wpbr-linepay-tw' ),
 				);
 				wp_send_json( $return );
 			}
 		} catch ( Exception $e ) {
 
-			$order->add_order_note( __( 'LINE Pay Confirm Failed!', 'woo-linepay-tw' ) . $e->getMessage() );
+			$order->add_order_note( __( 'LINE Pay Confirm Failed!', 'wpbr-linepay-tw' ) . $e->getMessage() );
 			$return = array(
 				'success' => false,
 				'message' => $e->getMessage(),
@@ -202,7 +202,7 @@ class LINEPay_TW {
 	 * @return void
 	 */
 	public function linepay_tw_enqueue_scripts() {
-		wp_enqueue_style( 'linepay-tw', LINEPAY_TW_PLUGIN_URL . 'assets/css/linepay-tw-public.css', array(), '1.0' );
+		wp_enqueue_style( 'wpbr-linepay-tw', WPBR_LINEPAY_PLUGIN_URL . 'assets/css/wpbr-linepay-tw-public.css', array(), '1.0' );
 	}
 
 	/**
@@ -212,11 +212,11 @@ class LINEPay_TW {
 	 */
 	public function linepay_tw_admin_scripts() {
 
-		wp_enqueue_script( 'linepay-tw', LINEPAY_TW_PLUGIN_URL . 'assets/js/linepay-tw-admin.js', array(), '1.0', true );
-		wp_enqueue_style( 'linepay-tw', LINEPAY_TW_PLUGIN_URL . 'assets/css/linepay-tw-admin.css', array(), '1.0' );
+		wp_enqueue_script( 'wpbr-linepay-tw', WPBR_LINEPAY_PLUGIN_URL . 'assets/js/wpbr-linepay-tw-admin.js', array(), '1.0', true );
+		wp_enqueue_style( 'wpbr-linepay-tw', WPBR_LINEPAY_PLUGIN_URL . 'assets/css/wpbr-linepay-tw-admin.css', array(), '1.0' );
 
 		wp_localize_script(
-			'linepay-tw',
+			'wpbr-linepay-tw',
 			'linepay_object',
 			array(
 				'ajax_url'      => admin_url( 'admin-ajax.php' ),
@@ -237,13 +237,13 @@ class LINEPay_TW {
 		$setting_links['general'] = sprintf(
 			'<a href="%s">%s</a>',
 			esc_url( admin_url( 'admin.php?page=wc-settings&tab=linepay-tw' ) ),
-			esc_html__( 'General Settings', 'woo-linepay-tw' )
+			esc_html__( 'General Settings', 'wpbr-linepay-tw' )
 		);
 
 		$setting_links['payment'] = sprintf(
 			'<a href="%s">%s</a>',
 			esc_url( admin_url( 'admin.php?page=wc-settings&tab=checkout' ) ),
-			esc_html__( 'Payment Settings', 'woo-linepay-tw' )
+			esc_html__( 'Payment Settings', 'wpbr-linepay-tw' )
 		);
 
 		return array_merge( $links, $setting_links );
@@ -256,7 +256,7 @@ class LINEPay_TW {
 	 * @return WC_Settings_Tab_LINEPay_TW
 	 */
 	public function linepay_tw_add_settings() {
-		require_once LINEPAY_TW_PLUGIN_DIR . 'includes/settings/class-linepay-tw-settings-tab.php';
+		require_once WPBR_LINEPAY_PLUGIN_DIR . 'includes/settings/class-linepay-tw-settings-tab.php';
 		return new WC_Settings_Tab_LINEPay_TW();
 	}
 
@@ -272,7 +272,7 @@ class LINEPay_TW {
 			if ( empty( self::$log ) ) {
 				self::$log = new WC_Logger();
 			}
-			self::$log->log( $level, $message, array( 'source' => 'woo-linepay-tw' ) );
+			self::$log->log( $level, $message, array( 'source' => 'wpbr-linepay-tw' ) );
 		}
 	}
 

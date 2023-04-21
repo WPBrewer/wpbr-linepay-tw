@@ -55,7 +55,7 @@ class LINEPay_TW_Response {
 			$order_id = ( isset( $_GET['order_id'] ) ) ? sanitize_text_field( wp_unslash( $_GET['order_id'] ) ) : '';
 
 			if ( empty( $order_id ) ) {
-				throw new Exception( sprintf( WC_Gateway_LINEPay_Const::LOG_TEMPLATE_HANDLE_CALLBANK_NOT_FOUND_ORDER_ID, $order_id, __( 'Unable to process callback.', 'woo-linepay-tw' ) ) );
+				throw new Exception( sprintf( WPBR_LINEPay_Const::LOG_TEMPLATE_HANDLE_CALLBANK_NOT_FOUND_ORDER_ID, $order_id, __( 'Unable to process callback.', 'wpbr-linepay-tw' ) ) );
 			}
 
 			$request_type   = ( isset( $_GET['request_type'] ) ) ? sanitize_text_field( wp_unslash( $_GET['request_type'] ) ) : '';
@@ -64,13 +64,13 @@ class LINEPay_TW_Response {
 			$gateway = new LINEPay_TW_Payment();
 			$request = new LINEPay_TW_Request( $gateway );
 
-			if ( WC_Gateway_LINEPay_Const::PAYMENT_STATUS_RESERVED === $payment_status ) {
+			if ( WPBR_LINEPay_Const::PAYMENT_STATUS_RESERVED === $payment_status ) {
 
 				switch ( $request_type ) {
-					case WC_Gateway_LINEPay_Const::REQUEST_TYPE_CONFIRM:
+					case WPBR_LINEPay_Const::REQUEST_TYPE_CONFIRM:
 						$request->confirm( $order_id );
 						break;
-					case WC_Gateway_LINEPay_Const::REQUEST_TYPE_CANCEL:
+					case WPBR_LINEPay_Const::REQUEST_TYPE_CANCEL:
 						$request->cancel( $order_id );
 						break;
 				}

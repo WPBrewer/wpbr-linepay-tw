@@ -61,7 +61,7 @@ class WC_Settings_Tab_LINEPay_TW extends WC_Settings_Page {
 						'title'   => __( 'Debug Log', 'woo-linepay-tw' ),
 						'type'    => 'checkbox',
 						'default' => 'no',
-						'desc'    => sprintf( __( 'Log LINE Pay payment message, inside <code>%s</code>', 'woo-linepay-tw' ), wc_get_log_file_path( 'woo-linepay-tw' ) ),
+						'desc'    => sprintf( __( 'Log LINE Pay payment message, inside <code>%s</code>', 'woo-linepay-tw' ), wc_get_log_file_path( 'wpbr-linepay-tw' ) ),
 						'id'      => 'linepay_tw_debug_log_enabled',
 					),
 					array(

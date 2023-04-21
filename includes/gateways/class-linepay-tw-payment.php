@@ -24,14 +24,14 @@ class LINEPay_TW_Payment extends WC_Payment_Gateway {
 	 */
 	public function __construct() {
 
-		$this->id                 = WC_Gateway_LINEPay_Const::ID;
+		$this->id                 = WPBR_LINEPay_Const::ID;
 		$this->icon               = $this->get_icon();
 		$this->title              = $this->get_option( 'title' );
 		$this->description        = $this->get_option( 'description' );
 		$this->has_fields         = false;
-		$this->order_button_text  = __( 'Pay with LINE Pay', 'woo-linepay-tw' );
-		$this->method_title       = __( 'LINE Pay - General', 'woo-linepay-tw' );
-		$this->method_description = __( 'Pay via LINE Pay', 'woo-linepay-tw' );
+		$this->order_button_text  = __( 'Pay with LINE Pay', 'wpbr-linepay-tw' );
+		$this->method_title       = __( 'LINE Pay - General', 'wpbr-linepay-tw' );
+		$this->method_description = __( 'Pay with LINE Pay', 'wpbr-linepay-tw' );
 
 		$this->payment_type   = 'NORMAL';
 		$this->payment_action = get_option( 'linepay_tw_payment_action' );
@@ -72,8 +72,8 @@ class LINEPay_TW_Payment extends WC_Payment_Gateway {
 		if ( get_option( 'linepay_tw_display_logo_enabled' ) === 'yes' ) {
 			$icon_html .= sprintf(
 				'<img src="%s" alt="%s" />',
-				esc_url( LINEPAY_TW_PLUGIN_URL . 'assets/images/linepay-logo.png' ),
-				esc_attr__( 'LINE Pay Taiwan', 'woo-linepay-tw' )
+				esc_url( WPBR_LINEPAY_PLUGIN_URL . 'assets/images/linepay-logo.png' ),
+				esc_attr__( 'LINE Pay Taiwan', 'wpbr-linepay-tw' )
 			);
 		}
 		/**
@@ -95,7 +95,7 @@ class LINEPay_TW_Payment extends WC_Payment_Gateway {
 	 * @see WC_Gateway_LINEPay_Settings->get_form_fields()
 	 */
 	public function init_form_fields() {
-		$this->form_fields = include LINEPAY_TW_PLUGIN_DIR . 'includes/settings/settings-linepay-tw-payment.php';
+		$this->form_fields = include WPBR_LINEPAY_PLUGIN_DIR . 'includes/settings/settings-linepay-tw-payment.php';
 	}
 
 	/**
@@ -180,11 +180,11 @@ class LINEPay_TW_Payment extends WC_Payment_Gateway {
 			}
 
 			if ( $order->get_status() === 'on-hold' ) {
-				$text = '<span class="linepay-order-onhold">' . esc_html__( 'We have received your order, but the payment status need to be confirmed. Please contact the support.', 'woo-linepay-tw' ) . '</span>';
+				$text = '<span class="linepay-order-onhold">' . esc_html__( 'We have received your order, but the payment status need to be confirmed. Please contact the support.', 'wpbr-linepay-tw' ) . '</span>';
 			}
 
 			if ( $order->get_status() === 'pending' ) {
-				$text = '<span class="linepay-order-onhold">' . esc_html__( 'We have received your order, but the order is awaiting payment. Please pay again.', 'woo-linepay-tw' ) . '</span>';
+				$text = '<span class="linepay-order-onhold">' . esc_html__( 'We have received your order, but the order is awaiting payment. Please pay again.', 'wpbr-linepay-tw' ) . '</span>';
 			}
 		}
 
@@ -206,11 +206,11 @@ class LINEPay_TW_Payment extends WC_Payment_Gateway {
 		}
 
 		if ( $order->get_status() === 'on-hold' ) {
-			echo '<div class="linepay-order-onhold">' . esc_html__( 'We have received your order, but the payment status need to be confirmed. Please contact the support.', 'woo-linepay-tw' ) . '</div>';
+			echo '<div class="linepay-order-onhold">' . esc_html__( 'We have received your order, but the payment status need to be confirmed. Please contact the support.', 'wpbr-linepay-tw' ) . '</div>';
 		}
 
 		if ( $order->get_status() === 'pending' ) {
-			echo '<div class="linepay-order-onhold">' . esc_html__( 'We have received your order, but the order is awaiting payment. Please pay again.', 'woo-linepay-tw' ) . '</div>';
+			echo '<div class="linepay-order-onhold">' . esc_html__( 'We have received your order, but the order is awaiting payment. Please pay again.', 'wpbr-linepay-tw' ) . '</div>';
 		}
 
 	}

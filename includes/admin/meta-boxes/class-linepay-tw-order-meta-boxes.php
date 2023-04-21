@@ -44,7 +44,7 @@ class LINEPay_TW_Order_Meta_Boxes {
 		if ( array_key_exists( get_post_meta( $post->ID, '_payment_method', true ), LINEPay_TW::$allowed_payments ) ) {
 			add_meta_box(
 				'woocommerce-linepay-meta-boxes',
-				__( 'LINE Pay Details', 'woo-linepay-tw' ),
+				__( 'LINE Pay Details', 'wpbr-linepay-tw' ),
 				array(
 					self::get_instance(),
 					'linepay_admin_meta',
@@ -75,11 +75,11 @@ class LINEPay_TW_Order_Meta_Boxes {
 		if ( array_key_exists( get_post_meta( $post->ID, '_payment_method', true ), LINEPay_TW::$allowed_payments ) ) {
 
 			echo '<table>';
-			echo '<tr><th><div id="order-id" data-order-id="' . esc_html( $post->ID ) . '">' . esc_html__( 'Transaction ID', 'woo-linepay-tw' ) . '</div></th><td>' . esc_html( $theorder->get_meta( '_linepay_reserved_transaction_id' ) ) . '</td></tr>';
-			echo '<tr><th><div>' . esc_html__( 'Payment Status', 'woo-linepay-tw' ) . '</div></th><td>' . esc_html( $theorder->get_meta( '_linepay_payment_status' ) ) . '</td></tr>';
+			echo '<tr><th><div id="order-id" data-order-id="' . esc_html( $post->ID ) . '">' . esc_html__( 'Transaction ID', 'wpbr-linepay-tw' ) . '</div></th><td>' . esc_html( $theorder->get_meta( '_linepay_reserved_transaction_id' ) ) . '</td></tr>';
+			echo '<tr><th><div>' . esc_html__( 'Payment Status', 'wpbr-linepay-tw' ) . '</div></th><td>' . esc_html( $theorder->get_meta( '_linepay_payment_status' ) ) . '</td></tr>';
 
-			// if ( $theorder->get_meta( '_linepay_payment_status' ) === WC_Gateway_LINEPay_Const::PAYMENT_STATUS_AUTHED ) {
-				echo '<tr id="linepay-action"><th>' . esc_html__( 'Payment Action', 'woo-linepay-tw' ) . '</th><td><button class="button linepay-confirm-btn" data-id=' . esc_html( $post->ID ) . '>' . esc_html__( 'Confirm Payment', 'woo-linepay-tw' ) . '</button></tr>';
+			// if ( $theorder->get_meta( '_linepay_payment_status' ) === WPBR_LINEPay_Const::PAYMENT_STATUS_AUTHED ) {
+				echo '<tr id="linepay-action"><th>' . esc_html__( 'Payment Action', 'wpbr-linepay-tw' ) . '</th><td><button class="button linepay-confirm-btn" data-id=' . esc_html( $post->ID ) . '>' . esc_html__( 'Confirm Payment', 'wpbr-linepay-tw' ) . '</button></tr>';
 			// }
 
 			echo '</table>';
