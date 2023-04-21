@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Pay with LINE Pay\n"
 "POT-Creation-Date: 2023-04-22 00:00+0800\n"
-"PO-Revision-Date: 2023-04-22 00:02+0800\n"
+"PO-Revision-Date: 2023-04-22 00:12+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: zh_TW\n"
@@ -74,7 +74,7 @@ msgstr "付款方式設定"
 #: includes/gateways/class-linepay-tw-payment.php:32
 #: includes/gateways/class-linepay-tw-payment.php:34
 msgid "Pay with LINE Pay"
-msgstr "以 LINE Pay 付款"
+msgstr "LINE Pay 付款方式"
 
 #: includes/gateways/class-linepay-tw-payment.php:33
 msgid "LINE Pay - General"
@@ -262,7 +262,7 @@ msgstr "https://wpbrewer.com/product/woo-linepay-tw/"
 
 #. Description of the plugin/theme
 msgid "Provides LINE Pay for your WooCommerce store"
-msgstr "為你的商店加上 LINE Pay 支付方式"
+msgstr "為你的商店加上 LINE Pay 付款方式"
 
 #. Author of the plugin/theme
 msgid "WPBrewer"
