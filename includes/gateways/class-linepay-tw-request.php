@@ -347,10 +347,6 @@ class LINEPay_TW_Request {
 		LINEPay_TW::log( 'remaining refund:' . $remaining_refund_amount );
 		$is_partial_refund = ( $remaining_refund_amount > 0 ) ? true : false;
 
-		if ( apply_filters( 'line_pay_allow_partial_refund', $is_partial_refund ) ) {
-			return new WP_Error( 'refund error', __( 'Not allow partial refund', 'wpbr-linepay-tw' ) );
-		}
-
 		$result = $this->do_refund( $order, $transaction_id, $std_refund_amount, $is_partial_refund );
 
 		return $result;
@@ -624,7 +620,7 @@ class LINEPay_TW_Request {
 		 *
 		 * @return void
 		 */
-		if ( apply_filters( 'linepay_tw_enable_detail_note', false ) ) {
+		if ( apply_filters( 'linepay_tw_enable_detail_note', true ) ) {
 			$check_status = $this->check( $order );
 			$check_code   = $check_status->returnCode;
 			$check_msg    = $check_status->returnMessage;
