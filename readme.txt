@@ -23,6 +23,10 @@ Major features include:
 
 == Changelog ==
 
+= 1.1.1 - 2023-10-09 =
+
+* Update: fix partial refund
+
 = 1.1.0 - 2023-04-22 =
 
 * Updated: change plugin name and slug.
