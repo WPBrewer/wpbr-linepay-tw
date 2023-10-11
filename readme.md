@@ -10,6 +10,11 @@ This plugin provides LINE Pay payment (v3) functionality in Taiwan.
 
 ## Changlog ##
 
+= 1.1.2 =
+*Release Date - 10 October 2023*
+
+* Update: fix fatal error when activating the plugin
+
 = 1.1.1 =
 *Release Date - 09 October 2023*
 
