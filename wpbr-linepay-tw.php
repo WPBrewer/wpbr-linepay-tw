@@ -5,7 +5,7 @@
  * Description: Provides LINE Pay for your WooCommerce store
  * Author: WPBrewer
  * Author URI: https://wpbrewer.com
- * Version: 1.1.1
+ * Version: 1.1.2
  * Text Domain: wpbr-linepay-tw
  * Domain Path: /languages
  *
@@ -34,7 +34,7 @@ defined( 'ABSPATH' ) || exit; // Exit if accessed directly.
 define( 'WPBR_LINEPAY_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
 define( 'WPBR_LINEPAY_PLUGIN_DIR', plugin_dir_path( __FILE__ ) );
 define( 'WPBR_LINEPAY_BASENAME', plugin_basename( __FILE__ ) );
-define( 'WPBR_LINEPAY_VERSION', '1.1.1' );
+define( 'WPBR_LINEPAY_VERSION', '1.1.2' );
 
 /**
  * Display a notice if WooCommerce is not installed and activated
