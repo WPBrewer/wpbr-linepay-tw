@@ -63,6 +63,7 @@ function linepay_tw_previous_deactivate() {
 function run_wpbr_linepay() {
 
 	// check if previous version install
+	require_once ABSPATH . 'wp-admin/includes/plugin.php';
 	if ( is_plugin_active( 'woo-linepay-tw/woo-linepay-tw.php' ) ) {
 		deactivate_plugins( 'woo-linepay-tw/woo-linepay-tw.php' );
 		add_action( 'admin_notices', 'linepay_tw_previous_deactivate' );
@@ -75,7 +76,6 @@ function run_wpbr_linepay() {
 	 * @since 1.0.0
 	 */
 	if ( ! in_array( 'woocommerce/woocommerce.php', apply_filters( 'active_plugins', get_option( 'active_plugins' ) ), true ) ) {
-		require_once ABSPATH . 'wp-admin/includes/plugin.php';
 		if ( is_plugin_active( 'wpbr-linepay-tw/wpbr-linepay-tw.php' ) ) {
 			deactivate_plugins( WPBR_LINEPAY_BASENAME );
 			add_action( 'admin_notices', 'wpbr_linepay_tw_needs_woocommerce' );
