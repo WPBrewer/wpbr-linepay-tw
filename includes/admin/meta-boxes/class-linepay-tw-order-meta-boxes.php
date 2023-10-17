@@ -80,9 +80,9 @@ class LINEPay_TW_Order_Meta_Boxes {
 			echo '<tr><th><div id="order-id" data-order-id="' . esc_html( $order->get_id() ) . '">' . esc_html__( 'Transaction ID', 'wpbr-linepay-tw' ) . '</div></th><td>' . esc_html( $order->get_meta( '_linepay_reserved_transaction_id' ) ) . '</td></tr>';
 			echo '<tr><th><div>' . esc_html__( 'Payment Status', 'wpbr-linepay-tw' ) . '</div></th><td>' . esc_html( $order->get_meta( '_linepay_payment_status' ) ) . '</td></tr>';
 
-			// if ( $order->get_meta( '_linepay_payment_status' ) === WPBR_LINEPay_Const::PAYMENT_STATUS_AUTHED ) {
+			if ( $order->get_meta( '_linepay_payment_status' ) === WPBR_LINEPay_Const::PAYMENT_STATUS_AUTHED ) {
 				echo '<tr id="linepay-action"><th>' . esc_html__( 'Payment Action', 'wpbr-linepay-tw' ) . '</th><td><button class="button linepay-confirm-btn" data-id=' . esc_html( $order->get_id() ) . '>' . esc_html__( 'Confirm Payment', 'wpbr-linepay-tw' ) . '</button></tr>';
-			// }
+			}
 
 			echo '</table>';
 		}
