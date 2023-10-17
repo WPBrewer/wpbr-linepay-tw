@@ -7,6 +7,9 @@
 
 defined( 'ABSPATH' ) || exit;
 
+use Automattic\WooCommerce\Internal\DataStores\Orders\CustomOrdersTableController;
+use Automattic\WooCommerce\Utilities\OrderUtil;
+
 /**
  * LINEPay_TW_Order_Meta_Boxes class
  */
@@ -37,11 +40,14 @@ class LINEPay_TW_Order_Meta_Boxes {
 	 * @param object $post The post object.
 	 * @return void
 	 */
-	public function linepay_add_meta_boxes( $post ) {
+	public function linepay_add_meta_boxes() {
 
-		global $post;
+		//NOTE: 這邊拿不到 global $post
+		$screen = wc_get_container()->get( CustomOrdersTableController::class )->custom_orders_table_usage_is_enabled()
+		? wc_get_page_screen_id( 'shop-order' )
+		: 'shop_order';
 
-		if ( array_key_exists( get_post_meta( $post->ID, '_payment_method', true ), LINEPay_TW::$allowed_payments ) ) {
+		// if ( array_key_exists( $order->get_meta( '_payment_method' ), LINEPay_TW::$allowed_payments ) ) {
 			add_meta_box(
 				'woocommerce-linepay-meta-boxes',
 				__( 'LINE Pay Details', 'wpbr-linepay-tw' ),
@@ -49,11 +55,11 @@ class LINEPay_TW_Order_Meta_Boxes {
 					self::get_instance(),
 					'linepay_admin_meta',
 				),
-				'shop_order',
+				$screen,
 				'side',
 				'default'
 			);
-		}
+		// }
 
 	}
 
@@ -64,22 +70,18 @@ class LINEPay_TW_Order_Meta_Boxes {
 	 * @param object $post Post object.
 	 * @return void
 	 */
-	public function linepay_admin_meta( $post ) {
+	public function linepay_admin_meta( $post_or_order_object ) {
 
-		global $theorder;
+		$order = ( $post_or_order_object instanceof WP_Post ) ? wc_get_order( $post_or_order_object->ID ) : $post_or_order_object;
 
-		if ( ! is_object( $theorder ) ) {
-			$theorder = wc_get_order( $post->ID );
-		}
-
-		if ( array_key_exists( get_post_meta( $post->ID, '_payment_method', true ), LINEPay_TW::$allowed_payments ) ) {
+		if ( array_key_exists( $order->get_payment_method(), LINEPay_TW::$allowed_payments ) ) {
 
 			echo '<table>';
-			echo '<tr><th><div id="order-id" data-order-id="' . esc_html( $post->ID ) . '">' . esc_html__( 'Transaction ID', 'wpbr-linepay-tw' ) . '</div></th><td>' . esc_html( $theorder->get_meta( '_linepay_reserved_transaction_id' ) ) . '</td></tr>';
-			echo '<tr><th><div>' . esc_html__( 'Payment Status', 'wpbr-linepay-tw' ) . '</div></th><td>' . esc_html( $theorder->get_meta( '_linepay_payment_status' ) ) . '</td></tr>';
+			echo '<tr><th><div id="order-id" data-order-id="' . esc_html( $order->get_id() ) . '">' . esc_html__( 'Transaction ID', 'wpbr-linepay-tw' ) . '</div></th><td>' . esc_html( $order->get_meta( '_linepay_reserved_transaction_id' ) ) . '</td></tr>';
+			echo '<tr><th><div>' . esc_html__( 'Payment Status', 'wpbr-linepay-tw' ) . '</div></th><td>' . esc_html( $order->get_meta( '_linepay_payment_status' ) ) . '</td></tr>';
 
-			// if ( $theorder->get_meta( '_linepay_payment_status' ) === WPBR_LINEPay_Const::PAYMENT_STATUS_AUTHED ) {
-				echo '<tr id="linepay-action"><th>' . esc_html__( 'Payment Action', 'wpbr-linepay-tw' ) . '</th><td><button class="button linepay-confirm-btn" data-id=' . esc_html( $post->ID ) . '>' . esc_html__( 'Confirm Payment', 'wpbr-linepay-tw' ) . '</button></tr>';
+			// if ( $order->get_meta( '_linepay_payment_status' ) === WPBR_LINEPay_Const::PAYMENT_STATUS_AUTHED ) {
+				echo '<tr id="linepay-action"><th>' . esc_html__( 'Payment Action', 'wpbr-linepay-tw' ) . '</th><td><button class="button linepay-confirm-btn" data-id=' . esc_html( $order->get_id() ) . '>' . esc_html__( 'Confirm Payment', 'wpbr-linepay-tw' ) . '</button></tr>';
 			// }
 
 			echo '</table>';

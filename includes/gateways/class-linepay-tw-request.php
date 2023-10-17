@@ -177,7 +177,7 @@ class LINEPay_TW_Request {
 			$currency = $order->get_currency();
 
 			// Direct access to DB to check whether order price information is altered.
-			$reserved_std_amount = $this->get_standardized( get_post_meta( $order_id, '_order_total', true ), $currency );
+			$reserved_std_amount = $this->get_standardized( $order->get_total(), $currency );
 			$std_amount          = $this->get_standardized( $amount );
 
 			// 1st verification of the amount, confirm the requested amount Confirm the reserved amount

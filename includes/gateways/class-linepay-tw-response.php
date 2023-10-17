@@ -54,12 +54,14 @@ class LINEPay_TW_Response {
 			// phpcs:disable WordPress.Security.NonceVerification.Recommended
 			$order_id = ( isset( $_GET['order_id'] ) ) ? sanitize_text_field( wp_unslash( $_GET['order_id'] ) ) : '';
 
-			if ( empty( $order_id ) ) {
+			$order = wc_get_order( $order_id );
+
+			if ( ! $order ) {
 				throw new Exception( sprintf( WPBR_LINEPay_Const::LOG_TEMPLATE_HANDLE_CALLBANK_NOT_FOUND_ORDER_ID, $order_id, __( 'Unable to process callback.', 'wpbr-linepay-tw' ) ) );
 			}
 
 			$request_type   = ( isset( $_GET['request_type'] ) ) ? sanitize_text_field( wp_unslash( $_GET['request_type'] ) ) : '';
-			$payment_status = get_post_meta( $order_id, '_linepay_payment_status', true );
+			$payment_status = $order->get_meta( '_linepay_payment_status' );
 
 			$gateway = new LINEPay_TW_Payment();
 			$request = new LINEPay_TW_Request( $gateway );

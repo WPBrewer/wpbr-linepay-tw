@@ -180,11 +180,11 @@ class LINEPay_TW_Payment extends WC_Payment_Gateway {
 			}
 
 			if ( $order->get_status() === 'on-hold' ) {
-				$text = '<span class="linepay-order-onhold">' . esc_html__( 'We have received your order, but the payment status need to be confirmed. Please contact the support.', 'wpbr-linepay-tw' ) . '</span>';
+				$text = esc_html__( 'We have received your order, but the payment status need to be confirmed. Please contact the support.', 'wpbr-linepay-tw' );
 			}
 
 			if ( $order->get_status() === 'pending' ) {
-				$text = '<span class="linepay-order-onhold">' . esc_html__( 'We have received your order, but the order is awaiting payment. Please pay again.', 'wpbr-linepay-tw' ) . '</span>';
+				$text = esc_html__( 'We have received your order, but the order is awaiting payment. Please pay again.', 'wpbr-linepay-tw' );
 			}
 		}
 
@@ -206,11 +206,11 @@ class LINEPay_TW_Payment extends WC_Payment_Gateway {
 		}
 
 		if ( $order->get_status() === 'on-hold' ) {
-			echo '<div class="linepay-order-onhold">' . esc_html__( 'We have received your order, but the payment status need to be confirmed. Please contact the support.', 'wpbr-linepay-tw' ) . '</div>';
+			echo esc_html__( 'We have received your order, but the payment status need to be confirmed. Please contact the support.', 'wpbr-linepay-tw' );
 		}
 
 		if ( $order->get_status() === 'pending' ) {
-			echo '<div class="linepay-order-onhold">' . esc_html__( 'We have received your order, but the order is awaiting payment. Please pay again.', 'wpbr-linepay-tw' ) . '</div>';
+			echo esc_html__( 'We have received your order, but the order is awaiting payment. Please pay again.', 'wpbr-linepay-tw' ) . '</div>';
 		}
 
 	}
