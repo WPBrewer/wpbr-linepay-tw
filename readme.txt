@@ -26,6 +26,7 @@ Major features include:
 = 1.1.3 - 2023-10-18 =
 
 * Update: Compatible with HPOS
+* Update: Increase Requires PHP version to 7.4
 
 = 1.1.2 - 2023-10-11 =
 

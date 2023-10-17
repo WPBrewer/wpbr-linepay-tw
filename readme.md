@@ -14,6 +14,7 @@ This plugin provides LINE Pay payment (v3) functionality in Taiwan.
 *Release Date - 18 October 2023*
 
 * Update: Compatible with HPOS
+* Update: Increase Requires PHP to 7.4
 
 = 1.1.2 =
 *Release Date - 11 October 2023*
