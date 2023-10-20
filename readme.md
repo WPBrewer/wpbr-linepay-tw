@@ -6,9 +6,14 @@ This plugin provides LINE Pay payment (v3) functionality in Taiwan.
 2. Refund (Partial refund allowed)
 3. Support country: Taiwan
 4. Support Plugin: WooCommerce
-
+5. Compatible with High-Performance Order Storage (HPOS)
 
 ## Changlog ##
+
+= 1.1.4 =
+*Release Date - 20 October 2023*
+
+* Update: only show metabox if the payment method is LINE Pay
 
 = 1.1.3 =
 *Release Date - 18 October 2023*
