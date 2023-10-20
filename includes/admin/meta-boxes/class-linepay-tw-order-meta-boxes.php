@@ -30,7 +30,7 @@ class LINEPay_TW_Order_Meta_Boxes {
 	public static function init() {
 		self::get_instance();
 
-		add_action( 'add_meta_boxes', array( self::get_instance(), 'linepay_add_meta_boxes' ) );
+		add_action( 'add_meta_boxes', array( self::get_instance(), 'linepay_add_meta_boxes' ), 10, 2 );
 
 	}
 
@@ -40,26 +40,33 @@ class LINEPay_TW_Order_Meta_Boxes {
 	 * @param object $post The post object.
 	 * @return void
 	 */
-	public function linepay_add_meta_boxes() {
+	public function linepay_add_meta_boxes( $post_type, $post_or_order_object ) {
 
-		//NOTE: 這邊拿不到 global $post
+		$order = ( $post_or_order_object instanceof WP_Post ) ? wc_get_order( $post_or_order_object->ID ) : $post_or_order_object;
+
+		if ( ! $order instanceof WC_Order ) {
+			return;
+		}
+
+		if ( ! array_key_exists( $order->get_payment_method(), LINEPay_TW::$allowed_payments ) ) {
+			return;
+		}
+
 		$screen = wc_get_container()->get( CustomOrdersTableController::class )->custom_orders_table_usage_is_enabled()
 		? wc_get_page_screen_id( 'shop-order' )
 		: 'shop_order';
 
-		// if ( array_key_exists( $order->get_meta( '_payment_method' ), LINEPay_TW::$allowed_payments ) ) {
-			add_meta_box(
-				'woocommerce-linepay-meta-boxes',
-				__( 'LINE Pay Details', 'wpbr-linepay-tw' ),
-				array(
-					self::get_instance(),
-					'linepay_admin_meta',
-				),
-				$screen,
-				'side',
-				'default'
-			);
-		// }
+		add_meta_box(
+			'woocommerce-linepay-meta-boxes',
+			__( 'LINE Pay Details', 'wpbr-linepay-tw' ),
+			array(
+				self::get_instance(),
+				'linepay_admin_meta',
+			),
+			$screen,
+			'side',
+			'default'
+		);
 
 	}
 
