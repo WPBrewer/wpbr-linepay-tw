@@ -620,7 +620,7 @@ class LINEPay_TW_Request {
 		 *
 		 * @return void
 		 */
-		if ( apply_filters( 'linepay_tw_enable_detail_note', true ) ) {
+		if ( apply_filters( 'linepay_tw_enable_detail_note', false ) ) {
 			$check_status = $this->check( $order );
 			$check_code   = $check_status->returnCode;
 			$check_msg    = $check_status->returnMessage;
