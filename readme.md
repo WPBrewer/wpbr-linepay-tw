@@ -53,3 +53,7 @@ If you have any ideas to improve this plugin, please drop a line to service@wpbr
 ## Find Issues?
 Please email service@wpbrewer.com if you find any issues.
 For free version, we only provide community support (No expect response time, but we will response ASAP).
+
+## How can I report security bugs?
+
+You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team help validate, triage and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/wpbr-linepay-tw)
