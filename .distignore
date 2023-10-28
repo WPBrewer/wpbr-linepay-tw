@@ -3,6 +3,7 @@
 .gitignore
 .wordpress-org
 .git
+.github
 .editorconfig
 .vs
 .idea
