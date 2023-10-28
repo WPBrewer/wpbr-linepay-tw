@@ -26,6 +26,8 @@ multisite.xml.dist
 phpcs.ruleset.xml
 README.md
 wp-cli.local.yml
+main.yaml
+update-assets.yaml
 tests
 vendor
 node_modules
