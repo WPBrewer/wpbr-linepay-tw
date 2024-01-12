@@ -17,7 +17,7 @@ return array(
 	'enabled'     => array(
 		'title'   => __( 'Enable/Disable', 'wpbr-linepay-tw' ),
 		'type'    => 'checkbox',
-		'label'   => __( 'Enable', 'wpbr-linepay-tw' ),
+		'label'   => __( 'Enable LINE Pay', 'wpbr-linepay-tw' ),
 		'default' => 'no',
 	),
 	'title'       => array(
