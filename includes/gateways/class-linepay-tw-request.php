@@ -173,8 +173,6 @@ class LINEPay_TW_Request {
 				throw new Exception( 'Cant find order by order_id:' . $order_id );
 			}
 
-			throw new Exception( 'test confirm failed' );
-
 			$amount   = $order->get_total();
 			$currency = $order->get_currency();
 
