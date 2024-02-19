@@ -10,6 +10,12 @@ This plugin provides LINE Pay payment (v3) functionality in Taiwan.
 
 ## Changlog ##
 
+= 1.2.0 =
+*Release Date - 20 Feburary 2024*
+
+* Add - Allow to set fail order status
+* Add - Allow to enable detail payment status note in order note
+
 = 1.1.4 =
 *Release Date - 20 October 2023*
 

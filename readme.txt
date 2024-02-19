@@ -4,7 +4,7 @@ Tags: WooCommerce, payment, LINE Pay, LINE, taiwan, payment, payment gateway
 Requires at least: 5.9
 Tested up to: 6.3.2
 Requires PHP: 7.4
-Stable tag: 1.1.4
+Stable tag: 1.2.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -23,6 +23,11 @@ Major features include:
 * Compatible with High-Performance Order Storage (HPOS)
 
 == Changelog ==
+
+= 1.2.0 - 2024-02-20 =
+
+* Add - Allow to set fail order status
+* Add - Allow to enable detail payment status note in order note
 
 = 1.1.4 - 2023-10-21 =
 
