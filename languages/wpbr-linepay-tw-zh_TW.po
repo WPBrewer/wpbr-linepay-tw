@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Pay with LINE Pay\n"
-"POT-Creation-Date: 2024-02-16 16:38+0800\n"
-"PO-Revision-Date: 2024-02-16 16:50+0800\n"
+"POT-Creation-Date: 2024-02-20 00:52+0800\n"
+"PO-Revision-Date: 2024-02-20 00:52+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: zh_TW\n"
@@ -104,38 +104,38 @@ msgid ""
 "to pay again."
 msgstr "[LINE Pay] 已收到您的訂單，但付款失敗。請重新再付款一次。"
 
-#: includes/gateways/class-linepay-tw-request.php:274
+#: includes/gateways/class-linepay-tw-request.php:276
 msgid "Order payment is authed, but need to be confirmed。"
 msgstr "訂單交易已授權(Auth)，但需要進行交易確認(Confirm)。"
 
-#: includes/gateways/class-linepay-tw-request.php:281
+#: includes/gateways/class-linepay-tw-request.php:283
 msgid "Payment is cancelled or expired。"
 msgstr "付款已取消或過期。"
 
-#: includes/gateways/class-linepay-tw-request.php:288
+#: includes/gateways/class-linepay-tw-request.php:290
 msgid "LINE Pay Transaction failed。"
 msgstr "LINE Pay 付款交易失敗。"
 
-#: includes/gateways/class-linepay-tw-request.php:292
+#: includes/gateways/class-linepay-tw-request.php:294
 #, php-format
 msgid "Awaiting Payment, Status Code: %s。"
 msgstr "等待付款中，狀態碼：%s。"
 
-#: includes/gateways/class-linepay-tw-request.php:348
+#: includes/gateways/class-linepay-tw-request.php:350
 #, php-format
 msgid "Unable to find order #%s"
 msgstr "找不到訂單編號 #%s"
 
-#: includes/gateways/class-linepay-tw-request.php:381
+#: includes/gateways/class-linepay-tw-request.php:383
 msgid "no transaction_id is found"
 msgstr "找不到交易編號"
 
-#: includes/gateways/class-linepay-tw-request.php:495
+#: includes/gateways/class-linepay-tw-request.php:497
 #, php-format
 msgid "Refund via LINE Pay successfully. Refund transaction id: %s"
 msgstr "通過 LINE Pay退款成功。退款交易編號：%s"
 
-#: includes/gateways/class-linepay-tw-request.php:500
+#: includes/gateways/class-linepay-tw-request.php:502
 #, php-format
 msgid ""
 "Refund via LINE Pay failed. Refund transaction id: %1$s, returnCode: %2$s, "
@@ -145,7 +145,7 @@ msgstr ""
 "%3$s"
 
 #. translators:  %1$s is product name, %2$s is the order item count
-#: includes/gateways/class-linepay-tw-request.php:574
+#: includes/gateways/class-linepay-tw-request.php:576
 #, php-format
 msgid "%1$s and total %2$s products"
 msgstr "%1$s 以及總共 %2$s 個商品"
@@ -184,8 +184,8 @@ msgid "Fail Order Status"
 msgstr "付款失敗的訂單狀態"
 
 #: includes/settings/class-linepay-tw-settings-tab.php:78
-msgid "The order status when payment failed"
-msgstr "當付款失敗時的訂單狀態"
+msgid "The order status will be set to this status when payment failed."
+msgstr "當付款失敗時，訂單狀態會改變為此設定狀態。"
 
 #: includes/settings/class-linepay-tw-settings-tab.php:83
 msgid "Detail Status Note in Order Note"

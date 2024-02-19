@@ -75,7 +75,7 @@ class WC_Settings_Tab_LINEPay_TW extends WC_Settings_Page {
 						'title'   => __( 'Fail Order Status', 'wpbr-linepay-tw'),
 						'type'    => 'select',
 						'options' => wc_get_order_statuses(),
-						'desc'    => __( 'The order status when payment failed', 'wpbr-linepay-tw' ),
+						'desc'    => __( 'The order status will be set to this status when payment failed.', 'wpbr-linepay-tw' ),
 						'default' => 'wc-failed',
 						'id'      => 'linepay_tw_payment_fail_order_status',
 					),
