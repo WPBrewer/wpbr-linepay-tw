@@ -20,6 +20,20 @@ class LINEPay_TW {
 	private static $instance;
 
 	/**
+	 * The order status when payment is failed.
+	 *
+	 * @var string
+	 */
+	public static $fail_order_status;
+
+	/**
+	 * Whether or not add detail payment status note in order note.
+	 *
+	 * @var boolean
+	 */
+	public static $detail_payment_status_note_enabled;
+
+	/**
 	 * Whether or not logging is enabled.
 	 *
 	 * @var boolean
@@ -81,7 +95,12 @@ class LINEPay_TW {
 		require_once WPBR_LINEPAY_PLUGIN_DIR . 'includes/gateways/class-linepay-tw-request.php';
 		require_once WPBR_LINEPAY_PLUGIN_DIR . 'includes/gateways/class-linepay-tw-response.php';
 		require_once WPBR_LINEPAY_PLUGIN_DIR . 'includes/utils/class-wpbr-linepay-const.php';
+		require_once WPBR_LINEPAY_PLUGIN_DIR . 'includes/utils/class-wpbr-linepay-status-code.php';
 		require_once WPBR_LINEPAY_PLUGIN_DIR . 'includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php';
+
+		self::$fail_order_status = get_option( 'linepay_tw_payment_fail_order_status', 'wc-failed' );
+
+		self::$detail_payment_status_note_enabled = wc_string_to_bool( get_option( 'linepay_tw_detail_status_note_enabled' ) ); 
 
 		self::$log_enabled = 'yes' === get_option( 'linepay_tw_debug_log_enabled', 'no' );
 

@@ -72,6 +72,22 @@ class WC_Settings_Tab_LINEPay_TW extends WC_Settings_Page {
 						'id'      => 'linepay_tw_display_logo_enabled',
 					),
 					array(
+						'title'   => __( 'Fail Order Status', 'wpbr-linepay-tw'),
+						'type'    => 'select',
+						'options' => wc_get_order_statuses(),
+						'desc'    => __( 'The order status when payment failed', 'wpbr-linepay-tw' ),
+						'default' => 'wc-failed',
+						'id'      => 'linepay_tw_payment_fail_order_status',
+					),
+					array(
+						'title'   => __( 'Detail Status Note in Order Note', 'wpbr-linepay-tw'),
+						'type'    => 'checkbox',
+						'default' => 'no',
+						'options' => wc_get_order_statuses(),
+						'desc'    => __( 'Check payment status and add note in order note, enable it for test purpose only.', 'wpbr-linepay-tw' ),
+						'id'      => 'linepay_tw_detail_status_note_enabled',
+					),
+					array(
 						'type' => 'sectionend',
 						'id'   => 'linepay_tw_general_setting',
 					),

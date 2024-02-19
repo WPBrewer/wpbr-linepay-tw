@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Pay with LINE Pay\n"
-"POT-Creation-Date: 2023-04-22 00:00+0800\n"
-"PO-Revision-Date: 2023-04-22 00:12+0800\n"
+"POT-Creation-Date: 2024-02-16 16:38+0800\n"
+"PO-Revision-Date: 2024-02-16 16:50+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: zh_TW\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-"X-Generator: Poedit 3.1\n"
+"X-Generator: Poedit 3.4.2\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: wpbr-linepay-tw.php\n"
@@ -21,51 +21,51 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.min.js\n"
 
-#: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:47
+#: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:61
 msgid "LINE Pay Details"
 msgstr "LINE Pay 付款資訊"
 
-#: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:78
+#: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:87
 msgid "Transaction ID"
 msgstr "交易編號"
 
-#: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:79
+#: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:88
 msgid "Payment Status"
 msgstr "付款狀態"
 
-#: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:82
+#: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:91
 msgid "Payment Action"
 msgstr "付款動作"
 
-#: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:82
+#: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:91
 msgid "Confirm Payment"
 msgstr "付款確認"
 
-#: includes/class-wpbr-linepay-tw.php:138
+#: includes/class-wpbr-linepay-tw.php:157
 msgid "Unsecure AJAX call"
 msgstr "不安全的 AJAX 呼叫"
 
-#: includes/class-wpbr-linepay-tw.php:149
+#: includes/class-wpbr-linepay-tw.php:168
 msgid "No such order id"
 msgstr "沒有這個訂單編號"
 
-#: includes/class-wpbr-linepay-tw.php:160
+#: includes/class-wpbr-linepay-tw.php:179
 msgid "LINE Pay Confirm Succeed!"
 msgstr "LINE Pay 付款確認成功！"
 
-#: includes/class-wpbr-linepay-tw.php:163
+#: includes/class-wpbr-linepay-tw.php:182
 msgid "Confirm succeed"
 msgstr "付款確認成功"
 
-#: includes/class-wpbr-linepay-tw.php:169
+#: includes/class-wpbr-linepay-tw.php:188
 msgid "LINE Pay Confirm Failed!"
 msgstr "LINE Pay 付款確認失敗！"
 
-#: includes/class-wpbr-linepay-tw.php:240
+#: includes/class-wpbr-linepay-tw.php:259
 msgid "General Settings"
 msgstr "一般設定"
 
-#: includes/class-wpbr-linepay-tw.php:246
+#: includes/class-wpbr-linepay-tw.php:265
 #: includes/settings/class-linepay-tw-settings-tab.php:37
 msgid "Payment Settings"
 msgstr "付款方式設定"
@@ -74,7 +74,7 @@ msgstr "付款方式設定"
 #: includes/gateways/class-linepay-tw-payment.php:32
 #: includes/gateways/class-linepay-tw-payment.php:34
 msgid "Pay with LINE Pay"
-msgstr "LINE Pay 付款方式"
+msgstr "使用 LINE Pay 付款"
 
 #: includes/gateways/class-linepay-tw-payment.php:33
 msgid "LINE Pay - General"
@@ -104,29 +104,38 @@ msgid ""
 "to pay again."
 msgstr "[LINE Pay] 已收到您的訂單，但付款失敗。請重新再付款一次。"
 
-#: includes/gateways/class-linepay-tw-request.php:276
-msgid "Order payment is authed, but need to be confirmed"
-msgstr "訂單交易已授權(Auth)，但需要進行交易確認(Confirm)"
+#: includes/gateways/class-linepay-tw-request.php:274
+msgid "Order payment is authed, but need to be confirmed。"
+msgstr "訂單交易已授權(Auth)，但需要進行交易確認(Confirm)。"
 
-#: includes/gateways/class-linepay-tw-request.php:335
+#: includes/gateways/class-linepay-tw-request.php:281
+msgid "Payment is cancelled or expired。"
+msgstr "付款已取消或過期。"
+
+#: includes/gateways/class-linepay-tw-request.php:288
+msgid "LINE Pay Transaction failed。"
+msgstr "LINE Pay 付款交易失敗。"
+
+#: includes/gateways/class-linepay-tw-request.php:292
+#, php-format
+msgid "Awaiting Payment, Status Code: %s。"
+msgstr "等待付款中，狀態碼：%s。"
+
+#: includes/gateways/class-linepay-tw-request.php:348
 #, php-format
 msgid "Unable to find order #%s"
 msgstr "找不到訂單編號 #%s"
 
-#: includes/gateways/class-linepay-tw-request.php:351
-msgid "Not allow partial refund"
-msgstr "不允許部分退款"
-
-#: includes/gateways/class-linepay-tw-request.php:372
+#: includes/gateways/class-linepay-tw-request.php:381
 msgid "no transaction_id is found"
 msgstr "找不到交易編號"
 
-#: includes/gateways/class-linepay-tw-request.php:486
+#: includes/gateways/class-linepay-tw-request.php:495
 #, php-format
 msgid "Refund via LINE Pay successfully. Refund transaction id: %s"
 msgstr "通過 LINE Pay退款成功。退款交易編號：%s"
 
-#: includes/gateways/class-linepay-tw-request.php:491
+#: includes/gateways/class-linepay-tw-request.php:500
 #, php-format
 msgid ""
 "Refund via LINE Pay failed. Refund transaction id: %1$s, returnCode: %2$s, "
@@ -136,12 +145,12 @@ msgstr ""
 "%3$s"
 
 #. translators:  %1$s is product name, %2$s is the order item count
-#: includes/gateways/class-linepay-tw-request.php:565
+#: includes/gateways/class-linepay-tw-request.php:574
 #, php-format
 msgid "%1$s and total %2$s products"
 msgstr "%1$s 以及總共 %2$s 個商品"
 
-#: includes/gateways/class-linepay-tw-response.php:58
+#: includes/gateways/class-linepay-tw-response.php:60
 msgid "Unable to process callback."
 msgstr "無法處理 callback 呼叫。"
 
@@ -170,49 +179,67 @@ msgstr "顯示 Logo"
 msgid "Display logo on checkout page"
 msgstr "在結帳頁面顯示 LINE Pay Logo"
 
-#: includes/settings/class-linepay-tw-settings-tab.php:79
+#: includes/settings/class-linepay-tw-settings-tab.php:75
+msgid "Fail Order Status"
+msgstr "付款失敗的訂單狀態"
+
+#: includes/settings/class-linepay-tw-settings-tab.php:78
+msgid "The order status when payment failed"
+msgstr "當付款失敗時的訂單狀態"
+
+#: includes/settings/class-linepay-tw-settings-tab.php:83
+msgid "Detail Status Note in Order Note"
+msgstr "在訂單狀態中紀錄付款狀態資訊"
+
+#: includes/settings/class-linepay-tw-settings-tab.php:87
+msgid ""
+"Check payment status and add note in order note, enable it for test purpose "
+"only."
+msgstr "檢查付款狀態並在訂單備註中紀錄，建議於測試階段啟用。"
+
+#: includes/settings/class-linepay-tw-settings-tab.php:95
 msgid "API Settings"
 msgstr "API 參數設定"
 
-#: includes/settings/class-linepay-tw-settings-tab.php:81
+#: includes/settings/class-linepay-tw-settings-tab.php:97
 msgid "Enter your LINE Pay API credentials"
 msgstr "請輸入您的 LINE Pay 串接資訊"
 
-#: includes/settings/class-linepay-tw-settings-tab.php:85
+#: includes/settings/class-linepay-tw-settings-tab.php:101
 msgid "Sandbox Mode"
 msgstr "測試模式"
 
-#: includes/settings/class-linepay-tw-settings-tab.php:87
+#: includes/settings/class-linepay-tw-settings-tab.php:103
 msgid "Enable sandbox mode."
 msgstr "啟用測試模式。"
 
-#: includes/settings/class-linepay-tw-settings-tab.php:90
+#: includes/settings/class-linepay-tw-settings-tab.php:106
 msgid "When enabled, you need to use the test-only data below."
 msgstr "當啟用測試模式時，請填入測試環境的串接資料。"
 
-#: includes/settings/class-linepay-tw-settings-tab.php:94
+#: includes/settings/class-linepay-tw-settings-tab.php:110
 msgid "Sandbox Channel ID"
 msgstr "測試環境 Channel ID"
 
-#: includes/settings/class-linepay-tw-settings-tab.php:96
 #: includes/settings/class-linepay-tw-settings-tab.php:112
+#: includes/settings/class-linepay-tw-settings-tab.php:128
 msgid "Enter your Channel ID."
 msgstr "輸入您的 Channel ID。"
 
-#: includes/settings/class-linepay-tw-settings-tab.php:102
+#: includes/settings/class-linepay-tw-settings-tab.php:118
 msgid "Sandbox Channel Secret Key"
 msgstr "測試環境 Channel Secret Key"
 
-#: includes/settings/class-linepay-tw-settings-tab.php:104
 #: includes/settings/class-linepay-tw-settings-tab.php:120
+#: includes/settings/class-linepay-tw-settings-tab.php:136
 msgid "Enter your Channel SecretKey."
 msgstr "輸入您的 Channel SecretKey。"
 
-#: includes/settings/class-linepay-tw-settings-tab.php:110
+#: includes/settings/class-linepay-tw-settings-tab.php:126
 msgid "Channel ID"
 msgstr "正式環境 Channel ID"
 
-#: includes/settings/class-linepay-tw-settings-tab.php:118
+#: includes/settings/class-linepay-tw-settings-tab.php:134
 msgid "Channel Secret Key"
 msgstr "正式環境 Channel Secret Key"
 
@@ -271,6 +298,9 @@ msgstr "WPBrewer"
 #. Author URI of the plugin/theme
 msgid "https://wpbrewer.com"
 msgstr "https://wpbrewer.com"
+
+#~ msgid "Not allow partial refund"
+#~ msgstr "不允許部分退款"
 
 #~ msgid "Pay via LINE Pay"
 #~ msgstr "透過 LINE Pay 來進行付款"

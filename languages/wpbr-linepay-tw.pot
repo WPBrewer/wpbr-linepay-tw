@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Pay with LINE Pay\n"
-"POT-Creation-Date: 2023-04-22 00:00+0800\n"
+"POT-Creation-Date: 2024-02-16 16:38+0800\n"
 "PO-Revision-Date: 2022-06-29 15:35+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-"X-Generator: Poedit 3.1\n"
+"X-Generator: Poedit 3.4.2\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-Flags-xgettext: --add-comments=translators:\n"
 "X-Poedit-WPHeader: wpbr-linepay-tw.php\n"
@@ -21,51 +21,51 @@ msgstr ""
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: *.min.js\n"
 
-#: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:47
+#: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:61
 msgid "LINE Pay Details"
 msgstr ""
 
-#: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:78
+#: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:87
 msgid "Transaction ID"
 msgstr ""
 
-#: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:79
+#: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:88
 msgid "Payment Status"
 msgstr ""
 
-#: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:82
+#: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:91
 msgid "Payment Action"
 msgstr ""
 
-#: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:82
+#: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:91
 msgid "Confirm Payment"
 msgstr ""
 
-#: includes/class-wpbr-linepay-tw.php:138
+#: includes/class-wpbr-linepay-tw.php:157
 msgid "Unsecure AJAX call"
 msgstr ""
 
-#: includes/class-wpbr-linepay-tw.php:149
+#: includes/class-wpbr-linepay-tw.php:168
 msgid "No such order id"
 msgstr ""
 
-#: includes/class-wpbr-linepay-tw.php:160
+#: includes/class-wpbr-linepay-tw.php:179
 msgid "LINE Pay Confirm Succeed!"
 msgstr ""
 
-#: includes/class-wpbr-linepay-tw.php:163
+#: includes/class-wpbr-linepay-tw.php:182
 msgid "Confirm succeed"
 msgstr ""
 
-#: includes/class-wpbr-linepay-tw.php:169
+#: includes/class-wpbr-linepay-tw.php:188
 msgid "LINE Pay Confirm Failed!"
 msgstr ""
 
-#: includes/class-wpbr-linepay-tw.php:240
+#: includes/class-wpbr-linepay-tw.php:259
 msgid "General Settings"
 msgstr ""
 
-#: includes/class-wpbr-linepay-tw.php:246
+#: includes/class-wpbr-linepay-tw.php:265
 #: includes/settings/class-linepay-tw-settings-tab.php:37
 msgid "Payment Settings"
 msgstr ""
@@ -104,29 +104,38 @@ msgid ""
 "to pay again."
 msgstr ""
 
-#: includes/gateways/class-linepay-tw-request.php:276
-msgid "Order payment is authed, but need to be confirmed"
+#: includes/gateways/class-linepay-tw-request.php:274
+msgid "Order payment is authed, but need to be confirmed。"
 msgstr ""
 
-#: includes/gateways/class-linepay-tw-request.php:335
+#: includes/gateways/class-linepay-tw-request.php:281
+msgid "Payment is cancelled or expired。"
+msgstr ""
+
+#: includes/gateways/class-linepay-tw-request.php:288
+msgid "LINE Pay Transaction failed。"
+msgstr ""
+
+#: includes/gateways/class-linepay-tw-request.php:292
+#, php-format
+msgid "Awaiting Payment, Status Code: %s。"
+msgstr ""
+
+#: includes/gateways/class-linepay-tw-request.php:348
 #, php-format
 msgid "Unable to find order #%s"
 msgstr ""
 
-#: includes/gateways/class-linepay-tw-request.php:351
-msgid "Not allow partial refund"
-msgstr ""
-
-#: includes/gateways/class-linepay-tw-request.php:372
+#: includes/gateways/class-linepay-tw-request.php:381
 msgid "no transaction_id is found"
 msgstr ""
 
-#: includes/gateways/class-linepay-tw-request.php:486
+#: includes/gateways/class-linepay-tw-request.php:495
 #, php-format
 msgid "Refund via LINE Pay successfully. Refund transaction id: %s"
 msgstr ""
 
-#: includes/gateways/class-linepay-tw-request.php:491
+#: includes/gateways/class-linepay-tw-request.php:500
 #, php-format
 msgid ""
 "Refund via LINE Pay failed. Refund transaction id: %1$s, returnCode: %2$s, "
@@ -134,12 +143,12 @@ msgid ""
 msgstr ""
 
 #. translators:  %1$s is product name, %2$s is the order item count
-#: includes/gateways/class-linepay-tw-request.php:565
+#: includes/gateways/class-linepay-tw-request.php:574
 #, php-format
 msgid "%1$s and total %2$s products"
 msgstr ""
 
-#: includes/gateways/class-linepay-tw-response.php:58
+#: includes/gateways/class-linepay-tw-response.php:60
 msgid "Unable to process callback."
 msgstr ""
 
@@ -168,49 +177,67 @@ msgstr ""
 msgid "Display logo on checkout page"
 msgstr ""
 
-#: includes/settings/class-linepay-tw-settings-tab.php:79
-msgid "API Settings"
+#: includes/settings/class-linepay-tw-settings-tab.php:75
+msgid "Fail Order Status"
 msgstr ""
 
-#: includes/settings/class-linepay-tw-settings-tab.php:81
-msgid "Enter your LINE Pay API credentials"
+#: includes/settings/class-linepay-tw-settings-tab.php:78
+msgid "The order status when payment failed"
 msgstr ""
 
-#: includes/settings/class-linepay-tw-settings-tab.php:85
-msgid "Sandbox Mode"
+#: includes/settings/class-linepay-tw-settings-tab.php:83
+msgid "Detail Status Note in Order Note"
 msgstr ""
 
 #: includes/settings/class-linepay-tw-settings-tab.php:87
+msgid ""
+"Check payment status and add note in order note, enable it for test purpose "
+"only."
+msgstr ""
+
+#: includes/settings/class-linepay-tw-settings-tab.php:95
+msgid "API Settings"
+msgstr ""
+
+#: includes/settings/class-linepay-tw-settings-tab.php:97
+msgid "Enter your LINE Pay API credentials"
+msgstr ""
+
+#: includes/settings/class-linepay-tw-settings-tab.php:101
+msgid "Sandbox Mode"
+msgstr ""
+
+#: includes/settings/class-linepay-tw-settings-tab.php:103
 msgid "Enable sandbox mode."
 msgstr ""
 
-#: includes/settings/class-linepay-tw-settings-tab.php:90
+#: includes/settings/class-linepay-tw-settings-tab.php:106
 msgid "When enabled, you need to use the test-only data below."
 msgstr ""
 
-#: includes/settings/class-linepay-tw-settings-tab.php:94
+#: includes/settings/class-linepay-tw-settings-tab.php:110
 msgid "Sandbox Channel ID"
 msgstr ""
 
-#: includes/settings/class-linepay-tw-settings-tab.php:96
 #: includes/settings/class-linepay-tw-settings-tab.php:112
+#: includes/settings/class-linepay-tw-settings-tab.php:128
 msgid "Enter your Channel ID."
 msgstr ""
 
-#: includes/settings/class-linepay-tw-settings-tab.php:102
+#: includes/settings/class-linepay-tw-settings-tab.php:118
 msgid "Sandbox Channel Secret Key"
 msgstr ""
 
-#: includes/settings/class-linepay-tw-settings-tab.php:104
 #: includes/settings/class-linepay-tw-settings-tab.php:120
+#: includes/settings/class-linepay-tw-settings-tab.php:136
 msgid "Enter your Channel SecretKey."
 msgstr ""
 
-#: includes/settings/class-linepay-tw-settings-tab.php:110
+#: includes/settings/class-linepay-tw-settings-tab.php:126
 msgid "Channel ID"
 msgstr ""
 
-#: includes/settings/class-linepay-tw-settings-tab.php:118
+#: includes/settings/class-linepay-tw-settings-tab.php:134
 msgid "Channel Secret Key"
 msgstr ""
 

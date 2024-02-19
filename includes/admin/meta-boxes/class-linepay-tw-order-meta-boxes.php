@@ -65,7 +65,7 @@ class LINEPay_TW_Order_Meta_Boxes {
 			),
 			$screen,
 			'side',
-			'default'
+			'high'
 		);
 
 	}

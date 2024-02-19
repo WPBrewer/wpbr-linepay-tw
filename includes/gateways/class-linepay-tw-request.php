@@ -173,6 +173,8 @@ class LINEPay_TW_Request {
 				throw new Exception( 'Cant find order by order_id:' . $order_id );
 			}
 
+			throw new Exception( 'test confirm failed' );
+
 			$amount   = $order->get_total();
 			$currency = $order->get_currency();
 
@@ -254,14 +256,11 @@ class LINEPay_TW_Request {
 	 */
 	public function on_process_confirm_failed( $order ) {
 
-		LINEPay_TW::log( 'on_process_confirm_failed====>' );
-
 		// Initialize order stored in session.
 		WC()->session->set( 'order_awaiting_payment', false );
 
 		try {
 
-			// $this->check_payment_and_update_order_note( $order, 'Check payment status when confirm failed' );
 			$check_status = $this->check( $order );
 			$check_code   = $check_status->returnCode;
 			$check_msg    = $check_status->returnMessage;
@@ -269,11 +268,30 @@ class LINEPay_TW_Request {
 			LINEPay_TW::log( $check_info );
 			$order->add_order_note( $check_info );
 
-			if ( '0110' === $check_code ) {
+			if ( LINEPayStatusCode::AUTHED === $check_code ) {
 				// Completed authorization - Able to call the Confirm API.
 				$order->update_meta_data( '_linepay_payment_status', WPBR_LINEPay_Const::PAYMENT_STATUS_AUTHED );
 				$order->save();
-				$order->add_order_note( __( 'Order payment is authed, but need to be confirmed', 'wpbr-linepay-tw' ) );
+				$order->update_status( 'on-hold' );
+				$order->add_order_note( __( 'Order payment is authed, but need to be confirmed。', 'wpbr-linepay-tw' ) );
+
+			} elseif ( LINEPayStatusCode::CANCELLED_EXPIRED === $check_code ) {
+
+				$order->update_meta_data( '_linepay_payment_status', WPBR_LINEPay_Const::PAYMENT_STATUS_CANCELLED );
+				$order->save();
+				$order->update_status( LINEPay_TW::$fail_order_status );
+				$order->add_order_note( __( 'Payment is cancelled or expired。', 'wpbr-linepay-tw' ) );
+
+			} elseif ( LINEPayStatusCode::FAILED === $check_code ) {
+
+				$order->update_meta_data( '_linepay_payment_status', WPBR_LINEPay_Const::PAYMENT_STATUS_FAILED );
+				$order->save();
+				$order->update_status( LINEPay_TW::$fail_order_status );
+				$order->add_order_note( __( 'LINE Pay Transaction failed。', 'wpbr-linepay-tw' ) );
+
+			} else {
+				$order->update_status( 'pending' );
+				$order->add_order_note( sprintf( __( 'Awaiting Payment, Status Code: %s。', 'wpbr-linepay-tw' ), $check_code ) );
 			}
 		} catch ( Exception $e ) {
 
@@ -281,10 +299,7 @@ class LINEPay_TW_Request {
 
 		} finally {
 
-			// customer payment is auth, but the payment need to be confirmed.
-			$order->update_status( 'on-hold' );
 			wp_safe_redirect( $this->get_return_url( $order ) );
-
 			exit;
 
 		}
@@ -620,7 +635,7 @@ class LINEPay_TW_Request {
 		 *
 		 * @return void
 		 */
-		if ( apply_filters( 'linepay_tw_enable_detail_note', false ) ) {
+		if ( LINEPAY_TW::$detail_payment_status_note_enabled || apply_filters( 'linepay_tw_enable_detail_note', false ) ) {
 			$check_status = $this->check( $order );
 			$check_code   = $check_status->returnCode;
 			$check_msg    = $check_status->returnMessage;
