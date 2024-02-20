@@ -61,7 +61,7 @@ class WC_Settings_Tab_LINEPay_TW extends WC_Settings_Page {
 						'title'   => __( 'Debug Log', 'wpbr-linepay-tw' ),
 						'type'    => 'checkbox',
 						'default' => 'no',
-						'desc'    => sprintf( __( 'Log LINE Pay payment message, inside <code>%s</code>', 'wpbr-linepay-tw' ), wc_get_log_file_path( 'wpbr-linepay-tw' ) ),
+						'desc'    => sprintf( esc_html__( 'Log LINE Pay payment message, inside %1$s%2$s%3$s', 'wpbr-linepay-tw' ),'<code>', wc_get_log_file_path( 'wpbr-linepay-tw' ),'</code>' ),
 						'id'      => 'linepay_tw_debug_log_enabled',
 					),
 					array(
@@ -103,13 +103,13 @@ class WC_Settings_Tab_LINEPay_TW extends WC_Settings_Page {
 						'label'   => __( 'Enable sandbox mode.', 'wpbr-linepay-tw' ),
 						'desc'    => '',
 						'default' => 'no',
-						'desc'    => __( 'When enabled, you need to use the test-only data below.', 'wpbr-linepay-tw' ),
+						'desc'    => __( 'Enable', 'wpbr-linepay-tw') . '<br>' . __( 'When enabled, you need to use the test-only data below.', 'wpbr-linepay-tw' ),
 						'id'      => 'linepay_tw_sandboxmode_enabled',
 					),
 					array(
 						'title'    => __( 'Sandbox Channel ID', 'wpbr-linepay-tw' ),
 						'type'     => 'text',
-						'desc'     => __( 'Enter your Channel ID.', 'wpbr-linepay-tw' ),
+						'desc'     => __( 'Enter your Sandbox Channel ID.', 'wpbr-linepay-tw' ),
 						'desc_tip' => true,
 						'default'  => '',
 						'id'       => 'linepay_tw_sandbox_channel_id',
@@ -117,7 +117,7 @@ class WC_Settings_Tab_LINEPay_TW extends WC_Settings_Page {
 					array(
 						'title'    => __( 'Sandbox Channel Secret Key', 'wpbr-linepay-tw' ),
 						'type'     => 'text',
-						'desc'     => __( 'Enter your Channel SecretKey.', 'wpbr-linepay-tw' ),
+						'desc'     => __( 'Enter your Sandbox Channel Secret Key.', 'wpbr-linepay-tw' ),
 						'desc_tip' => true,
 						'default'  => '',
 						'id'       => 'linepay_tw_sandbox_channel_secret',
@@ -133,7 +133,7 @@ class WC_Settings_Tab_LINEPay_TW extends WC_Settings_Page {
 					array(
 						'title'    => __( 'Channel Secret Key', 'wpbr-linepay-tw' ),
 						'type'     => 'text',
-						'desc'     => __( 'Enter your Channel SecretKey.', 'wpbr-linepay-tw' ),
+						'desc'     => __( 'Enter your Channel Secret Key.', 'wpbr-linepay-tw' ),
 						'desc_tip' => true,
 						'default'  => '',
 						'id'       => 'linepay_tw_channel_secret',

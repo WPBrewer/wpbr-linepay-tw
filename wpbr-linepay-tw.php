@@ -44,14 +44,14 @@ define( 'WPBR_LINEPAY_VERSION', '1.2.0' );
 function wpbr_linepay_tw_needs_woocommerce() {
 
 	echo '<div id="message" class="error">';
-	echo '  <p>' . esc_html( __( 'Pay with LINE Pay needs WooCommerce, please intall and activate WooCommerce first!', 'wpbr-linepay-tw' ) ) . '</p>';
+	echo '  <p>' . esc_html__( 'Pay with LINE Pay needs WooCommerce, please intall and activate WooCommerce first!', 'wpbr-linepay-tw' ) . '</p>';
 	echo '</div>';
 
 }
 
 function linepay_tw_previous_deactivate() {
 	echo '<div id="message" class="error">';
-	echo '  <p>' . esc_html( __( 'We deactivate plugin LINE Pay Taiwan for WooCommerce to avoid conflict with the new version.', 'wpbr-linepay-tw' ) ) . '</p>';
+	echo '  <p>' . esc_html__( 'We deactivate plugin Pay with LINE Pay to avoid conflict with the new version.', 'wpbr-linepay-tw' ) . '</p>';
 	echo '</div>';
 }
 
