@@ -12,6 +12,10 @@ Accept payments via LINE Pay for your ecommerce store.
 
 == Description ==
 
+### 注意：尚未支援購物車與結帳區塊 (Cart & Checkout Block)，請轉換成短代碼 (shortcode) 的模式來顯示購物車和結帳頁面 ###
+** 若不確定如何轉換，請洽客服信箱 service@wpbrewer.com **
+
+
 Pay with LINE Pay allows you to provide LINE Pay payment gateway for the customers.
 
 Major features include:
