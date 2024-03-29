@@ -274,9 +274,10 @@ class LINEPay_TW {
 	 *
 	 * @return WC_Settings_Tab_LINEPay_TW
 	 */
-	public function linepay_tw_add_settings() {
+	public function linepay_tw_add_settings( $settings ) {
 		require_once WPBR_LINEPAY_PLUGIN_DIR . 'includes/settings/class-linepay-tw-settings-tab.php';
-		return new WC_Settings_Tab_LINEPay_TW();
+		$settings[] = new WC_Settings_Tab_LINEPay_TW();
+		return $settings;
 	}
 
 	/**
