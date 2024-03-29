@@ -61,7 +61,7 @@ class WC_Settings_Tab_LINEPay_TW extends WC_Settings_Page {
 						'title'   => __( 'Debug Log', 'wpbr-linepay-tw' ),
 						'type'    => 'checkbox',
 						'default' => 'no',
-						'desc'    => sprintf( __( 'Log LINE Pay payment message, inside <code>%s</code>', 'wpbr-linepay-tw' ), wc_get_log_file_path( 'wpbr-linepay-tw' ) ),
+						'desc'    => sprintf( __( 'Log LINE Pay payment message. You Can find logs at WooCommerce -> Status -> Logs. %s', 'wpbr-linepay-tw' ), $this->get_log_link() ),
 						'id'      => 'linepay_tw_debug_log_enabled',
 					),
 					array(
@@ -169,4 +169,8 @@ class WC_Settings_Tab_LINEPay_TW extends WC_Settings_Page {
 		$settings = $this->get_settings( $current_section );
 		WC_Admin_Settings::save_fields( $settings );
 	}
+
+	protected function get_log_link() {
+        return '<a href="'. esc_url( admin_url( 'admin.php?page=wc-status&tab=logs')). '">' . __( 'View logs', 'wpbr-linepay-tw' ).'</a>';
+    }
 }
