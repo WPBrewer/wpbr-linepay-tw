@@ -6,6 +6,7 @@
  * Author: WPBrewer
  * Author URI: https://wpbrewer.com
  * Version: 1.2.1
+ * Requires Plugins: woocommerce
  * Text Domain: wpbr-linepay-tw
  * Domain Path: /languages
  *
