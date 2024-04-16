@@ -10,6 +10,12 @@ This plugin provides LINE Pay payment (v3) functionality in Taiwan.
 
 ## Changlog ##
 
+= 1.2.2 =
+*Release Date - 14 Apirl 2024*
+
+* FIX - Fix potential conflict with other plugins and provide backward compatibility.
+* ADD - Add WooCommerce as a require plugin.
+
 = 1.2.1 =
 *Release Date - 29 March 2024*
 
