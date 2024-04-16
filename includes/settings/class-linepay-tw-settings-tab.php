@@ -17,7 +17,7 @@ class WC_Settings_Tab_LINEPay_TW extends WC_Settings_Page {
 	public function __construct() {
 
 		$this->id    = 'linepay-tw';
-		$this->label = __( 'LINE Pay TW', 'wpbr-linepay-tw' );
+		$this->label = __( 'LINE Pay', 'wpbr-linepay-tw' );
 
 		add_action( 'woocommerce_settings_' . $this->id, array( $this, 'output' ) );
 		add_action( 'woocommerce_settings_save_' . $this->id, array( $this, 'save' ) );
