@@ -390,7 +390,6 @@ class LINEPay_TW_Request {
 		$check_result = $this->execute( $url, $request_args, 20 );
 
 		return $check_result;
-
 	}
 
 	/**
@@ -467,11 +466,11 @@ class LINEPay_TW_Request {
 			$resp = $this->execute( $url, $request_args );
 
 			if ( '0000' !== $resp->returnCode ) {
-				throw new Exception( sprintf( 'Execute LINE Pay Refund API failed. Return code: %s. Response body: %s', $resp->returnCode, $resp ) );
+				return new WP_Error( 'error', sprintf( 'Execute LINE Pay Refund API failed. Return code: %s. Return Message: %s', $resp->returnCode, $resp->returnMessage ) );
 			}
 		} catch ( Exception $e ) {
 			LINEPay_TW::log( sprintf( '[refund][order_id:%s] refund error:%s', $order_id, $e->getMessage() ) );
-			return new WP_Error( $e->getMessage() );
+			return new WP_Error( 'error', $e->getMessage() );
 		}
 
 		if ( '0000' === $resp->returnCode ) {
@@ -840,5 +839,4 @@ class LINEPay_TW_Request {
 	private static function generate_request_time() {
 		return date( WPBR_LINEPay_Const::REQUEST_TIME_FORMAT ) . '' . ( explode( '.', microtime( true ) )[1] );
 	}
-
 }
