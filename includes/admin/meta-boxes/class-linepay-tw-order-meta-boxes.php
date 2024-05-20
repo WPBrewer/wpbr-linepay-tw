@@ -31,7 +31,6 @@ class LINEPay_TW_Order_Meta_Boxes {
 		self::get_instance();
 
 		add_action( 'add_meta_boxes', array( self::get_instance(), 'linepay_add_meta_boxes' ), 10, 2 );
-
 	}
 
 	/**
@@ -67,7 +66,6 @@ class LINEPay_TW_Order_Meta_Boxes {
 			'side',
 			'high'
 		);
-
 	}
 
 
@@ -114,5 +112,4 @@ class LINEPay_TW_Order_Meta_Boxes {
 	public function __construct() {
 		// do nothing.
 	}
-
 }

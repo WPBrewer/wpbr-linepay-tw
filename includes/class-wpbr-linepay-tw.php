@@ -100,7 +100,7 @@ class LINEPay_TW {
 
 		self::$fail_order_status = get_option( 'linepay_tw_payment_fail_order_status', 'wc-failed' );
 
-		self::$detail_payment_status_note_enabled = wc_string_to_bool( get_option( 'linepay_tw_detail_status_note_enabled' ) ); 
+		self::$detail_payment_status_note_enabled = wc_string_to_bool( get_option( 'linepay_tw_detail_status_note_enabled' ) );
 
 		self::$log_enabled = 'yes' === get_option( 'linepay_tw_debug_log_enabled', 'no' );
 
@@ -132,14 +132,13 @@ class LINEPay_TW {
 
 		load_plugin_textdomain( 'wpbr-linepay-tw', false, trailingslashit( dirname( WPBR_LINEPAY_BASENAME ) . '/languages' ) );
 
-		add_filter( 'woocommerce_get_settings_pages', array( self::get_instance(), 'linepay_tw_add_settings' ), 15 );
+		add_filter( 'woocommerce_get_settings_pages', array( self::get_instance(), 'linepay_tw_add_settings' ) );
 		add_filter( 'woocommerce_payment_gateways', array( self::get_instance(), 'add_linepay_tw_payment_gateway' ) );
 		add_action( 'wp_enqueue_scripts', array( self::get_instance(), 'linepay_tw_enqueue_scripts' ), 9 );
 		add_action( 'admin_enqueue_scripts', array( self::get_instance(), 'linepay_tw_admin_scripts' ), 9 );
 
 		add_action( 'wp_ajax_linepay_confirm', array( self::get_instance(), 'linepay_tw_ajax_confirm_payment' ) );
 		add_filter( 'plugin_action_links_' . WPBR_LINEPAY_BASENAME, array( self::get_instance(), 'linepay_tw_add_action_links' ) );
-
 	}
 
 	/**
@@ -193,7 +192,6 @@ class LINEPay_TW {
 			wp_send_json( $return );
 
 		}
-
 	}
 	/**
 	 * Returns channel information that matches the environment information of LINEPay Gateway.
@@ -242,7 +240,6 @@ class LINEPay_TW {
 				'confirm_nonce' => wp_create_nonce( 'linepay-confirm' ),
 			)
 		);
-
 	}
 
 	/**
@@ -276,7 +273,7 @@ class LINEPay_TW {
 	 */
 	public function linepay_tw_add_settings( $settings ) {
 		require_once WPBR_LINEPAY_PLUGIN_DIR . 'includes/settings/class-linepay-tw-settings-tab.php';
-		
+
 		if ( is_array( $settings ) ) {
 			$settings[] = new WC_Settings_Tab_LINEPay_TW();
 		} else {
@@ -324,5 +321,4 @@ class LINEPay_TW {
 
 		return self::$instance;
 	}
-
 }

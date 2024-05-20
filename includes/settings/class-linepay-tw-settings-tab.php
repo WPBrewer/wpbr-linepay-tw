@@ -72,7 +72,7 @@ class WC_Settings_Tab_LINEPay_TW extends WC_Settings_Page {
 						'id'      => 'linepay_tw_display_logo_enabled',
 					),
 					array(
-						'title'   => __( 'Fail Order Status', 'wpbr-linepay-tw'),
+						'title'   => __( 'Fail Order Status', 'wpbr-linepay-tw' ),
 						'type'    => 'select',
 						'options' => wc_get_order_statuses(),
 						'desc'    => __( 'The order status will be set to this status when payment failed.', 'wpbr-linepay-tw' ),
@@ -80,7 +80,7 @@ class WC_Settings_Tab_LINEPay_TW extends WC_Settings_Page {
 						'id'      => 'linepay_tw_payment_fail_order_status',
 					),
 					array(
-						'title'   => __( 'Detail Status Note in Order Note', 'wpbr-linepay-tw'),
+						'title'   => __( 'Detail Status Note in Order Note', 'wpbr-linepay-tw' ),
 						'type'    => 'checkbox',
 						'default' => 'no',
 						'options' => wc_get_order_statuses(),
@@ -171,6 +171,6 @@ class WC_Settings_Tab_LINEPay_TW extends WC_Settings_Page {
 	}
 
 	protected function get_log_link() {
-        return '<a href="'. esc_url( admin_url( 'admin.php?page=wc-status&tab=logs')). '">' . __( 'View logs', 'wpbr-linepay-tw' ).'</a>';
-    }
+		return '<a href="' . esc_url( admin_url( 'admin.php?page=wc-status&tab=logs' ) ) . '">' . __( 'View logs', 'wpbr-linepay-tw' ) . '</a>';
+	}
 }

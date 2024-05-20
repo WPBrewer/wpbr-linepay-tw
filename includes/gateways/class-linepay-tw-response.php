@@ -30,7 +30,6 @@ class LINEPay_TW_Response {
 
 		// handling callback from LINE Pay.
 		add_action( 'woocommerce_api_linepay_payment', array( self::get_instance(), 'receive_payment_response' ) );
-
 	}
 
 	/**
@@ -82,7 +81,6 @@ class LINEPay_TW_Response {
 		} catch ( Exception $e ) {
 			LINEPay_TW::log( 'receive_payment_response error: ' . $e->getMessage() );
 		}
-
 	}
 
 	/**
@@ -97,5 +95,4 @@ class LINEPay_TW_Response {
 
 		return self::$instance;
 	}
-
 }

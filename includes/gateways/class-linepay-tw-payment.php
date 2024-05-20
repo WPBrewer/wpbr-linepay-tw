@@ -58,7 +58,6 @@ class LINEPay_TW_Payment extends WC_Payment_Gateway {
 		add_action( 'woocommerce_update_options_payment_gateways_' . $this->id, array( $this, 'process_admin_options' ) );
 		add_filter( 'woocommerce_thankyou_order_received_text', array( $this, 'thankyou_order_on_hold_message' ), 10, 2 );
 		add_action( 'woocommerce_order_details_before_order_table', array( $this, 'display_on_hold_message_on_order_details' ) );
-
 	}
 
 	/**
@@ -85,7 +84,6 @@ class LINEPay_TW_Payment extends WC_Payment_Gateway {
 		 * @param string $this->id  The payment gateway id.
 		 */
 		return apply_filters( 'woocommerce_gateway_icon', $icon_html, $this->id );
-
 	}
 
 	/**
@@ -212,7 +210,5 @@ class LINEPay_TW_Payment extends WC_Payment_Gateway {
 		if ( $order->get_status() === 'pending' ) {
 			echo esc_html__( 'We have received your order, but the order is awaiting payment. Please pay again.', 'wpbr-linepay-tw' ) . '</div>';
 		}
-
 	}
-
 }
