@@ -7,8 +7,14 @@ This plugin provides LINE Pay payment (v3) functionality in Taiwan.
 3. Support country: Taiwan
 4. Support Plugin: WooCommerce
 5. Compatible with High-Performance Order Storage (HPOS)
+6. Compatible with Cart & Checkout Blocks
 
 ## Changlog ##
+
+= 1.3.0 = 
+*Release Date - 20 May 2024*
+
+* ADD - Support Cart & Checkout Blocks
 
 = 1.2.2 =
 *Release Date - 14 Apirl 2024*
