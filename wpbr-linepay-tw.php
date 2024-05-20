@@ -59,8 +59,27 @@ function linepay_tw_previous_deactivate() {
 add_action( 'before_woocommerce_init', function() {
 	if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
 		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'cart_checkout_blocks', __FILE__, true );
 	}
 } );
+
+add_action( 'woocommerce_blocks_loaded', 'wpbr_gateway_block_support' );
+function wpbr_gateway_block_support() {
+
+	if( ! class_exists( 'Automattic\WooCommerce\Blocks\Payments\Integrations\AbstractPaymentMethodType' ) ) {
+		return;
+	}
+
+	require_once WPBR_LINEPAY_PLUGIN_DIR . 'includes/gateways/class-linepay-tw-payment-block.php';
+
+	add_action(
+		'woocommerce_blocks_payment_method_type_registration',
+		function ( Automattic\WooCommerce\Blocks\Payments\PaymentMethodRegistry $payment_method_registry ) {
+			$payment_method_registry->register( new LINEPay_Block() );
+		}
+	);
+
+}
 
 /**
  * Run the plugin.
