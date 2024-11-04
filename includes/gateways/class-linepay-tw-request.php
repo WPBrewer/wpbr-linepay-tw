@@ -112,7 +112,7 @@ class LINEPay_TW_Request {
 
 			// phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 			if ( '0000' !== $result->returnCode ) {
-				throw new Exception( sprintf( 'Execute LINE Pay Request API failed. Return code: %s. Response body: %s', $result->returnCode, $result ) );
+				throw new Exception( sprintf( 'Execute LINE Pay Request API failed. Return code: %s. Response message: %s', $result->returnCode, $result->returnMessage ) );
 			}
 
 			$order->update_meta_data( '_linepay_payment_status', WPBR_LINEPay_Const::PAYMENT_STATUS_RESERVED );
