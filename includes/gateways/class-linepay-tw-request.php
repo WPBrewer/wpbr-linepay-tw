@@ -72,7 +72,7 @@ class LINEPay_TW_Request {
 								'request_type' => WPBR_LINEPay_Const::REQUEST_TYPE_CONFIRM,
 								'order_id'     => $order_id,
 							),
-							home_url( WPBR_LINEPay_Const::URI_CALLBACK_HANDLER )
+							WC()->api_request_url( 'linepay_payment' )
 						)
 					),
 					'confirmUrlType' => WPBR_LINEPay_Const::CONFIRM_URLTYPE_CLIENT, // 使用者的畫面跳轉到商家 confirmUrl，完成付款流程.
@@ -82,7 +82,7 @@ class LINEPay_TW_Request {
 								'request_type' => WPBR_LINEPay_Const::REQUEST_TYPE_CANCEL,
 								'order_id'     => $order_id,
 							),
-							home_url( WPBR_LINEPay_Const::URI_CALLBACK_HANDLER )
+							WC()->api_request_url( 'linepay_payment' )
 						)
 					),
 				),
