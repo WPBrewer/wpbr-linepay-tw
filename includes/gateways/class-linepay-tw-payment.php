@@ -20,6 +20,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 class LINEPay_TW_Payment extends WC_Payment_Gateway {
 
 	/**
+	 * The payment type.
+	 *
+	 * @var string
+	 */
+	public $payment_type;
+
+	/**
+	 * The supported currencies.
+	 * @var mixed
+	 */
+	public $supported_currencies;
+
+	/**
 	 * The constructor.
 	 */
 	public function __construct() {
@@ -34,7 +47,6 @@ class LINEPay_TW_Payment extends WC_Payment_Gateway {
 		$this->method_description = __( 'Pay with LINE Pay', 'wpbr-linepay-tw' );
 
 		$this->payment_type   = 'NORMAL';
-		$this->payment_action = get_option( 'linepay_tw_payment_action' );
 
 		// Support refund function.
 		$this->supports = array(
