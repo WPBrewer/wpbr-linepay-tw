@@ -59,10 +59,6 @@ final class WPBR_LINEPay_Const {
 	const PAYMENT_STATUS_REFUNDED  = 'refunded';
 	const PAYMENT_STATUS_FAILED    = 'failed';
 
-	// payment action.
-	const PAYMENT_ACTION_AUTH         = 'authorization';
-	const PAYMENT_ACTION_AUTH_CAPTURE = 'authorization/capture';
-
 	// payment type.
 	const PAYMENT_TYPE_NORMAL      = 'NORMAL';
 	const PAYMENT_TYPE_PREAPPROVED = 'PREAPPROVED';
