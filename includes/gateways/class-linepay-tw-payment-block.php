@@ -15,26 +15,17 @@ final class LINEPay_Block extends AbstractPaymentMethodType {
 	protected $name = WPBR_LINEPay_Const::ID;
 
 	/**
-	 * The payment gateway instance
-	 *
-	 * @var LINEPay_TW_Payment
-	 */
-	private $gateway;
-
-	/**
 	 * Initialize the payment method
 	 */
 	public function initialize() {
 		$this->settings = get_option( 'woocommerce_linepay-tw_settings', array() );
-		$gateways       = WC()->payment_gateways->payment_gateways();
-		$this->gateway  = $gateways[ $this->name ];
 	}
 
 	/**
 	 * Is the payment method available?
 	 */
 	public function is_active() {
-		return $this->gateway->is_available();
+		return filter_var( $this->get_setting( 'enabled', false ), FILTER_VALIDATE_BOOLEAN );
 	}
 
 	public function get_payment_method_script_handles() {
@@ -69,8 +60,6 @@ final class LINEPay_Block extends AbstractPaymentMethodType {
 		return array(
 			'title'        => $this->get_setting( 'title' ),
 			'description'  => $this->get_setting( 'description' ),
-			'button_title' => $this->gateway->order_button_text,
-			'supports'    => array_filter( $this->gateway->supports, array( $this->gateway, 'supports' ) ),
 		);
 	}
 }
