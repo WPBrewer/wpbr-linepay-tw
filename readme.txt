@@ -2,9 +2,9 @@
 Contributors: wpbrewer, bluestan
 Tags: WooCommerce, payment, LINE Pay, LINE, payment gateway
 Requires at least: 5.9
-Tested up to: 6.6
-Requires PHP: 7.4
-Stable tag: 1.3.1
+Tested up to: 6.8
+Requires PHP: 8.0
+Stable tag: 1.3.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -25,6 +25,11 @@ Major features include:
 * Compatible with Cart & Checkout Blocks
 
 == Changelog ==
+
+= 1.3.2 - 2025-09-09 = 
+* UPDATE - Increase Requires PHP version to 8.0
+* UPDATE - Minor adjustment for block checkout compatibility.
+* FIX - Avoid dynamic properties and support PHP 8.2 (also PHP 8.3)
 
 = 1.3.1 - 2024-11-05 = 
 * UPDATE - Adjust the redirect url, so it could work with any permalink setting.

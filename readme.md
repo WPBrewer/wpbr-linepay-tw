@@ -11,8 +11,15 @@ This plugin provides LINE Pay payment (v3) functionality in Taiwan.
 
 ## Changlog ##
 
+= 1.3.2 = 
+*Release Date - 9 Sept 2025*
+
+* FIX - Avoid dynamic properties and support PHP 8.2 (also support PHP 8.3)
+* UPDATE - Minor adjustment for block checkout compatiblity
+* UPDATE - Increase Requires PHP version to 8.0
+
 = 1.3.1 =
-*Release Date - 2024-11-05*
+*Release Date - 5 Nov 2024*
 
 * UPDATE - Adjust the redirect url, so it could work with any permalink setting.
 * FIX - Error when request API failed.
