@@ -329,8 +329,8 @@ class LINEPay_TW_Request {
 				$order->add_order_note( __( 'LINE Pay Transaction failed。', 'wpbr-linepay-tw' ) );
 
 			} else {
-				$order->update_status( 'pending' );
-				$order->add_order_note( sprintf( __( 'Awaiting Payment, Status Code: %s。', 'wpbr-linepay-tw' ), $check_code ) );
+				$order->update_status( 'on-hold' );
+				$order->add_order_note( sprintf( __( 'Payment confirm failed, Status Code: %s。', 'wpbr-linepay-tw' ), $check_code ) );
 			}
 		} catch ( Exception $e ) {
 
