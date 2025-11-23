@@ -173,6 +173,22 @@ class LINEPay_TW_Request {
 				throw new Exception( 'Cant find order by order_id:' . $order_id );
 			}
 
+			// Check if already confirmed using dedicated flag AND payment status
+			if ( wc_string_to_bool($order->get_meta( '_wpbr_linepay_confirmed' )) ) {
+				$payment_status = $order->get_meta( '_linepay_payment_status' );
+				if ( WPBR_LINEPay_Const::PAYMENT_STATUS_CONFIRMED === $payment_status ) {
+					// Both flag AND status confirmed - safe to skip
+					LINEPay_TW::log( sprintf( '[confirm][order_id:%s] Already confirmed, skipping duplicate call', $order_id ) );
+					if ( $is_checkout ) {
+						wp_safe_redirect( $this->get_return_url( $order ) );
+						exit;
+					}
+					return true;
+				}
+				// Flag is set but payment not confirmed yet - continue to process/wait
+				LINEPay_TW::log( sprintf( '[confirm][order_id:%s] Confirmation in progress, waiting...', $order_id ) );
+			}
+
 			$amount   = $order->get_total();
 			$currency = $order->get_currency();
 
@@ -184,6 +200,10 @@ class LINEPay_TW_Request {
 			if ( $std_amount !== $reserved_std_amount ) {
 				throw new Exception( sprintf( WPBR_LINEPay_Const::LOG_TEMPLATE_CONFIRM_FAILURE_MISMATCH_ORDER_AMOUNT, $std_amount, $reserved_std_amount ) );
 			}
+
+			// Set confirmation flag to prevent concurrent requests
+			$order->update_meta_data( '_wpbr_linepay_confirmed', true );
+			$order->save();
 
 			// api call.
 			$reserved_transaction_id = $order->get_meta( '_linepay_reserved_transaction_id' );
@@ -230,6 +250,13 @@ class LINEPay_TW_Request {
 		} catch ( Exception $e ) {
 
 			LINEPay_TW::log( 'process payment confirm error:' . $e->getMessage() );
+
+			// Clear confirmation flag if not actually a duplicate (1172-Already confirmed transaction)
+			if ( strpos( $e->getMessage(), '1172' ) === false ) {
+				$order->update_meta_data( '_wpbr_linepay_confirmed', false );
+				$order->save();
+			}
+
 			if ( $is_checkout ) {
 				/**
 				 * Do action when confirm failed.
@@ -266,7 +293,21 @@ class LINEPay_TW_Request {
 			LINEPay_TW::log( $check_info );
 			$order->add_order_note( $check_info );
 
-			if ( LINEPayStatusCode::AUTHED === $check_code ) {
+			if ( LINEPayStatusCode::COMPLETED === $check_code ) {
+				// Payment already completed - mark order as successful
+				$url            = $this->get_request_url( WPBR_LINEPay_Const::REQUEST_TYPE_DETAILS, array( 'transaction_id' => $order->get_meta( '_linepay_reserved_transaction_id' ) ) );
+				$request_args   = $this->build_execute_request_args( $url, null, 20, 'GET' );
+				$payment_detail = $this->execute( $url, $request_args, 20 );
+				if ( $payment_detail ) {
+					$order->update_meta_data( '_wpbr_linepay_confirmed', true );
+					$order->update_meta_data( '_linepay_payment_status', WPBR_LINEPay_Const::PAYMENT_STATUS_CONFIRMED );
+					$order->update_meta_data( '_linepay_transaction_balanced_amount', $payment_detail->info->amount );
+					$order->save();
+					$order->payment_complete( $payment_detail->info->transactionId );
+				}
+				wp_safe_redirect( $this->get_return_url( $order ) );
+				exit;
+			} elseif ( LINEPayStatusCode::AUTHED === $check_code ) {
 				// Completed authorization - Able to call the Confirm API.
 				$order->update_meta_data( '_linepay_payment_status', WPBR_LINEPay_Const::PAYMENT_STATUS_AUTHED );
 				$order->save();
