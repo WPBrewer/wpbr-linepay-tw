@@ -139,6 +139,8 @@ class LINEPay_TW {
 
 		add_action( 'wp_ajax_linepay_confirm', array( self::get_instance(), 'linepay_tw_ajax_confirm_payment' ) );
 		add_filter( 'plugin_action_links_' . WPBR_LINEPAY_BASENAME, array( self::get_instance(), 'linepay_tw_add_action_links' ) );
+
+		add_action( WPBR_LINEPay_Const::AS_HOOK_CONFIRM_RETRY, array( self::get_instance(), 'handle_confirm_retry' ), 10, 1 );
 	}
 
 	/**
@@ -175,6 +177,8 @@ class LINEPay_TW {
 		try {
 
 			if ( $request->confirm( $order->get_id(), false ) ) {
+				// Cancel any pending retry actions for this order.
+				as_unschedule_all_actions( WPBR_LINEPay_Const::AS_HOOK_CONFIRM_RETRY, array( (int) $order->get_id() ), WPBR_LINEPay_Const::AS_GROUP_CONFIRM_RETRY );
 				$order->add_order_note( __( 'LINE Pay Confirm Succeed!', 'wpbr-linepay-tw' ) );
 				$return = array(
 					'success' => true,
@@ -284,6 +288,154 @@ class LINEPay_TW {
 		}
 
 		return $settings;
+	}
+
+	/**
+	 * Handle confirm retry for an order.
+	 *
+	 * Uses chained single actions: on failure, schedules the next single
+	 * action. On success or exhaustion, simply does not schedule — the
+	 * chain stops naturally without needing to unschedule anything.
+	 *
+	 * @param int $order_id The order ID.
+	 * @return void
+	 */
+	public function handle_confirm_retry( $order_id ) {
+
+		$order = wc_get_order( $order_id );
+
+		if ( ! $order ) {
+			self::log( sprintf( '[confirm-retry][order_id:%s] Order not found, skipping.', $order_id ), 'warning' );
+			return;
+		}
+
+		$payment_status = $order->get_meta( '_linepay_payment_status' );
+		if ( WPBR_LINEPay_Const::PAYMENT_STATUS_AUTHED !== $payment_status ) {
+			self::log( sprintf( '[confirm-retry][order_id:%s] Payment status is "%s", skipping.', $order_id, $payment_status ) );
+			return;
+		}
+
+		$max_retries = apply_filters( 'linepay_tw_max_retry_count', WPBR_LINEPay_Const::DEFAULT_MAX_RETRY_COUNT, $order_id );
+		$retry_count = (int) $order->get_meta( WPBR_LINEPay_Const::META_CONFIRM_RETRY_COUNT );
+
+		if ( $retry_count >= $max_retries ) {
+			self::log( sprintf( '[confirm-retry][order_id:%s] Retries already exhausted (%d/%d), skipping.', $order_id, $retry_count, $max_retries ) );
+			return;
+		}
+
+		$retry_count++;
+		$order->update_meta_data( WPBR_LINEPay_Const::META_CONFIRM_RETRY_COUNT, $retry_count );
+		$order->save();
+
+		self::log( sprintf( '[confirm-retry][order_id:%s] Attempting confirm retry #%d/%d.', $order_id, $retry_count, $max_retries ) );
+
+		$gateway = new LINEPay_TW_Payment();
+		$request = new LINEPay_TW_Request( $gateway );
+
+		try {
+			if ( $request->confirm( $order_id, false ) ) {
+				/* translators: %d is the retry attempt number */
+				$order->add_order_note( sprintf( __( 'LINE Pay Confirm succeeded on auto-retry #%d.', 'wpbr-linepay-tw' ), $retry_count ) );
+				self::log( sprintf( '[confirm-retry][order_id:%s] Confirm succeeded on retry #%d.', $order_id, $retry_count ) );
+				// Success — do not schedule next action, chain stops.
+				return;
+			}
+		} catch ( Exception $e ) {
+			/* translators: %1$d is the retry attempt number, %2$s is the error message */
+			$order->add_order_note( sprintf( __( 'LINE Pay auto-retry #%1$d failed: %2$s', 'wpbr-linepay-tw' ), $retry_count, $e->getMessage() ) );
+			self::log( sprintf( '[confirm-retry][order_id:%s] Retry #%d failed: %s', $order_id, $retry_count, $e->getMessage() ), 'error' );
+		}
+
+		// Decide: schedule next retry or send notification.
+		if ( $retry_count >= $max_retries ) {
+			self::send_retry_failed_notification( $order );
+			/* translators: %d is the max retry count */
+			$order->add_order_note( sprintf( __( 'LINE Pay auto-retry exhausted after %d attempts. Admin has been notified.', 'wpbr-linepay-tw' ), $retry_count ) );
+			self::log( sprintf( '[confirm-retry][order_id:%s] All %d retries exhausted. Notification sent.', $order_id, $retry_count ), 'error' );
+			// Exhausted — do not schedule next action, chain stops.
+		} else {
+			// Schedule next single action.
+			self::schedule_confirm_retry( $order_id );
+		}
+	}
+
+	/**
+	 * Schedule a single confirm retry action for an order.
+	 *
+	 * Uses chained single actions instead of a recurring action.
+	 * Each callback schedules the next one if retries remain.
+	 *
+	 * @param int $order_id The order ID.
+	 * @return void
+	 */
+	public static function schedule_confirm_retry( $order_id ) {
+
+		$interval = apply_filters( 'linepay_tw_retry_interval', WPBR_LINEPay_Const::DEFAULT_RETRY_INTERVAL, $order_id );
+
+		as_schedule_single_action(
+			time() + ( $interval * MINUTE_IN_SECONDS ),
+			WPBR_LINEPay_Const::AS_HOOK_CONFIRM_RETRY,
+			array( (int) $order_id ),
+			WPBR_LINEPay_Const::AS_GROUP_CONFIRM_RETRY
+		);
+
+		self::log( sprintf( '[confirm-retry][order_id:%s] Scheduled next retry in %d minute(s).', $order_id, $interval ) );
+	}
+
+	/**
+	 * Send email notification when all retries are exhausted.
+	 *
+	 * @param WC_Order $order The order object.
+	 * @return void
+	 */
+	private static function send_retry_failed_notification( $order ) {
+
+		$to = get_option( 'linepay_tw_retry_notification_email' );
+		if ( empty( $to ) ) {
+			$to = get_option( 'admin_email' );
+		}
+
+		$site_name      = wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
+		$order_id       = $order->get_id();
+		$transaction_id = $order->get_meta( '_linepay_reserved_transaction_id' );
+		$amount         = $order->get_total();
+		$retry_count    = (int) $order->get_meta( WPBR_LINEPay_Const::META_CONFIRM_RETRY_COUNT );
+		$order_url      = admin_url( 'post.php?post=' . $order_id . '&action=edit' );
+
+		if ( function_exists( 'wc_get_container' ) ) {
+			try {
+				$order_url = wc_get_container()->get( \Automattic\WooCommerce\Internal\Admin\Orders\PageController::class )->get_edit_url( $order_id );
+			} catch ( Exception $e ) {
+				// fallback to default URL above.
+			}
+		}
+
+		$subject = sprintf(
+			/* translators: %1$s is the site name, %2$s is the order ID */
+			__( '[%1$s] LINE Pay Confirm Failed - Order #%2$s', 'wpbr-linepay-tw' ),
+			$site_name,
+			$order_id
+		);
+
+		$body = sprintf(
+			/* translators: %1$s is order ID, %2$s is transaction ID, %3$s is amount, %4$d is retry count, %5$s is order admin URL */
+			__(
+				"LINE Pay Confirm API has failed after all retry attempts.\n\n" .
+				"Order ID: #%1\$s\n" .
+				"Transaction ID: %2\$s\n" .
+				"Amount: %3\$s\n" .
+				"Retry Attempts: %4\$d\n\n" .
+				"Please check the order and take manual action:\n%5\$s",
+				'wpbr-linepay-tw'
+			),
+			$order_id,
+			$transaction_id,
+			$amount,
+			$retry_count,
+			$order_url
+		);
+
+		wp_mail( $to, $subject, $body );
 	}
 
 	/**

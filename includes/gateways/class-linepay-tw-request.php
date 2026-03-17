@@ -314,6 +314,9 @@ class LINEPay_TW_Request {
 				$order->update_status( 'on-hold' );
 				$order->add_order_note( __( 'Order payment is authed, but need to be confirmed。', 'wpbr-linepay-tw' ) );
 
+				LINEPay_TW::schedule_confirm_retry( $order->get_id() );
+				$order->add_order_note( __( 'Auto-retry for confirm payment has been scheduled.', 'wpbr-linepay-tw' ) );
+
 			} elseif ( LINEPayStatusCode::CANCELLED_EXPIRED === $check_code ) {
 
 				$order->update_meta_data( '_linepay_payment_status', WPBR_LINEPay_Const::PAYMENT_STATUS_CANCELLED );

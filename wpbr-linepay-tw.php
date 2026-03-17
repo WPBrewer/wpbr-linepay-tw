@@ -114,3 +114,9 @@ function run_wpbr_linepay() {
 
 }
 add_action( 'plugins_loaded', 'run_wpbr_linepay' );
+
+register_deactivation_hook( __FILE__, function() {
+	if ( function_exists( 'as_unschedule_all_actions' ) ) {
+		as_unschedule_all_actions( 'linepay_tw_confirm_retry', null, 'linepay-tw-confirm-retry' );
+	}
+} );
