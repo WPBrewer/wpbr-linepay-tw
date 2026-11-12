@@ -369,6 +369,12 @@ class LINEPay_TW_Request {
 
 		LINEPay_TW::log( sprintf( WPBR_LINEPay_Const::LOG_TEMPLATE_PAYMENT_CANCEL, $order_id, $reserved_transaction_id ) );
 
+		// Mark the LINE Pay payment as cancelled so this reserved transaction can't be confirmed or cancelled again.
+		// The order itself stays pending; paying again calls request() and sets the status back to reserved.
+		$order->update_meta_data( '_linepay_payment_status', WPBR_LINEPay_Const::PAYMENT_STATUS_CANCELLED );
+		$order->save();
+		$order->add_order_note( __( 'LINE Pay payment was cancelled by the customer.', 'wpbr-linepay-tw' ) );
+
 		// redirect to thank you page, order status is pending.
 		wp_safe_redirect( $this->get_return_url( $order ) );
 		exit;
