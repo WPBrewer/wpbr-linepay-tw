@@ -71,6 +71,7 @@ class LINEPay_TW_Request {
 							array(
 								'request_type' => WPBR_LINEPay_Const::REQUEST_TYPE_CONFIRM,
 								'order_id'     => $order_id,
+								'key'          => $order->get_order_key(),
 							),
 							WC()->api_request_url( 'linepay_payment' )
 						)
@@ -81,6 +82,7 @@ class LINEPay_TW_Request {
 							array(
 								'request_type' => WPBR_LINEPay_Const::REQUEST_TYPE_CANCEL,
 								'order_id'     => $order_id,
+								'key'          => $order->get_order_key(),
 							),
 							WC()->api_request_url( 'linepay_payment' )
 						)
