@@ -11,6 +11,16 @@ This plugin provides LINE Pay payment (v3) functionality in Taiwan.
 
 ## Changlog ##
 
+= 1.3.4 =
+*Release Date - 12 Nov 2026*
+
+* FIX - Security: Verify the order key in the LINE Pay callback to prevent order key disclosure (broken access control)
+* FIX - Mark LINE Pay payment as cancelled when the customer cancels the payment
+* FIX - Keep the order pending when confirm fails because the LINE Pay payment is not authorized yet
+* FIX - Add capability check to the admin confirm payment action
+* UPDATE - Mask the order key in the request log
+* ADD - Auto-retry confirm payment when the payment is authorized but not yet confirmed
+
 *Release Date - 24 Nov 2025*
 = 1.3.3 =
 * FIX - Avoid multiple confirm api called
