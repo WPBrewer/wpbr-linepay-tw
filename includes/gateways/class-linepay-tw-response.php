@@ -94,9 +94,8 @@ class LINEPay_TW_Response {
 				throw new Exception( sprintf( 'order key mismatch for order id: %s', $order_id ) );
 			}
 
-			// LINE Pay always appends transactionId to confirmUrl; it must match the reserved transaction.
-			if ( WPBR_LINEPay_Const::REQUEST_TYPE_CONFIRM === $request_type
-				&& ( '' === $transaction_id || ! hash_equals( (string) $order->get_meta( '_linepay_reserved_transaction_id' ), $transaction_id ) ) ) {
+			// LINE Pay always appends transactionId to confirmUrl and cancelUrl; it must match the reserved transaction.
+			if ( '' === $transaction_id || ! hash_equals( (string) $order->get_meta( '_linepay_reserved_transaction_id' ), $transaction_id ) ) {
 				throw new Exception( sprintf( 'transaction id mismatch for order id: %s', $order_id ) );
 			}
 
