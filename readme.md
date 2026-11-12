@@ -18,6 +18,7 @@ This plugin provides LINE Pay payment (v3) functionality in Taiwan.
 * FIX - Mark LINE Pay payment as cancelled when the customer cancels the payment
 * FIX - Keep the order pending when confirm fails because the LINE Pay payment is not authorized yet
 * FIX - Add capability check to the admin confirm payment action
+* FIX - Broken layout on the order details page for orders awaiting payment
 * UPDATE - Mask the order key in the request log
 * ADD - Auto-retry confirm payment when the payment is authorized but not yet confirmed
 
