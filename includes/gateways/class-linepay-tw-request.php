@@ -107,7 +107,8 @@ class LINEPay_TW_Request {
 
 			$body         = array_merge( $body, $product_info, $redirect_urls, $options );
 			$request_args = $this->build_execute_request_args( $url, $body );
-			LINEPay_TW::log( sprintf( '[request][order_id:%s] execute request_args: %s', $order_id, wc_print_r( $request_args, true ) ) );
+			// Mask the order key so it is not written to the log.
+			LINEPay_TW::log( sprintf( '[request][order_id:%s] execute request_args: %s', $order_id, str_replace( $order->get_order_key(), '***', wc_print_r( $request_args, true ) ) ) );
 
 			$result = $this->execute( $url, $request_args );
 			LINEPay_TW::log( '[request] execute result: ' . wc_print_r( $result, true ) );
