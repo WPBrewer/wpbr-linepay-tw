@@ -56,7 +56,28 @@ class LINEPay_TW_Response {
 			$request_type   = isset( $_GET['request_type'] ) ? sanitize_text_field( wp_unslash( $_GET['request_type'] ) ) : '';
 			$order_key      = isset( $_GET['key'] ) ? sanitize_text_field( wp_unslash( $_GET['key'] ) ) : '';
 			$transaction_id = isset( $_GET['transactionId'] ) ? sanitize_text_field( wp_unslash( $_GET['transactionId'] ) ) : '';
+			$received_params = implode(
+				',',
+				array_map(
+					function ( $name ) {
+						return preg_replace( '/[^A-Za-z0-9_\-]/', '', (string) $name );
+					},
+					array_keys( $_GET )
+				)
+			);
 			// phpcs:enable WordPress.Security.NonceVerification.Recommended
+
+			// Record what LINE Pay sent back. Never log the order key value itself.
+			LINEPay_TW::log(
+				sprintf(
+					'[callback][order_id:%s] request_type: %s, params: %s, key: %s, transactionId: %s',
+					$order_id,
+					$request_type,
+					$received_params,
+					'' === $order_key ? 'missing' : 'present',
+					'' === $transaction_id ? 'missing' : $transaction_id
+				)
+			);
 
 			if ( ! in_array( $request_type, array( WPBR_LINEPay_Const::REQUEST_TYPE_CONFIRM, WPBR_LINEPay_Const::REQUEST_TYPE_CANCEL ), true ) ) {
 				throw new Exception( sprintf( 'invalid request type for order id: %s', $order_id ) );
