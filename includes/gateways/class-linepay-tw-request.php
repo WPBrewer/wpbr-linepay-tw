@@ -334,6 +334,12 @@ class LINEPay_TW_Request {
 				$order->update_status( LINEPay_TW::$fail_order_status );
 				$order->add_order_note( __( 'LINE Pay Transaction failed。', 'wpbr-linepay-tw' ) );
 
+			} elseif ( LINEPayStatusCode::UNAUTH === $check_code ) {
+
+				// Customer has not authorized the payment yet - keep the order pending so it can still be paid
+				// or be cancelled by WooCommerce's unpaid order timeout.
+				$order->add_order_note( __( 'LINE Pay payment is not authorized yet, order status remains unchanged.', 'wpbr-linepay-tw' ) );
+
 			} else {
 				$order->update_status( 'on-hold' );
 				$order->add_order_note( sprintf( __( 'Payment confirm failed, Status Code: %s。', 'wpbr-linepay-tw' ), $check_code ) );
