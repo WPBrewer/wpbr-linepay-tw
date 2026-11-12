@@ -160,7 +160,15 @@ class LINEPay_TW {
 			wp_send_json( $return );
 		}
 
-		$order_id = $posted['post_id'];
+		if ( ! current_user_can( 'edit_shop_orders' ) ) {
+			$return = array(
+				'success' => false,
+				'message' => __( 'You do not have permission to confirm this payment.', 'wpbr-linepay-tw' ),
+			);
+			wp_send_json( $return );
+		}
+
+		$order_id = isset( $posted['post_id'] ) ? absint( $posted['post_id'] ) : 0;
 		$order    = wc_get_order( $order_id );
 
 		if ( ! $order ) {
