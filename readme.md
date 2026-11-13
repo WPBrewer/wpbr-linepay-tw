@@ -11,7 +11,7 @@ This plugin provides LINE Pay payment (v3) functionality in Taiwan.
 
 ## Changlog ##
 
-= 1.3.4 =
+= 1.4.0 =
 *Release Date - 12 Nov 2026*
 
 * FIX - Security: Verify the order key in the LINE Pay callback to prevent order key disclosure (broken access control)
