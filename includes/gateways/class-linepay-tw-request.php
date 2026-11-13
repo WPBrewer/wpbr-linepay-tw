@@ -452,6 +452,104 @@ class LINEPay_TW_Request {
 	}
 
 	/**
+	 * Query LINE Pay for the current payment status and sync it to the order.
+	 *
+	 * Used by the admin "Check Payment Status" action. It only syncs the status,
+	 * it never calls the Confirm API, so no payment is captured here.
+	 *
+	 * @param WC_Order $order The order object.
+	 * @return string The message describing the result.
+	 *
+	 * @throws Exception When the check request is failed.
+	 */
+	public function sync_payment_status( $order ) {
+
+		$check_status = $this->check( $order );
+		$check_code   = $check_status->returnCode;
+		$check_info   = sprintf( '[sync][order_id:%s] Check payment status by admin, return code:%s, return message:%s', $order->get_id(), $check_code, $check_status->returnMessage );
+		LINEPay_TW::log( $check_info );
+		$order->add_order_note( $check_info );
+
+		// Only sync while the payment is still in progress. For a finished payment (confirmed, refunded,
+		// cancelled, failed) the check result is shown for reference only, so it never overwrites a
+		// refunded or cancelled status.
+		$payment_status = $order->get_meta( '_linepay_payment_status' );
+		if ( ! in_array( $payment_status, array( WPBR_LINEPay_Const::PAYMENT_STATUS_RESERVED, WPBR_LINEPay_Const::PAYMENT_STATUS_AUTHED ), true ) ) {
+			return sprintf(
+				/* translators: %1$s is the LINE Pay return code, %2$s is the LINE Pay return message */
+				__( 'LINE Pay status: %1$s (%2$s). The order is not changed because the payment is already finished.', 'wpbr-linepay-tw' ),
+				$check_code,
+				$check_status->returnMessage
+			);
+		}
+
+		// Only an order that is still waiting for payment may be moved to the fail status.
+		$awaiting_payment = $order->has_status( array( 'pending', 'on-hold' ) );
+
+		if ( LINEPayStatusCode::UNAUTH === $check_code ) {
+
+			$message = __( 'LINE Pay payment is not authorized yet, order status remains unchanged.', 'wpbr-linepay-tw' );
+
+		} elseif ( LINEPayStatusCode::AUTHED === $check_code ) {
+
+			$order->update_meta_data( '_linepay_payment_status', WPBR_LINEPay_Const::PAYMENT_STATUS_AUTHED );
+			$order->save();
+			$message = __( 'LINE Pay payment is authorized. You can now confirm the payment.', 'wpbr-linepay-tw' );
+
+		} elseif ( LINEPayStatusCode::CANCELLED_EXPIRED === $check_code ) {
+
+			$order->update_meta_data( '_linepay_payment_status', WPBR_LINEPay_Const::PAYMENT_STATUS_CANCELLED );
+			$order->save();
+			if ( $awaiting_payment ) {
+				$order->update_status( LINEPay_TW::$fail_order_status );
+			}
+			$message = __( 'Payment is cancelled or expired。', 'wpbr-linepay-tw' );
+
+		} elseif ( LINEPayStatusCode::FAILED === $check_code ) {
+
+			$order->update_meta_data( '_linepay_payment_status', WPBR_LINEPay_Const::PAYMENT_STATUS_FAILED );
+			$order->save();
+			if ( $awaiting_payment ) {
+				$order->update_status( LINEPay_TW::$fail_order_status );
+			}
+			$message = __( 'LINE Pay Transaction failed。', 'wpbr-linepay-tw' );
+
+		} elseif ( LINEPayStatusCode::COMPLETED === $check_code ) {
+
+			// Payment already captured on LINE Pay - record it on the order.
+			$url            = $this->get_request_url( WPBR_LINEPay_Const::REQUEST_TYPE_DETAILS, array( 'transaction_id' => $order->get_meta( '_linepay_reserved_transaction_id' ) ) );
+			$request_args   = $this->build_execute_request_args( $url, null, 20, 'GET' );
+			$payment_detail = $this->execute( $url, $request_args, 20 );
+			if ( ! $payment_detail || '0000' !== $payment_detail->returnCode || empty( $payment_detail->info ) ) {
+				throw new Exception( __( 'Unable to get the LINE Pay payment details.', 'wpbr-linepay-tw' ) );
+			}
+
+			// The Payment Details API returns a list of transactions.
+			$detail         = is_array( $payment_detail->info ) ? reset( $payment_detail->info ) : $payment_detail->info;
+			$transaction_id = ! empty( $detail->transactionId ) ? $detail->transactionId : $order->get_meta( '_linepay_reserved_transaction_id' );
+			$paid_amount    = 0;
+			if ( ! empty( $detail->payInfo ) && is_array( $detail->payInfo ) ) {
+				foreach ( $detail->payInfo as $pay_info ) {
+					$paid_amount += isset( $pay_info->amount ) ? $pay_info->amount : 0;
+				}
+			}
+
+			$order->update_meta_data( '_wpbr_linepay_confirmed', true );
+			$order->update_meta_data( '_linepay_payment_status', WPBR_LINEPay_Const::PAYMENT_STATUS_CONFIRMED );
+			$order->update_meta_data( '_linepay_transaction_balanced_amount', $paid_amount ? $paid_amount : $order->get_total() );
+			$order->save();
+			$order->payment_complete( $transaction_id );
+			$message = __( 'LINE Pay payment is already completed. The order has been marked as paid.', 'wpbr-linepay-tw' );
+
+		} else {
+			/* translators: %s is the LINE Pay return code */
+			$message = sprintf( __( 'Unexpected LINE Pay status code: %s. Order status remains unchanged.', 'wpbr-linepay-tw' ), $check_code );
+		}
+
+		return $message;
+	}
+
+	/**
 	 * Build request arguments for LINE Pay API.
 	 *
 	 * @param string $url The request url.

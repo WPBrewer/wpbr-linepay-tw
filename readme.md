@@ -21,6 +21,7 @@ This plugin provides LINE Pay payment (v3) functionality in Taiwan.
 * FIX - Broken layout on the order details page for orders awaiting payment
 * UPDATE - Mask the order key in the request log
 * ADD - Auto-retry confirm payment when the payment is authorized but not yet confirmed
+* ADD - Check Payment Status button on the order edit page to sync the payment status from LINE Pay
 
 *Release Date - 24 Nov 2025*
 = 1.3.3 =

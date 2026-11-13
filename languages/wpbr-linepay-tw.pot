@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-11-12T05:07:13+00:00\n"
+"POT-Creation-Date: 2026-11-13T02:44:28+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: wpbr-linepay-tw\n"
@@ -18,7 +18,6 @@ msgstr ""
 #: wpbr-linepay-tw.php
 #: includes/gateways/class-linepay-tw-payment.php:45
 #: includes/gateways/class-linepay-tw-payment.php:47
-#: assets/js/blocks/linepay.js:15
 msgid "Pay with LINE Pay"
 msgstr ""
 
@@ -50,77 +49,91 @@ msgstr ""
 msgid "Transaction ID"
 msgstr ""
 
-#: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:86
+#: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:88
+msgid "Check Status"
+msgstr ""
+
+#: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:90
 msgid "Payment Status"
 msgstr ""
 
-#: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:89
+#: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:93
 msgid "Payment Action"
 msgstr ""
 
-#: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:89
+#: includes/admin/meta-boxes/class-linepay-tw-order-meta-boxes.php:93
 msgid "Confirm Payment"
 msgstr ""
 
-#: includes/class-wpbr-linepay-tw.php:158
+#: includes/class-wpbr-linepay-tw.php:159
+#: includes/class-wpbr-linepay-tw.php:224
 msgid "Unsecure AJAX call"
 msgstr ""
 
-#: includes/class-wpbr-linepay-tw.php:166
+#: includes/class-wpbr-linepay-tw.php:167
 msgid "You do not have permission to confirm this payment."
 msgstr ""
 
-#: includes/class-wpbr-linepay-tw.php:177
+#: includes/class-wpbr-linepay-tw.php:178
+#: includes/class-wpbr-linepay-tw.php:245
 msgid "No such order id"
 msgstr ""
 
-#: includes/class-wpbr-linepay-tw.php:190
+#: includes/class-wpbr-linepay-tw.php:191
 msgid "LINE Pay Confirm Succeed!"
 msgstr ""
 
-#: includes/class-wpbr-linepay-tw.php:193
+#: includes/class-wpbr-linepay-tw.php:194
 msgid "Confirm succeed"
 msgstr ""
 
-#: includes/class-wpbr-linepay-tw.php:199
+#: includes/class-wpbr-linepay-tw.php:200
 msgid "LINE Pay Confirm Failed!"
 msgstr ""
 
-#: includes/class-wpbr-linepay-tw.php:268
+#: includes/class-wpbr-linepay-tw.php:233
+msgid "You do not have permission to check this payment."
+msgstr ""
+
+#: includes/class-wpbr-linepay-tw.php:254
+msgid "This order has no LINE Pay transaction ID."
+msgstr ""
+
+#: includes/class-wpbr-linepay-tw.php:341
 msgid "General Settings"
 msgstr ""
 
-#: includes/class-wpbr-linepay-tw.php:274
+#: includes/class-wpbr-linepay-tw.php:347
 #: includes/settings/class-linepay-tw-settings-tab.php:37
 msgid "Payment Settings"
 msgstr ""
 
 #. translators: %d is the retry attempt number
-#: includes/class-wpbr-linepay-tw.php:346
+#: includes/class-wpbr-linepay-tw.php:419
 #, php-format
 msgid "LINE Pay Confirm succeeded on auto-retry #%d."
 msgstr ""
 
 #. translators: %1$d is the retry attempt number, %2$s is the error message
-#: includes/class-wpbr-linepay-tw.php:353
+#: includes/class-wpbr-linepay-tw.php:426
 #, php-format
 msgid "LINE Pay auto-retry #%1$d failed: %2$s"
 msgstr ""
 
 #. translators: %d is the max retry count
-#: includes/class-wpbr-linepay-tw.php:361
+#: includes/class-wpbr-linepay-tw.php:434
 #, php-format
 msgid "LINE Pay auto-retry exhausted after %d attempts. Admin has been notified."
 msgstr ""
 
 #. translators: %1$s is the site name, %2$s is the order ID
-#: includes/class-wpbr-linepay-tw.php:423
+#: includes/class-wpbr-linepay-tw.php:496
 #, php-format
 msgid "[%1$s] LINE Pay Confirm Failed - Order #%2$s"
 msgstr ""
 
 #. translators: %1$s is order ID, %2$s is transaction ID, %3$s is amount, %4$d is retry count, %5$s is order admin URL
-#: includes/class-wpbr-linepay-tw.php:430
+#: includes/class-wpbr-linepay-tw.php:503
 #, php-format
 msgid ""
 "LINE Pay Confirm API has failed after all retry attempts.\n"
@@ -143,12 +156,12 @@ msgid "LINE Pay Taiwan"
 msgstr ""
 
 #: includes/gateways/class-linepay-tw-payment.php:193
-#: includes/gateways/class-linepay-tw-payment.php:219
+#: includes/gateways/class-linepay-tw-payment.php:221
 msgid "We have received your order, but the payment status need to be confirmed. Please contact the support."
 msgstr ""
 
 #: includes/gateways/class-linepay-tw-payment.php:197
-#: includes/gateways/class-linepay-tw-payment.php:223
+#: includes/gateways/class-linepay-tw-payment.php:225
 msgid "We have received your order, but the order is awaiting payment. Please pay again."
 msgstr ""
 
@@ -165,14 +178,17 @@ msgid "Auto-retry for confirm payment has been scheduled."
 msgstr ""
 
 #: includes/gateways/class-linepay-tw-request.php:328
+#: includes/gateways/class-linepay-tw-request.php:506
 msgid "Payment is cancelled or expired。"
 msgstr ""
 
 #: includes/gateways/class-linepay-tw-request.php:335
+#: includes/gateways/class-linepay-tw-request.php:515
 msgid "LINE Pay Transaction failed。"
 msgstr ""
 
 #: includes/gateways/class-linepay-tw-request.php:341
+#: includes/gateways/class-linepay-tw-request.php:491
 msgid "LINE Pay payment is not authorized yet, order status remains unchanged."
 msgstr ""
 
@@ -194,29 +210,52 @@ msgstr ""
 msgid "no transaction_id is found"
 msgstr ""
 
-#: includes/gateways/class-linepay-tw-request.php:553
+#. translators: %1$s is the LINE Pay return code, %2$s is the LINE Pay return message
+#: includes/gateways/class-linepay-tw-request.php:480
+#, php-format
+msgid "LINE Pay status: %1$s (%2$s). The order is not changed because the payment is already finished."
+msgstr ""
+
+#: includes/gateways/class-linepay-tw-request.php:497
+msgid "LINE Pay payment is authorized. You can now confirm the payment."
+msgstr ""
+
+#: includes/gateways/class-linepay-tw-request.php:524
+msgid "Unable to get the LINE Pay payment details."
+msgstr ""
+
+#: includes/gateways/class-linepay-tw-request.php:542
+msgid "LINE Pay payment is already completed. The order has been marked as paid."
+msgstr ""
+
+#. translators: %s is the LINE Pay return code
+#: includes/gateways/class-linepay-tw-request.php:546
+#, php-format
+msgid "Unexpected LINE Pay status code: %s. Order status remains unchanged."
+msgstr ""
+
+#: includes/gateways/class-linepay-tw-request.php:651
 #, php-format
 msgid "Refund via LINE Pay successfully. Refund transaction id: %s"
 msgstr ""
 
-#: includes/gateways/class-linepay-tw-request.php:558
+#: includes/gateways/class-linepay-tw-request.php:656
 #, php-format
 msgid "Refund via LINE Pay failed. Refund transaction id: %1$s, returnCode: %2$s, returnMessage: %3$s"
 msgstr ""
 
 #. translators:  %1$s is product name, %2$s is the order item count
-#: includes/gateways/class-linepay-tw-request.php:632
+#: includes/gateways/class-linepay-tw-request.php:730
 #, php-format
 msgid "%1$s and total %2$s products"
 msgstr ""
 
-#: includes/gateways/class-linepay-tw-response.php:68
+#: includes/gateways/class-linepay-tw-response.php:89
 msgid "Unable to process callback."
 msgstr ""
 
 #: includes/settings/class-linepay-tw-settings-tab.php:20
 #: includes/settings/settings-linepay-tw-payment.php:27
-#: assets/js/blocks/linepay.js:3
 msgid "LINE Pay"
 msgstr ""
 
@@ -345,4 +384,8 @@ msgstr ""
 
 #: wpbr-linepay-tw.php:55
 msgid "We deactivate plugin LINE Pay Taiwan for WooCommerce to avoid conflict with the new version."
+msgstr ""
+
+#: assets/js/wpbr-linepay-tw-admin.js:102
+msgid "Unable to check the payment status. Please try again."
 msgstr ""

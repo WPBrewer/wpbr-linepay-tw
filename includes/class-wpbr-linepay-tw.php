@@ -138,6 +138,7 @@ class LINEPay_TW {
 		add_action( 'admin_enqueue_scripts', array( self::get_instance(), 'linepay_tw_admin_scripts' ), 9 );
 
 		add_action( 'wp_ajax_linepay_confirm', array( self::get_instance(), 'linepay_tw_ajax_confirm_payment' ) );
+		add_action( 'wp_ajax_linepay_check', array( self::get_instance(), 'linepay_tw_ajax_check_payment' ) );
 		add_filter( 'plugin_action_links_' . WPBR_LINEPAY_BASENAME, array( self::get_instance(), 'linepay_tw_add_action_links' ) );
 
 		add_action( WPBR_LINEPay_Const::AS_HOOK_CONFIRM_RETRY, array( self::get_instance(), 'handle_confirm_retry' ), 10, 1 );
@@ -206,6 +207,77 @@ class LINEPay_TW {
 		}
 	}
 	/**
+	 * Handle of check payment status request via wp-admin.
+	 *
+	 * Queries LINE Pay and syncs the payment status to the order. It never captures the payment.
+	 *
+	 * @return void
+	 */
+	public function linepay_tw_ajax_check_payment() {
+
+		$posted = wp_unslash( $_POST );
+
+		if ( ! array_key_exists( 'security', $posted ) || ! wp_verify_nonce( $posted['security'], 'linepay-check' ) ) {
+			wp_send_json(
+				array(
+					'success' => false,
+					'message' => __( 'Unsecure AJAX call', 'wpbr-linepay-tw' ),
+				)
+			);
+		}
+
+		if ( ! current_user_can( 'edit_shop_orders' ) ) {
+			wp_send_json(
+				array(
+					'success' => false,
+					'message' => __( 'You do not have permission to check this payment.', 'wpbr-linepay-tw' ),
+				)
+			);
+		}
+
+		$order_id = isset( $posted['post_id'] ) ? absint( $posted['post_id'] ) : 0;
+		$order    = wc_get_order( $order_id );
+
+		if ( ! $order || ! array_key_exists( $order->get_payment_method(), self::$allowed_payments ) ) {
+			wp_send_json(
+				array(
+					'success' => false,
+					'message' => __( 'No such order id', 'wpbr-linepay-tw' ),
+				)
+			);
+		}
+
+		if ( '' === (string) $order->get_meta( '_linepay_reserved_transaction_id' ) ) {
+			wp_send_json(
+				array(
+					'success' => false,
+					'message' => __( 'This order has no LINE Pay transaction ID.', 'wpbr-linepay-tw' ),
+				)
+			);
+		}
+
+		try {
+			$gateway = new LINEPay_TW_Payment();
+			$request = new LINEPay_TW_Request( $gateway );
+			$message = $request->sync_payment_status( $order );
+			wp_send_json(
+				array(
+					'success' => true,
+					'message' => $message,
+				)
+			);
+		} catch ( Exception $e ) {
+			self::log( sprintf( '[sync][order_id:%s] check payment status failed: %s', $order_id, $e->getMessage() ), 'error' );
+			wp_send_json(
+				array(
+					'success' => false,
+					'message' => $e->getMessage(),
+				)
+			);
+		}
+	}
+
+	/**
 	 * Returns channel information that matches the environment information of LINEPay Gateway.
 	 *
 	 * @return array
@@ -241,7 +313,7 @@ class LINEPay_TW {
 	 */
 	public function linepay_tw_admin_scripts() {
 
-		wp_enqueue_script( 'wpbr-linepay-tw', WPBR_LINEPAY_PLUGIN_URL . 'assets/js/wpbr-linepay-tw-admin.js', array(), '1.0', true );
+		wp_enqueue_script( 'wpbr-linepay-tw', WPBR_LINEPAY_PLUGIN_URL . 'assets/js/wpbr-linepay-tw-admin.js', array(), WPBR_LINEPAY_VERSION, true );
 		wp_enqueue_style( 'wpbr-linepay-tw', WPBR_LINEPAY_PLUGIN_URL . 'assets/css/wpbr-linepay-tw-admin.css', array(), '1.0' );
 
 		wp_localize_script(
@@ -250,6 +322,7 @@ class LINEPay_TW {
 			array(
 				'ajax_url'      => admin_url( 'admin-ajax.php' ),
 				'confirm_nonce' => wp_create_nonce( 'linepay-confirm' ),
+				'check_nonce'   => wp_create_nonce( 'linepay-check' ),
 			)
 		);
 	}

@@ -34,6 +34,7 @@ Major features include:
 * FIX - Broken layout on the order details page for orders awaiting payment
 * UPDATE - Mask the order key in the request log
 * ADD - Auto-retry confirm payment when the payment is authorized but not yet confirmed
+* ADD - Check Payment Status button on the order edit page to sync the payment status from LINE Pay
 
 = 1.3.3 - 2025-11/24
 * FIX - Avoid multiple confirm api called
