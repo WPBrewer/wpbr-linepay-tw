@@ -2,7 +2,7 @@
 Contributors: wpbrewer, bluestan
 Tags: WooCommerce, payment, LINE Pay, LINE, payment gateway
 Requires at least: 5.9
-Tested up to: 6.8
+Tested up to: 7.1
 Requires PHP: 8.0
 Stable tag: 1.4.0
 License: GPLv3
