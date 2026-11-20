@@ -107,11 +107,9 @@ class LINEPay_TW_Request {
 
 			$body         = array_merge( $body, $product_info, $redirect_urls, $options );
 			$request_args = $this->build_execute_request_args( $url, $body );
-			// Mask the order key so it is not written to the log.
-			LINEPay_TW::log( sprintf( '[request][order_id:%s] execute request_args: %s', $order_id, str_replace( $order->get_order_key(), '***', wc_print_r( $request_args, true ) ) ) );
+			LINEPay_TW::log( sprintf( '[request][order_id:%s] execute request_args: %s', $order_id, wc_print_r( $this->get_loggable_request_args( $request_args, $order ), true ) ) );
 
 			$result = $this->execute( $url, $request_args );
-			LINEPay_TW::log( '[request] execute result: ' . wc_print_r( $result, true ) );
 
 			// phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 			if ( '0000' !== $result->returnCode ) {
@@ -211,7 +209,7 @@ class LINEPay_TW_Request {
 			// api call.
 			$reserved_transaction_id = $order->get_meta( '_linepay_reserved_transaction_id' );
 			$url                     = $this->get_request_url( WPBR_LINEPay_Const::REQUEST_TYPE_CONFIRM, array( 'transaction_id' => $reserved_transaction_id ) );
-			LINEPay_TW::log( sprintf( '[confirm][order_id:%s] http request url : %s', $order_id, $url ) );
+			LINEPay_TW::log( sprintf( '[confirm][order_id:%s] http request url : %s', $order_id, LINEPay_TW::mask_transaction_id_in_url( $url ) ) );
 
 			$body = array(
 				'amount'   => $std_amount,
@@ -219,7 +217,7 @@ class LINEPay_TW_Request {
 			);
 
 			$request_args = $this->build_execute_request_args( $url, $body );
-			LINEPay_TW::log( sprintf( '[confirm][order_id:%s] http_request request_args: %s', $order_id, str_replace( $order->get_order_key(), '***', wc_print_r( $request_args, true ) ) ) );
+			LINEPay_TW::log( sprintf( '[confirm][order_id:%s] http_request request_args: %s', $order_id, wc_print_r( $this->get_loggable_request_args( $request_args, $order ), true ) ) );
 
 			$this->check_payment_and_update_order_note( $order, 'Check payment status before confirm' );
 
@@ -373,7 +371,7 @@ class LINEPay_TW_Request {
 		// Initialize order stored in session.
 		WC()->session->set( 'order_awaiting_payment', false );
 
-		LINEPay_TW::log( sprintf( WPBR_LINEPay_Const::LOG_TEMPLATE_PAYMENT_CANCEL, $order_id, $reserved_transaction_id ) );
+		LINEPay_TW::log( sprintf( WPBR_LINEPay_Const::LOG_TEMPLATE_PAYMENT_CANCEL, $order_id, LINEPay_TW::mask_transaction_id( $reserved_transaction_id ) ) );
 
 		// Mark the LINE Pay payment as cancelled so this reserved transaction can't be confirmed or cancelled again.
 		// The order itself stays pending; paying again calls request() and sets the status back to reserved.
@@ -441,10 +439,10 @@ class LINEPay_TW_Request {
 		}
 
 		$url = $this->get_request_url( WPBR_LINEPay_Const::REQUEST_TYPE_CHECK, array( 'transaction_id' => $reserved_transaction_id ) );
-		LINEPay_TW::log( sprintf( '[check][order_id:%s] http request url : %s', $order->get_id(), $url ) );
+		LINEPay_TW::log( sprintf( '[check][order_id:%s] http request url : %s', $order->get_id(), LINEPay_TW::mask_transaction_id_in_url( $url ) ) );
 
 		$request_args = $this->build_execute_request_args( $url, null, 20, 'GET' );
-		LINEPay_TW::log( sprintf( '[check][order_id:%s] execute request_args: %s', $order->get_id(), wc_print_r( $request_args, true ) ) );
+		LINEPay_TW::log( sprintf( '[check][order_id:%s] execute request_args: %s', $order->get_id(), wc_print_r( $this->get_loggable_request_args( $request_args, $order ), true ) ) );
 
 		$check_result = $this->execute( $url, $request_args, 20 );
 
@@ -595,6 +593,71 @@ class LINEPay_TW_Request {
 	}
 
 	/**
+	 * Return a copy of the request arguments that is safe to write to the log.
+	 * The headers carry the channel id and the request signature, so they are dropped.
+	 * The order key in confirmUrl / cancelUrl is replaced with ***.
+	 *
+	 * @param array         $request_args The request arguments from build_execute_request_args().
+	 * @param WC_Order|null $order The order object, used to mask the order key.
+	 * @return array
+	 */
+	private function get_loggable_request_args( $request_args, $order = null ) {
+
+		unset( $request_args['headers'] );
+
+		if ( $order && isset( $request_args['body'] ) && is_string( $request_args['body'] ) ) {
+			$order_key = (string) $order->get_order_key();
+			if ( '' !== $order_key ) {
+				$request_args['body'] = str_replace( $order_key, '***', $request_args['body'] );
+			}
+		}
+
+		return $request_args;
+	}
+
+	/**
+	 * Return the parts of a LINE Pay response that are safe to write to the log.
+	 * Only the return code, return message and transaction ids are kept, and each transaction id
+	 * shows only its last 6 digits. The payment url,
+	 * payment access token, pay info (masked card number) and product details are dropped.
+	 *
+	 * @param mixed $response_body The decoded response body. It is null when the body is not valid JSON.
+	 * @return array|string
+	 */
+	private static function get_loggable_response( $response_body ) {
+
+		if ( ! is_object( $response_body ) ) {
+			return 'unable to decode response body';
+		}
+
+		$loggable = array(
+			'returnCode'    => isset( $response_body->returnCode ) ? $response_body->returnCode : '',
+			'returnMessage' => isset( $response_body->returnMessage ) ? $response_body->returnMessage : '',
+		);
+
+		if ( empty( $response_body->info ) ) {
+			return $loggable;
+		}
+
+		// Most APIs return info as an object. The Payment Details API returns a list of transactions.
+		$infos = is_array( $response_body->info ) ? $response_body->info : array( $response_body->info );
+
+		foreach ( $infos as $info ) {
+			if ( ! is_object( $info ) ) {
+				continue;
+			}
+			if ( isset( $info->transactionId ) ) {
+				$loggable['transactionId'][] = LINEPay_TW::mask_transaction_id( $info->transactionId );
+			}
+			if ( isset( $info->refundTransactionId ) ) {
+				$loggable['refundTransactionId'][] = LINEPay_TW::mask_transaction_id( $info->refundTransactionId );
+			}
+		}
+
+		return $loggable;
+	}
+
+	/**
 	 * Call the refund API and store the information DB according to the result.
 	 * 1. Save refund information in the form of serialized array
 	 * 2. After refund, the balance of the transaction amount is stored in string form.
@@ -617,7 +680,7 @@ class LINEPay_TW_Request {
 		);
 
 		$request_args = $this->build_execute_request_args( $url, $body );
-		LINEPay_TW::log( sprintf( '[refund][order_id:%s] request_args:%s', $order_id, wc_print_r( $request_args, true ) ) );
+		LINEPay_TW::log( sprintf( '[refund][order_id:%s] request_args:%s', $order_id, wc_print_r( $this->get_loggable_request_args( $request_args, $order ), true ) ) );
 
 		try {
 			$resp = $this->execute( $url, $request_args );
@@ -638,8 +701,8 @@ class LINEPay_TW_Request {
 				$refund_ids = array();
 			}
 
-			LINEPay_TW::log( sprintf( '[refund][order_id:%s] refund transaction ids:%s', $order_id, wc_print_r( $refund_ids, true ) ) );
 			$refund_ids[] = $resp->info->refundTransactionId;
+			LINEPay_TW::log( sprintf( '[refund][order_id:%s] refund transaction ids:%s', $order_id, wc_print_r( array_map( array( 'LINEPay_TW', 'mask_transaction_id' ), $refund_ids ), true ) ) );
 			$order->update_meta_data( '_linepay_refund_transaction_id', $refund_ids );
 
 			if ( ! $is_partial_refund ) {
@@ -675,17 +738,16 @@ class LINEPay_TW_Request {
 		$response = wp_remote_request( $url, $request_args );
 
 		if ( is_wp_error( $response ) ) {
-			throw new Exception( 'Execute remote request error:' . $response->get_error_message() );
+			throw new Exception( 'Execute remote request error:' . LINEPay_TW::mask_transaction_id_in_url( $response->get_error_message() ) );
 		}
 
 		$http_status   = (int) $response['response']['code'];
 		$response_body = self::json_custom_decode( wp_remote_retrieve_body( $response ) );
-		$return_code   = $response_body->returnCode;
 
-		LINEPay_TW::log( '[execute] http response code: ' . $http_status . ', response body: ' . wc_print_r( $response_body, true ) );
+		LINEPay_TW::log( '[execute] http response code: ' . $http_status . ', response body: ' . wc_print_r( self::get_loggable_response( $response_body ), true ) );
 
 		if ( 200 !== $http_status ) {
-			throw new Exception( sprintf( 'Execute API http response not success. http response code: %s. url: %s', $http_status, $url ) );
+			throw new Exception( sprintf( 'Execute API http response not success. http response code: %s. url: %s', $http_status, LINEPay_TW::mask_transaction_id_in_url( $url ) ) );
 		}
 
 		return $response_body;

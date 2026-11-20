@@ -75,7 +75,7 @@ class LINEPay_TW_Response {
 					$request_type,
 					$received_params,
 					'' === $order_key ? 'missing' : 'present',
-					'' === $transaction_id ? 'missing' : $transaction_id
+					'' === $transaction_id ? 'missing' : LINEPay_TW::mask_transaction_id( $transaction_id )
 				)
 			);
 

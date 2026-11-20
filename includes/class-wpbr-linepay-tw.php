@@ -536,6 +536,37 @@ class LINEPay_TW {
 	}
 
 	/**
+	 * Mask a LINE Pay transaction id for the log. Only the last 6 digits are kept.
+	 *
+	 * @param string|int $transaction_id The transaction id.
+	 * @return string
+	 */
+	public static function mask_transaction_id( $transaction_id ) {
+		$transaction_id = (string) $transaction_id;
+		if ( strlen( $transaction_id ) <= 6 ) {
+			return $transaction_id;
+		}
+		return '***' . substr( $transaction_id, -6 );
+	}
+
+	/**
+	 * Mask the transaction id inside a LINE Pay API url, for the log.
+	 * Covers /payments/{id}/..., /payments/requests/{id}/... and ?transactionId={id}.
+	 *
+	 * @param string $text The url, or a message that contains the url.
+	 * @return string
+	 */
+	public static function mask_transaction_id_in_url( $text ) {
+		return preg_replace_callback(
+			'#(/payments/(?:requests/)?|transactionId=)(\d+)#',
+			function ( $matches ) {
+				return $matches[1] . self::mask_transaction_id( $matches[2] );
+			},
+			(string) $text
+		);
+	}
+
+	/**
 	 * Constructor
 	 */
 	public function __construct() {
