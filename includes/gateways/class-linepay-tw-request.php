@@ -219,7 +219,7 @@ class LINEPay_TW_Request {
 			);
 
 			$request_args = $this->build_execute_request_args( $url, $body );
-			LINEPay_TW::log( sprintf( '[confirm][order_id:%s] http_request request_args:', $order_id, wc_print_r( $request_args, true ) ) );
+			LINEPay_TW::log( sprintf( '[confirm][order_id:%s] http_request request_args: %s', $order_id, str_replace( $order->get_order_key(), '***', wc_print_r( $request_args, true ) ) ) );
 
 			$this->check_payment_and_update_order_note( $order, 'Check payment status before confirm' );
 
@@ -685,7 +685,7 @@ class LINEPay_TW_Request {
 		LINEPay_TW::log( '[execute] http response code: ' . $http_status . ', response body: ' . wc_print_r( $response_body, true ) );
 
 		if ( 200 !== $http_status ) {
-			throw new Exception( sprintf( 'Execute API http response not success. http response code: %s. url: $s', $http_status, $url ) );
+			throw new Exception( sprintf( 'Execute API http response not success. http response code: %s. url: %s', $http_status, $url ) );
 		}
 
 		return $response_body;
